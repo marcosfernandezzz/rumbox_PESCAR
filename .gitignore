@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 
-node_moduleserror: pathspec 'Se inicializa el proyecto con vite' did not match any file(s) known to git
+node_modules

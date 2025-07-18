@@ -2,11 +2,16 @@
   "name": "rumbox-pescar",
   "private": true,
   "version": "0.0.0",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node server.js",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "vite": "^7.0.4"
