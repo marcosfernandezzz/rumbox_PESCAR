@@ -1,8 +1,6 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import User from "../models/user.model.js"; 
-import bcrypt from "bcrypt";
 
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);

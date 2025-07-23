@@ -1,8 +1,11 @@
 import express from 'express'
 import path from 'path'
 import dotenv from 'dotenv'
+import connectDB from './server/config/db.config.js'
 import { fileURLToPath } from 'url'
 import clientRoutes from './server/routes/client.routes.js'
+
+connectDB()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -15,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'server', 'public')))
 
 // Usar las rutas modularizadas
 app.use('/', clientRoutes)
+
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}/`)
