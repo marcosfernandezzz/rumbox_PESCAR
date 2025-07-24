@@ -1,38 +1,64 @@
-import User from "../models/user.model.js";
-import bcrypt from "bcrypt";
+import userService from "../services/user.service.js";
 
-//Registrar un usuario
-export const register = async (req, res) => {
-  const { email, password } = req.body
 
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const newUser = new User({ email, password: hashedPassword })
-    await newUser.save();
+const userController = {
 
-    res.status(201).json({ message: "Usuario registrado exitosamente" })
+  //Registrar un usuario
+  async register(req, res) {
+    try {
+      const { email, password } = req.body;
 
-  } catch (error) {
-     
-    res.status(500).json({ message: "Error al registrar el usuario", error })
-  }
-};
+      if (!email || !password) {
+        return res.status(400).json({ 
+          success: false,
+          message: "Email y contraseña son requeridos" 
+        });
+      }
 
-//Login de usuario
-export const login = async (req, res) => {
-    const { email, password } = req.body
+      const user = await userService.register(email, password);
+
+      return res.status(201).json({
+        success: true,
+        data: user,
+        message: "Usuario registrado exitosamente"
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message || "Error al registrar al usuario"
+      });
+
+    }
+  },
+
+  //Login de usuario
+  async login(req, res) {
 
     try {
-        const user = await User.findOne({ email });
+      const { email, password } = req.body;
 
-        if (!user) return res.status(404).json({ message: "Usuario no encontrado" }) 
-        
-        const valid = await bcrypt.compare(password, user.password)
-        if (!valid) return res.status(401).json({ message: "Contraseña incorrecta" })
+      if (!email || !password) {
+        return res.status(400).json({ 
+          success: false,
+          message: "Email y contraseña son requeridos" 
+        });
+      }
 
-        res.json({ message: "Login exitoso" })
-        
+      const user = await userService.login(email, password);
+
+      return res.status(200).json({
+        success: true,
+        data: user,
+        message: "Usuario autenticado exitosamente"
+      });
     } catch (error) {
-        res.status(500).json({ message: "Error al ingresar el usuario", error })
+      return res.status(500).json({
+        success: false,
+        message: error.message || "Error al iniciar sesión"
+      });
     }
+  }
+
 }
+
+export default userController;
