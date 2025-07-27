@@ -1,9 +1,10 @@
 import User from "../models/user.model.js";
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
+
 
 //Registrar un usuario
 const userService = {
-  async register(email, password) {
+  async register(name, email, password) {
     try {
       const existingUser = await User.findOne({ email });
 
@@ -12,7 +13,7 @@ const userService = {
       }
 
       //Crear un nuevo usuario
-      const newUser = await User.create({ email, password });
+      const newUser = await User.create({ name, email, password });
 
       //Retornar el usuario sin la contraseña
       const { password: _, ...userWithoutPassword } = newUser.toJSON();

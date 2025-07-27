@@ -6,16 +6,16 @@ const userController = {
   //Registrar un usuario
   async register(req, res) {
     try {
-      const { email, password } = req.body;
+      const { name, email, password } = req.body;
 
-      if (!email || !password) {
+      if (!name || !email || !password) {
         return res.status(400).json({ 
           success: false,
-          message: "Email y contraseña son requeridos" 
+          message: "Name, email y contraseña son requeridos" 
         });
       }
 
-      const user = await userService.register(email, password);
+      const user = await userService.register(name, email, password);
 
       return res.status(201).json({
         success: true,
