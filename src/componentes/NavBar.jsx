@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import logo from "../assets/imagenes/rumbi.png";
 import '../index.css'
 import { MdMenu } from "react-icons/md"; {/* <MdMenu /> */ }
@@ -13,6 +13,12 @@ import { FaUsers } from "react-icons/fa";
 
 export const NavBar = () => {
     const [open, setOpen] = useState(false);
+    const location = useLocation();
+
+    // Cerrar el menú cuando cambie la ubicación
+    React.useEffect(() => {
+        setOpen(false);
+    }, [location.pathname]);
     return (
         <section className='text-white'>
             {/* mobile first */}
@@ -36,14 +42,21 @@ export const NavBar = () => {
                     <hr />
                     <div className=' bg-[#1A68FF] flex flex-col items-start gap-2 p-4 md:hidden'>
                         <div className='flex justify-center-safe gap-4 items-center '>
-                            <FaUserCircle className='text-4xl' />
+                            <FaUserCircle className='text-5xl' />
                             <div className='flex-row'>
-                                <a href="" className='text-xl block'> Bienvenido </a>
-                                <a href="" className='block'>Ingrese a su cuenta para ver mas...</a>
+                                <h3  className='text-xl block'> Bienvenido </h3>
+                                <Link to="/login" className='block'>Ingrese a su cuenta para ver mas...</Link>
                             </div>
 
                         </div>
-
+                        <div className='w-full flex gap-2'>
+                            <Link to="/login" className="bg-[#FF6A00] text-white w-[45%] py-2 rounded text-center items-center">
+                                Ingresá
+                            </Link>
+                            <Link to="/login" className="bg-white text-[#FF6A00] w-[45%] py-2 rounded text-center">
+                                Creá tu cuenta
+                            </Link>
+                        </div>
 
                     </div>
                     <div className='rumbox-grlinear h-dvh flex flex-col p-4 justify-start md:hidden'>
@@ -72,9 +85,9 @@ export const NavBar = () => {
 
                     <div className='flex flex-col gap-4 justify-center items-center '>
                         <div className='space-x-4 flex items-end'>
-                            <a href="" className='text-xl '>Crea tu cuenta</a>
+                            <Link to="/login" className='text-xl '>Crea tu cuenta</Link>
 
-                            <a href="" className='text-xl '>Ingresa</a>
+                            <Link to="/login" className='text-xl '>Ingresa</Link>
 
                             <Link to="/carrito">
                                 <CgShoppingCart className='text-2xl' />
