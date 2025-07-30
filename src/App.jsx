@@ -6,6 +6,7 @@ import Paquetes from './pages/client/Paquetes'
 import Productos from './pages/client/Productos'
 import Carrito from './pages/client/Carrito'
 import LoginIn from './pages/client/LoginIn'
+import SignUpPage from './pages/client/SignUp'
 import Layout from "./layouts/Layout";
 
 export const App = () => {
@@ -18,6 +19,7 @@ export const App = () => {
         <Route path="carrito" element={<Carrito />} />
         <Route path="nosotros" element={<Nosotros />} />
         <Route path="login" element={<LoginIn />} />
+        <Route path="signup" element={<SignUpPage />} />
       </Route>
     </Routes>
   )
