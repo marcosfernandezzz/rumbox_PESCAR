@@ -40,7 +40,7 @@ export const NavBar = () => {
             {open && (
                 <>
                     <hr />
-                    <div className=' bg-[#1A68FF] flex flex-col items-start gap-2 p-4 md:hidden'>
+                    <div className=' bg-[#1A68FF] flex flex-col items-start gap-2 p-4  md:hidden'>
                         <div className='flex justify-center-safe gap-4 items-center '>
                             <FaUserCircle className='text-5xl' />
                             <div className='flex-row'>
@@ -53,13 +53,13 @@ export const NavBar = () => {
                             <Link to="/login" className="bg-orange-500 text-white font-semibold w-[45%] py-2 rounded text-center items-center">
                                 Ingresá
                             </Link>
-                            <Link to="/login" className="bg-white text-orange-500 font-semibold w-[45%] py-2 rounded text-center">
+                            <Link to="/signup" className="bg-white text-orange-500 font-semibold w-[45%] py-2 rounded text-center">
                                 Creá tu cuenta
                             </Link>
                         </div>
 
                     </div>
-                    <div className='bg-gray-100 text-black h-dvh flex flex-col p-4 justify-start md:hidden'>
+                    <div className='bg-gray-100 text-black h-dvh flex flex-col p-4 justify-start   md:hidden'>
                         <Link to="/" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaHome />Inicio</Link>
                         <Link to="/productos" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><TfiMenuAlt />Productos</Link>
                         <Link to="/paquetes" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><GiSuitcase />Paquetes</Link>
@@ -80,12 +80,12 @@ export const NavBar = () => {
                         <Link to="/" className='text-xl '>Inicio</Link>
                         <Link to="/productos" className='text-xl '>Productos</Link>
                         <Link to="/paquetes" className='text-xl '>Paquetes</Link>
-                        <Link to="/nosotros" className='hidden lg:inline text-xl '>Nosotros</Link>
+                        
                     </div>
 
                     <div className='flex flex-col gap-4 justify-center items-center '>
                         <div className='space-x-4 flex items-end'>
-                            <Link to="/login" className='text-xl '>Crea tu cuenta</Link>
+                            <Link to="/signup" className='text-xl '>Crea tu cuenta</Link>
 
                             <Link to="/login" className='text-xl '>Ingresa</Link>
 
