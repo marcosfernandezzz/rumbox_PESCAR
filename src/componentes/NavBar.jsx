@@ -49,22 +49,22 @@ export const NavBar = () => {
                             </div>
 
                         </div>
-                        <div className='w-full flex gap-2'>
-                            <Link to="/login" className="bg-[#FF6A00] text-white w-[45%] py-2 rounded text-center items-center">
+                        <div className='w-full flex gap-2 justify-center'>
+                            <Link to="/login" className="bg-orange-500 text-white font-semibold w-[45%] py-2 rounded text-center items-center">
                                 Ingresá
                             </Link>
-                            <Link to="/login" className="bg-white text-[#FF6A00] w-[45%] py-2 rounded text-center">
+                            <Link to="/login" className="bg-white text-orange-500 font-semibold w-[45%] py-2 rounded text-center">
                                 Creá tu cuenta
                             </Link>
                         </div>
 
                     </div>
-                    <div className='rumbox-grlinear h-dvh flex flex-col p-4 justify-start md:hidden'>
-                        <Link to="/" className='text-xl m-2 flex items-center gap-2'><FaHome />Inicio</Link>
-                        <Link to="/productos" className='text-xl m-2 flex items-center gap-2'><TfiMenuAlt />Productos</Link>
-                        <Link to="/paquetes" className='text-xl m-2 flex items-center gap-2'><GiSuitcase />Paquetes</Link>
-                        <Link to="/carrito" className='text-xl m-2 flex items-center gap-2'><CgShoppingCart />Carrito</Link>
-                        <Link to="/nosotros" className='text-xl m-2 flex items-center gap-2'><FaUsers />Nosotros</Link>
+                    <div className='bg-gray-100 text-black h-dvh flex flex-col p-4 justify-start md:hidden'>
+                        <Link to="/" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaHome />Inicio</Link>
+                        <Link to="/productos" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><TfiMenuAlt />Productos</Link>
+                        <Link to="/paquetes" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><GiSuitcase />Paquetes</Link>
+                        <Link to="/carrito" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><CgShoppingCart />Carrito</Link>
+                        <Link to="/nosotros" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaUsers />Nosotros</Link>
                     </div>
                 </>
             )}
