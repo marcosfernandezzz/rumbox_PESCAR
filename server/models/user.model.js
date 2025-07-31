@@ -1,32 +1,57 @@
 import mongoose from 'mongoose'
-import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
 const UserSchema = new mongoose.Schema({
-    name : { type: String },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-}) 
+    name: { 
+        type: String, 
+        required: [true, 'El nombre es requerido'],
+        trim: true
+    },
+    email: { 
+        type: String, 
+        required: [true, 'El email es requerido'], 
+        unique: true,
+        lowercase: true,
+        trim: true,
+        match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Email inválido']
+    },
+    password: { 
+        type: String, 
+        required: [true, 'La contraseña es requerida'],
+        minlength: [6, 'La contraseña debe tener al menos 6 caracteres']
+    }
+}, {
+    timestamps: true
+})
 
-// Hook para hashear la contraseña antes de guardarla
+// Middleware para encriptar contraseña antes de guardar
 UserSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) {
-        return next();
-    }
+    if (!this.isModified('password')) return next()
+    
     try {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
-        next();
+        const salt = await bcrypt.genSalt(10)
+        this.password = await bcrypt.hash(this.password, salt)
+        next()
     } catch (error) {
-        next(error);
+        next(error)
     }
-});
+})
 
 // Método para comparar contraseñas
 UserSchema.methods.comparePassword = async function(candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
-};
+    return await bcrypt.compare(candidatePassword, this.password)
+}
 
-export default mongoose.model('User', UserSchema)
+// Método para obtener usuario sin contraseña
+UserSchema.methods.toJSON = function() {
+    const user = this.toObject()
+    delete user.password
+    return user
+}
+
+export default mongoose.model('User', UserSchema) 
+
+
