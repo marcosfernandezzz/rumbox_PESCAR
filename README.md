@@ -1,196 +1,117 @@
-# Rumbox - Sistema de Autenticación
+# Rumbox PESCAR
 
-## 📋 Resumen de Cambios Implementados
+Proyecto full-stack con React (frontend) y Express (backend).
 
-Este documento describe las mejoras implementadas en el sistema de autenticación de Rumbox, incluyendo reorganización de componentes, ruteo, navegación y validaciones de formularios.
+## Estructura del Proyecto
 
-## 🏗️ Reorganización de Estructura
+- **Frontend**: React + Vite (puerto 5173)
+- **Backend**: Express + MongoDB (puerto 3000)
+- **API**: Rutas bajo `/api/*`
 
-### Antes
-```
-src/
-├── pages/client/
-│   └── LoginIn.jsx (componente + página mezclados)
-└── componentes/Auth/
-    └── SingUpPrompt.jsx
-```
+## Instalación
 
-### Después
-```
-src/
-├── componentes/Auth/
-│   ├── Login.jsx          # Componente reutilizable
-│   ├── SignUp.jsx         # Componente reutilizable
-│   └── SingUpPrompt.jsx   # Componente existente
-└── pages/client/
-    ├── LoginIn.jsx        # Página que usa Login
-    └── SignUp.jsx         # Página que usa SignUp
+```bash
+npm install
 ```
 
-## 🛣️ Sistema de Ruteo
+## Configuración de Base de Datos
 
-### Rutas Configuradas
-```jsx
-// App.jsx
-<Routes>
-  <Route path="/" element={<Layout />}>
-    <Route index element={<Home />} />
-    <Route path="productos" element={<Productos />} />
-    <Route path="paquetes" element={<Paquetes />} />
-    <Route path="carrito" element={<Carrito />} />
-    <Route path="nosotros" element={<Nosotros />} />
-    <Route path="login" element={<LoginIn />} />      // ✅ Nueva ruta
-    <Route path="signup" element={<SignUpPage />} />  // ✅ Nueva ruta
-  </Route>
-</Routes>
+Asegúrate de tener MongoDB instalado y configurar la variable de entorno:
+
+```bash
+# Crear archivo .env en la raíz del proyecto
+MONGO_URI=mongodb://localhost:27017/rumbox_pescar
 ```
 
-### Beneficios de la Reorganización
-- **Separación de responsabilidades**: Componentes Auth reutilizables vs páginas específicas
-- **Mantenibilidad**: Cambios en diseño se hacen en un solo lugar
-- **Escalabilidad**: Fácil agregar más funcionalidades de autenticación
+## Desarrollo
 
-## 🧭 Sistema de Navegación
+### Opción 1: Desarrollo completo (Recomendado)
+```bash
+npm run dev
+```
+Esto ejecutará:
+- **Frontend**: http://localhost:5173 (React + Vite)
+- **Backend**: http://localhost:3000 (Express)
 
-### Navegación Bidireccional
-1. **Entre formularios**:
-   - Login → SignUp: "¿No tienes cuenta? Regístrate aquí"
-   - SignUp → Login: "¿Ya tienes cuenta? Inicia sesión aquí"
+### Opción 2: Solo backend
+```bash
+npm run dev:server
+```
+- **Backend**: http://localhost:3000 (Express)
+- **APIs**: http://localhost:3000/api/*
 
-2. **Desde NavBar**:
-   - **Menú hamburguesa**: Botones "Ingresá" y "Creá tu cuenta"
-   - **Versión desktop**: Enlaces "Ingresa" y "Crea tu cuenta"
+### Opción 3: Solo frontend
+```bash
+npm run dev:client
+```
+- **Frontend**: http://localhost:5173 (React + Vite)
 
-3. **Desde SingUpPrompt**:
-   - Enlaces actualizados a rutas correctas
+## Scripts Disponibles
 
-### Correcciones Realizadas
-```jsx
-// Antes (ambos botones iban a /login)
-<Link to="/login">Ingresá</Link>
-<Link to="/login">Creá tu cuenta</Link>
+- `npm run dev` - Ejecuta frontend y backend simultáneamente
+- `npm run dev:client` - Solo el frontend (Vite)
+- `npm run dev:server` - Solo el backend (Express)
+- `npm run build` - Construye el frontend para producción
+- `npm run server` - Ejecuta solo el servidor en producción
 
-// Después (navegación correcta)
-<Link to="/login">Ingresá</Link>
-<Link to="/signup">Creá tu cuenta</Link>
+## Rutas de API
+
+### Autenticación (`/api/auth/*`)
+- `GET /api/auth/test` - Prueba de autenticación
+- `POST /api/auth/register` - Registro de usuario
+- `POST /api/auth/login` - Login de usuario
+- `GET /api/auth/profile/:id` - Obtener perfil de usuario
+
+### Cliente (`/api/client/*`)
+- `GET /api/client/test` - Prueba del cliente
+- `GET /api/client/data` - Datos del cliente
+- `GET /api/client/productos` - Lista de productos
+
+## Ejemplos de Uso
+
+### Registro de Usuario
+```bash
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Juan Pérez",
+    "email": "juan@ejemplo.com",
+    "password": "123456"
+  }'
 ```
 
-## ✅ Sistema de Validaciones
-
-### Login - Validaciones Implementadas
-```jsx
-// Validaciones de email
-- Campo requerido
-- Formato de email válido (regex: /\S+@\S+\.\S+/)
-
-// Validaciones de contraseña
-- Campo requerido
-- Mínimo 6 caracteres
+### Login de Usuario
+```bash
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "juan@ejemplo.com",
+    "password": "123456"
+  }'
 ```
 
-### SignUp - Validaciones Implementadas
-```jsx
-// Validaciones de nombre
-- Campo requerido
-- Mínimo 2 caracteres
+## Configuración
 
-// Validaciones de email
-- Campo requerido
-- Formato de email válido
+El proyecto está configurado para que:
+- En **desarrollo**: 
+  - Si existe `/dist`: Frontend y backend en puerto 3000
+  - Si no existe `/dist`: Frontend en 5173, backend en 3000
+- En **producción**: Express sirve los archivos estáticos de React
 
-// Validaciones de contraseña
-- Campo requerido
-- Mínimo 6 caracteres
+## Proxy
 
-// Validaciones de confirmación
-- Campo requerido
-- Debe coincidir con la contraseña
-```
+Vite está configurado para hacer proxy de las rutas `/api/*` al backend de Express automáticamente.
 
-### Características de UX
-- **Validación en tiempo real**: Los errores se limpian cuando el usuario empiece a escribir
-- **Feedback visual**: Bordes rojos en campos con errores
-- **Mensajes de error**: Texto descriptivo debajo de cada campo
-- **Estado de envío**: Botón deshabilitado durante el envío
-- **Indicadores de carga**: Texto del botón cambia durante el envío
+## Test de APIs
 
-### Ejemplo de Validación
-```jsx
-const validateForm = () => {
-  const newErrors = {}
-  
-  if (!formData.email) {
-    newErrors.email = 'El correo electrónico es requerido'
-  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-    newErrors.email = 'El correo electrónico no es válido'
-  }
-  
-  setErrors(newErrors)
-  return Object.keys(newErrors).length === 0
-}
-```
+Puedes usar el archivo `public/test-api.html` para probar las APIs de autenticación:
+1. Ejecuta `npm run dev`
+2. Abre `http://localhost:5173/test-api.html`
+3. Prueba registro y login
 
-## 🎨 Mejoras de UI/UX
+## Notas Importantes
 
-### Estados de Formulario
-- **Normal**: Bordes grises, botón azul
-- **Error**: Bordes rojos, mensaje de error
-- **Envío**: Botón deshabilitado, texto cambiado
-- **Éxito**: Alert de confirmación (simulado)
-
-### Responsive Design
-- **Mobile**: Menú hamburguesa con navegación completa
-- **Desktop**: Enlaces en header con navegación directa
-- **Formularios**: Diseño consistente en todas las pantallas
-
-## 🚀 Funcionalidades Implementadas
-
-### ✅ Completado
-- [x] Reorganización de componentes Auth
-- [x] Sistema de ruteo completo
-- [x] Navegación bidireccional
-- [x] Validaciones de formularios
-- [x] Estados de envío
-- [x] Feedback visual de errores
-- [x] Corrección de enlaces en NavBar
-- [x] Responsive design
-
-### 🔄 Pendiente (Futuras Implementaciones)
-- [ ] Integración con backend
-- [ ] Manejo de estado global (Context/Redux)
-- [ ] Persistencia de sesión
-- [ ] Recuperación de contraseña
-- [ ] Verificación de email
-- [ ] Validaciones del lado del servidor
-
-## 📱 Cómo Probar
-
-1. **Navegación**:
-   - Ve a `/login` → Usa "Regístrate aquí" → Ve a `/signup`
-   - Ve a `/signup` → Usa "Inicia sesión aquí" → Ve a `/login`
-   - Usa el menú hamburguesa → Navega entre opciones
-
-2. **Validaciones**:
-   - Intenta enviar formularios vacíos
-   - Usa emails inválidos
-   - Usa contraseñas cortas
-   - En SignUp, usa contraseñas que no coincidan
-
-3. **Estados**:
-   - Observa los cambios visuales durante la validación
-   - Ve el estado de envío en los botones
-
-## 🛠️ Tecnologías Utilizadas
-
-- **React**: Componentes funcionales con hooks
-- **React Router**: Navegación y ruteo
-- **Tailwind CSS**: Estilos y responsive design
-- **React Icons**: Iconografía
-- **JavaScript ES6+**: Validaciones y lógica
-
-## 📝 Notas de Desarrollo
-
-- Los formularios actualmente muestran alerts simulados
-- Las validaciones son del lado del cliente
-- La estructura está preparada para integración con backend
-- El código sigue principios de clean code y reutilización
+- **"Cannot GET /"**: Es normal cuando ejecutas solo el backend. Visita las rutas `/api/*` para probar las APIs
+- **Para desarrollo completo**: Usa `npm run dev` para tener frontend y backend funcionando
+- **Para producción**: Ejecuta `npm run build` antes de `npm run server`
+- **Base de datos**: Asegúrate de tener MongoDB corriendo y configurado

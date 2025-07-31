@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +8,8 @@ const Login = () => {
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [apiError, setApiError] = useState('')
+  const navigate = useNavigate()
 
   const validateForm = () => {
     const newErrors = {}
@@ -36,28 +38,53 @@ const Login = () => {
       ...prev,
       [name]: value
     }))
-    // Limpiar error cuando el usuario empiece a escribir
+    // Limpiar errores cuando el usuario empiece a escribir
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
         [name]: ''
       }))
     }
+    // Limpiar error de API
+    if (apiError) {
+      setApiError('')
+    }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (validateForm()) {
       setIsSubmitting(true)
-      // Aquí iría la lógica de autenticación
-      console.log('Datos del formulario:', formData)
-      // Simular envío
-      setTimeout(() => {
+      setApiError('')
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          console.log('Login exitoso:', data)
+          alert('Inicio de sesión exitoso!')
+          // Redirigir al home después del login
+          navigate('/')
+        } else {
+          setApiError(data.message || 'Error al iniciar sesión')
+        }
+      } catch (error) {
+        console.error('Error en login:', error)
+        setApiError('Error de conexión. Verifica tu conexión a internet.')
+      } finally {
         setIsSubmitting(false)
-        alert('Inicio de sesión exitoso!')
-      }, 1000)
+      }
     }
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -112,6 +139,9 @@ const Login = () => {
           )}
           {errors.password && (
             <div className="text-red-500 text-sm mt-1">{errors.password}</div>
+          )}
+          {apiError && (
+            <div className="text-red-500 text-sm mt-1 text-center">{apiError}</div>
           )}
 
           <div>
