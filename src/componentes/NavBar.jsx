@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import logo from "../assets/imagenes/rumbi.png";
 import '../index.css'
 import { MdMenu } from "react-icons/md"; {/* <MdMenu /> */ }
@@ -9,16 +9,38 @@ import { FaHome } from "react-icons/fa";   {/*<FaHome />*/ }
 import { GiSuitcase } from "react-icons/gi";  
 import { TfiMenuAlt } from "react-icons/tfi";
 import { FaUsers } from "react-icons/fa";
-
+import { FaSignOutAlt } from "react-icons/fa";
 
 export const NavBar = () => {
     const [open, setOpen] = useState(false);
+    const [user, setUser] = useState(null);
     const location = useLocation();
+    const navigate = useNavigate();
+
+    // Verificar si el usuario está autenticado
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userData = localStorage.getItem('user');
+        
+        if (token && userData) {
+            setUser(JSON.parse(userData));
+        } else {
+            setUser(null);
+        }
+    }, []);
 
     // Cerrar el menú cuando cambie la ubicación
     React.useEffect(() => {
         setOpen(false);
     }, [location.pathname]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setUser(null);
+        navigate('/');
+    };
+
     return (
         <section className='text-white'>
             {/* mobile first */}
@@ -44,20 +66,34 @@ export const NavBar = () => {
                         <div className='flex justify-center-safe gap-4 items-center '>
                             <FaUserCircle className='text-5xl' />
                             <div className='flex-row'>
-                                <h3  className='text-xl block'> Bienvenido </h3>
-                                <Link to="/login" className='block'>Ingrese a su cuenta para ver mas...</Link>
+                                {user ? (
+                                    <>
+                                        <h3 className='text-xl block'>Bienvenido, {user.name}</h3>
+                                        <button 
+                                            onClick={handleLogout}
+                                            className='block text-sm text-orange-300 hover:text-orange-100'
+                                        >
+                                            Cerrar sesión
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <h3 className='text-xl block'>Bienvenido</h3>
+                                        <Link to="/login" className='block'>Ingrese a su cuenta para ver mas...</Link>
+                                    </>
+                                )}
                             </div>
-
                         </div>
-                        <div className='w-full flex gap-2 justify-center'>
-                            <Link to="/login" className="bg-orange-500 text-white font-semibold w-[45%] py-2 rounded text-center items-center">
-                                Ingresá
-                            </Link>
-                            <Link to="/signup" className="bg-white text-orange-500 font-semibold w-[45%] py-2 rounded text-center">
-                                Creá tu cuenta
-                            </Link>
-                        </div>
-
+                        {!user && (
+                            <div className='w-full flex gap-2 justify-center'>
+                                <Link to="/login" className="bg-orange-500 text-white font-semibold w-[45%] py-2 rounded text-center items-center">
+                                    Ingresá
+                                </Link>
+                                <Link to="/signup" className="bg-white text-orange-500 font-semibold w-[45%] py-2 rounded text-center">
+                                    Creá tu cuenta
+                                </Link>
+                            </div>
+                        )}
                     </div>
                     <div className='bg-gray-100 text-black h-dvh flex flex-col p-4 justify-start   md:hidden'>
                         <Link to="/" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaHome />Inicio</Link>
@@ -65,6 +101,14 @@ export const NavBar = () => {
                         <Link to="/paquetes" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><GiSuitcase />Paquetes</Link>
                         <Link to="/carrito" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><CgShoppingCart />Carrito</Link>
                         <Link to="/nosotros" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaUsers />Nosotros</Link>
+                        {user && (
+                            <button 
+                                onClick={handleLogout}
+                                className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'
+                            >
+                                <FaSignOutAlt />Cerrar sesión
+                            </button>
+                        )}
                     </div>
                 </>
             )}
@@ -85,9 +129,22 @@ export const NavBar = () => {
 
                     <div className='flex flex-col gap-4 justify-center items-center '>
                         <div className='space-x-4 flex items-end'>
-                            <Link to="/signup" className='text-xl '>Crea tu cuenta</Link>
-
-                            <Link to="/login" className='text-xl '>Ingresa</Link>
+                            {user ? (
+                                <>
+                                    <span className='text-xl'>Hola, {user.name}</span>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className='text-xl hover:text-orange-300'
+                                    >
+                                        Cerrar sesión
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/signup" className='text-xl '>Crea tu cuenta</Link>
+                                    <Link to="/login" className='text-xl '>Ingresa</Link>
+                                </>
+                            )}
 
                             <Link to="/carrito">
                                 <CgShoppingCart className='text-2xl' />

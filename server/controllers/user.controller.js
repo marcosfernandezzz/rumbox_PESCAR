@@ -1,4 +1,5 @@
 import userService from "../services/user.service.js";
+import jwt from 'jsonwebtoken';
 
 const userController = {
   // Registrar un usuario
@@ -52,9 +53,17 @@ const userController = {
 
       const user = await userService.login(email, password);
 
+      // Generar JWT token
+      const token = jwt.sign(
+        { userId: user._id, email: user.email },
+        process.env.JWT_SECRET || 'tu_secreto_jwt',
+        { expiresIn: '24h' }
+      );
+
       return res.status(200).json({
         success: true,
         data: user,
+        token: token,
         message: "Usuario autenticado exitosamente"
       });
     } catch (error) {

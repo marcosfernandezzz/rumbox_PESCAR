@@ -21,6 +21,9 @@ const ProductSchema = new mongoose.Schema({
             message: "El precio debe ser un número entero"
         }
     },
+    descripcion:{
+        type: 
+    },
     categoria: {
         type: String,
         required: [true, "La categoría del producto es requerida"],
