@@ -2,14 +2,21 @@ import React from 'react'
 import Hero from '../../componentes/Hero'
 import Slider from'../../componentes/UI/Slider'
 import SingUpPrompt from '../../componentes/AUTH/SingUpPrompt'
+import CardList from '../../componentes/UI/CardList'
 
+import KitsData from '../../assets/Mockdata/KitsData.js'
+import ProductData from '../../assets/Mockdata/ProductData.js'
+import hero from '../../assets/imagenes/hero.png'
+import hero2 from '../../assets/imagenes/hero2.png'
 export const Home = () => {
   return (
     <main className=''>
-      <Hero/>
+      <Hero heroImg={hero} title='ESENCIALES PARA LA NIEVE' info='HASTA 40% OFF!' url={'/Productos'}/>
       <Slider/>
-      {/* <h2 className='text-3xl font-bold underline text-blue-500 bg-gray-200 h-dvh text-center justify-center pt-6'>contenido de Home</h2> */}
       <SingUpPrompt/>
+      <CardList title='Kit Destacados.'  Products= {KitsData} url={'/Paquetes'} btn='Ver mas Kits...' />
+      <Hero heroImg={hero2} title='¡Listo para tu próxima aventura?' info='Productos prácticos para viajeros curiosos.'/>
+      <CardList title='Productos Varios.'  Products= {ProductData} url={'/Productos'} btn='Ver mas productos...'/>
     </main>
   )
 }
