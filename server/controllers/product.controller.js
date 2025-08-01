@@ -4,12 +4,12 @@ const productController = {
   //GET - obtener todos los productos
   async getAll(req, res) {
     try {
-      const productos = await productosService.getAll();
+      const productos = await productService.getAll();
 
       res.status(200).json({
         success: true,
         data: productos,
-        message: "Productos obteniudos correctamente",
+        message: "Productos obtenidos correctamente",
       });
 
     } catch (error) {
@@ -28,20 +28,24 @@ const productController = {
         const producto = await productService.getByID(id);
 
         if (!producto) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: "Producto no encontrado"
-            })
+            });
         }
 
         res.status(200).json({
             success: true,
             data: producto,
             message: "Producto obtenido correctamente"
-        })
+        });
 
     } catch (error) {
-        
+        res.status(500).json({
+            success: false,
+            message: "Error al obtener el producto",
+            error: error.message,
+        });
     }
   }
 };

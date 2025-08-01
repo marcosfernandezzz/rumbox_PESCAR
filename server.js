@@ -5,6 +5,7 @@ import connectDB from './server/config/db.config.js'
 import { fileURLToPath } from 'url'
 import clientRoutes from './server/routes/client.routes.js'
 import authRoutes from './server/routes/auth.routes.js'
+import productRoutes from './server/routes/product.routes.js'
 
 dotenv.config()
 connectDB()
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }))
 // Rutas de API (backend)
 app.use('/api/auth', authRoutes)
 app.use('/api/client', clientRoutes)
+app.use('/api/products', productRoutes)
 
 // Configuración según el entorno
 if (isDevelopment) {
