@@ -4,6 +4,7 @@ import Home from './pages/client/Home'
 import Nosotros from './pages/client/Nosotros'
 import Paquetes from './pages/client/Paquetes'
 import Productos from './pages/client/Productos'
+import InfoProduct from './componentes/ContPageProduc/InfoProduct'
 import Carrito from './pages/client/Carrito'
 import LoginIn from './pages/client/LoginIn'
 import SignUpPage from './pages/client/SignUp'
@@ -15,6 +16,8 @@ export const App = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="productos" element={<Productos />} />
+        <Route path="productos/:zonaActual" element={<Productos />} />
+        <Route path="InfoProduct/:Id" element={<InfoProduct />} />
         <Route path="paquetes" element={<Paquetes />} />
         <Route path="carrito" element={<Carrito />} />
         <Route path="nosotros" element={<Nosotros />} />
