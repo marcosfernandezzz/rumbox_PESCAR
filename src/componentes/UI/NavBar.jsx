@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import logo from "../assets/imagenes/rumbi.png";
-import '../index.css'
+import logo from "../../assets/imagenes/rumbi.png";
+import '../../index.css'
 import { MdMenu } from "react-icons/md"; {/* <MdMenu /> */ }
 import { CgShoppingCart } from "react-icons/cg"; {/* <CgShoppingCart /> */ }
 import { FaUserCircle } from "react-icons/fa"; {/* <FaUserCircle /> */ }
@@ -10,7 +10,7 @@ import { GiSuitcase } from "react-icons/gi";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { FaUsers } from "react-icons/fa";
 import { FaSignOutAlt } from "react-icons/fa";
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 
 export const NavBar = () => {
     const [open, setOpen] = useState(false);

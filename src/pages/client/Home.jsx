@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Hero from '../../componentes/Hero'
+import Hero from '../../componentes/UI/Hero'
 import Slider from'../../componentes/UI/Slider'
 import SingUpPrompt from '../../componentes/AUTH/SingUpPrompt'
 import CardList from '../../componentes/UI/CardList'
