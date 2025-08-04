@@ -18,14 +18,32 @@ const ProductSchema = new mongoose.Schema({
         min: [0, "El precio no puede ser negativo"],
         validate: {
             validator: Number.isInteger,
-            message: "El precio debe ser un número entero"
+            message: "El precio debe ser un numero entero"
+        }
+    },
+    precioDescuento: {
+        type: Number,
+        required: [false, "El precio del producto es requerido"],
+        min: [0, "El precio no puede ser negativo"],
+        validate: {
+            validator: Number.isInteger,
+            message: "El precio debe ser un numero entero"
+        }
+    },
+    descuento: {
+        type: Number,
+        required: false,
+        min: [0, "El descuento no puede ser negativo"],
+        validate: {
+            validator: Number.isInteger,
+            message: "El descuento debe ser un numero entero"
         }
     },
     descripcion: {
         type: String,
         required: [true, "La descripción del producto es requerida"],
         trim: true,
-        maxLength: [50, "La descripción no puede exceder los 50 caracteres"],
+        maxLength: [200, "La descripción no puede exceder los 200 caracteres"],
         minLength: [10, "La descripción debe tener al menos 10 caracteres"],
     },
     categoria: {
@@ -37,9 +55,27 @@ const ProductSchema = new mongoose.Schema({
         maxLength: [7, "La categoría no puede exceder los 7 caracteres"],
         minLength: [5, "La categoría debe tener al menos 5 caracteres"],
     },
-    url: {
-        type: String,
+    caracteristicaUno: {
+        type: String ,
         required: false,
+        trim: true,
+        maxLenght:[20, "La caracteristica no puede exceder de los 20 caracteres"]
+    },
+    caracteristicaDos: {
+        type: String ,
+        required: false,
+        trim: true,
+        maxLenght:[20, "La caracteristica no puede exceder de los 20 caracteres"]
+    },
+    caracteristicaTres: {
+        type: String ,
+        required: false,
+        trim: true,
+        maxLenght:[20, "La caracteristica no puede exceder de los 20 caracteres"]
+    },
+    image: {
+        type: String,
+        required: true,
     },
     activo: {
         type: Boolean,
