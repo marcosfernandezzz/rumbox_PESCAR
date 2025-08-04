@@ -12,7 +12,7 @@ import hero2 from '../../assets/imagenes/hero2.png'
 export const Home = () => {
   return (
     <main className=''>
-      <Hero heroImg={hero2} title='¡Listo para tu próxima aventura?' info='Productos prácticos para viajeros curiosos.'/>
+      <Hero heroImg={hero2} title='¡Listo para tu próxima aventura?' info='Productos prácticos para viajeros curiosos.' refUrl ='Explorá nuestros productos'/>
       <Slider/>
       <SingUpPrompt/>
       <CardList title='Kit Destacados.'  Products= {KitsData} url={'/Paquetes'} btn='Ver mas Kits...' />

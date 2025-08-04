@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../contexts/AuthContext'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [apiError, setApiError] = useState('')
   const navigate = useNavigate()
+  const { login } = useContext(AuthContext)
 
   const validateForm = () => {
     const newErrors = {}
@@ -70,6 +72,8 @@ const Login = () => {
 
         if (response.ok) {
           console.log('Login exitoso:', data)
+          // Usar la función login del contexto para guardar el usuario
+          login(data.data)
           alert('Inicio de sesión exitoso!')
           // Redirigir al home después del login
           navigate('/')

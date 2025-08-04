@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import logo from "../assets/imagenes/rumbi.png";
 import '../index.css'
@@ -10,24 +10,15 @@ import { GiSuitcase } from "react-icons/gi";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { FaUsers } from "react-icons/fa";
 import { FaSignOutAlt } from "react-icons/fa";
+import { AuthContext } from '../contexts/AuthContext';
 
 export const NavBar = () => {
     const [open, setOpen] = useState(false);
-    const [user, setUser] = useState(null);
     const location = useLocation();
     const navigate = useNavigate();
+    const { usuario, logout } = useContext(AuthContext);
 
-    // Verificar si el usuario está autenticado
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const userData = localStorage.getItem('user');
-        
-        if (token && userData) {
-            setUser(JSON.parse(userData));
-        } else {
-            setUser(null);
-        }
-    }, []);
+
 
     // Cerrar el menú cuando cambie la ubicación
     React.useEffect(() => {
@@ -35,9 +26,7 @@ export const NavBar = () => {
     }, [location.pathname]);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setUser(null);
+        logout();
         navigate('/');
     };
 
@@ -66,9 +55,9 @@ export const NavBar = () => {
                         <div className='flex justify-center-safe gap-4 items-center '>
                             <FaUserCircle className='text-5xl' />
                             <div className='flex-row'>
-                                {user ? (
+                                {usuario ? (
                                     <>
-                                        <h3 className='text-xl block'>Bienvenido, {user.name}</h3>
+                                        <h3 className='text-xl block'>Bienvenido, {usuario.name || 'Usuario'}</h3>
                                         <button 
                                             onClick={handleLogout}
                                             className='block text-sm text-orange-300 hover:text-orange-100'
@@ -84,7 +73,7 @@ export const NavBar = () => {
                                 )}
                             </div>
                         </div>
-                        {!user && (
+                        {!usuario && (
                             <div className='w-full flex gap-2 justify-center'>
                                 <Link to="/login" className="bg-orange-500 text-white font-semibold w-[45%] py-2 rounded text-center items-center">
                                     Ingresá
@@ -101,7 +90,7 @@ export const NavBar = () => {
                         <Link to="/paquetes" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><GiSuitcase />Paquetes</Link>
                         <Link to="/carrito" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><CgShoppingCart />Carrito</Link>
                         <Link to="/nosotros" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaUsers />Nosotros</Link>
-                        {user && (
+                        {usuario && (
                             <button 
                                 onClick={handleLogout}
                                 className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'
@@ -129,9 +118,10 @@ export const NavBar = () => {
 
                     <div className='flex flex-col gap-4 justify-center items-center '>
                         <div className='space-x-4 flex items-end'>
-                            {user ? (
+                            {usuario ? (
                                 <>
-                                    <span className='text-xl'>Hola, {user.name}</span>
+                                    <span className='text-xl'>Hola, {usuario.name || 'Usuario'}</span>
+
                                     <button 
                                         onClick={handleLogout}
                                         className='text-xl hover:text-orange-300'

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../contexts/AuthContext'
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [apiError, setApiError] = useState('')
   const navigate = useNavigate()
+  const { login } = useContext(AuthContext)
 
   const validateForm = () => {
     const newErrors = {}
@@ -77,7 +79,7 @@ const SignUp = () => {
         // Enviar solo los datos necesarios para el registro
         const { name, email, password } = formData
         
-        const response = await fetch('http://localhost:3000/api/auth/register', {
+        const response = await fetch('/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -89,9 +91,15 @@ const SignUp = () => {
 
         if (response.ok) {
           console.log('Registro exitoso:', data)
-          alert('Cuenta creada exitosamente!')
-          // Redirigir al login después del registro
-          navigate('/login')
+          // Si el registro incluye datos del usuario, hacer login automático
+          if (data.data) {
+            login(data.data)
+            alert('Cuenta creada exitosamente! Has iniciado sesión automáticamente.')
+            navigate('/')
+          } else {
+            alert('Cuenta creada exitosamente!')
+            navigate('/login')
+          }
         } else {
           setApiError(data.message || 'Error al crear la cuenta')
         }
