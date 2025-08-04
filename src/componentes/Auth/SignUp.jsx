@@ -69,6 +69,8 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log('Iniciando handleSubmit...')
+    
     if (validateForm()) {
       setIsSubmitting(true)
       setApiError('')
@@ -76,16 +78,24 @@ const SignUp = () => {
       try {
         // Enviar solo los datos necesarios para el registro
         const { name, email, password } = formData
+        console.log('Datos a enviar:', { name, email, password: '***' })
+        
+        const requestBody = JSON.stringify({ name, email, password })
+        console.log('Request body:', requestBody)
         
         const response = await fetch('/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ name, email, password })
+          body: requestBody
         })
 
+        console.log('Response status:', response.status)
+        console.log('Response headers:', response.headers)
+
         const data = await response.json()
+        console.log('Response data:', data)
 
         if (response.ok) {
           console.log('Registro exitoso:', data)
@@ -93,14 +103,25 @@ const SignUp = () => {
           // Redirigir al login después del registro
           navigate('/login')
         } else {
+          console.log('Error en respuesta:', data)
           setApiError(data.message || 'Error al crear la cuenta')
         }
       } catch (error) {
-        console.error('Error en registro:', error)
-        setApiError('Error de conexión. Verifica tu conexión a internet.')
+        console.error('Error completo en registro:', error)
+        console.error('Error name:', error.name)
+        console.error('Error message:', error.message)
+        console.error('Error stack:', error.stack)
+        
+        if (error.name === 'TypeError') {
+          setApiError('Error de conexión. Verifica que el servidor esté corriendo.')
+        } else {
+          setApiError('Error de conexión. Verifica tu conexión a internet.')
+        }
       } finally {
         setIsSubmitting(false)
       }
+    } else {
+      console.log('Validación fallida, no se envía la petición')
     }
   }
 
