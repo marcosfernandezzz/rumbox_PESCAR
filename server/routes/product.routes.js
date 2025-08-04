@@ -7,11 +7,11 @@ router.get('/', productController.getAll) // GET /api/products/
 
 router.get('/:id', productController.getByID) // GET /api/products/:id
 
-router.post('/', productController.create) // POST /api/products/
+/* router.post('/', productController.create) */ // POST /api/products/
 
-router.put('/:id', productController.update) // PUT /api/products/:id
+/* router.put('/:id', productController.update) */ // PUT /api/products/:id
 
-router.delete('/:id', productController.delete) // DELETE /api/products/:id
+/* router.delete('/:id', productController.delete) */ // DELETE /api/products/:id
 
 
 export default router;
