@@ -42,9 +42,7 @@ export const NavBar = () => {
                     <button onClick={() => setOpen(!open)}>
                         <MdMenu className='text-2xl cursor-pointer md:hidden' />
                     </button>
-                    <Link to="/carrito">
-                        <CgShoppingCart className='text-2xl cursor-pointer md:hidden' />
-                    </Link>
+                    
                 </div>
             </div>
             {/* Menú desplegable mobile */}
@@ -57,7 +55,7 @@ export const NavBar = () => {
                             <div className='flex-row'>
                                 {usuario ? (
                                     <>
-                                        <h3 className='text-xl block'>Bienvenido, {usuario.name || 'Usuario'}</h3>
+                                        <h3 className='text-xl block'>Bienvenido, {usuario.name || 'Usuario'} !</h3>
                                         <button 
                                             onClick={handleLogout}
                                             className='block text-sm text-orange-300 hover:text-orange-100'
@@ -88,7 +86,10 @@ export const NavBar = () => {
                         <Link to="/" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaHome />Inicio</Link>
                         <Link to="/productos" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><TfiMenuAlt />Productos</Link>
                         <Link to="/paquetes" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><GiSuitcase />Paquetes</Link>
-                        <Link to="/carrito" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><CgShoppingCart />Carrito</Link>
+                        {usuario ? (
+                            <Link to="/carrito" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><CgShoppingCart />Carrito</Link>): (<></>)
+                            }
+                        
                         <Link to="/nosotros" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaUsers />Nosotros</Link>
                         {usuario && (
                             <button 
@@ -110,9 +111,9 @@ export const NavBar = () => {
                         <h1 className='text-4xl font-bold'>Rumbox</h1>
                     </div>
                     <div className='flex gap-4'>
-                        <Link to="/" className='text-xl '>Inicio</Link>
-                        <Link to="/productos" className='text-xl '>Productos</Link>
-                        <Link to="/paquetes" className='text-xl '>Paquetes</Link>
+                        <Link to="/" className='text-xl hover:text-orange-300'>Inicio</Link>
+                        <Link to="/productos" className='text-xl hover:text-orange-300'>Productos</Link>
+                        <Link to="/paquetes" className='text-xl hover:text-orange-300'>Paquetes</Link>
                         
                     </div>
 
@@ -120,13 +121,16 @@ export const NavBar = () => {
                         <div className='space-x-4 flex items-end'>
                             {usuario ? (
                                 <>
-                                    <span className='text-xl'>Hola, {usuario.name || 'Usuario'}</span>
+                                    <span className='text-xl'>{usuario.name || 'Usuario'}</span>
+                                    <Link to="/carrito">
+                                        <CgShoppingCart className='text-2xl hover:text-orange-300' />
+                                    </Link>
 
                                     <button 
                                         onClick={handleLogout}
-                                        className='text-xl hover:text-orange-300'
+                                        className='text-xl text-center cursor-pointer hover:text-orange-300'
                                     >
-                                        Cerrar sesión
+                                        <FaSignOutAlt/>
                                     </button>
                                 </>
                             ) : (
@@ -136,9 +140,7 @@ export const NavBar = () => {
                                 </>
                             )}
 
-                            <Link to="/carrito">
-                                <CgShoppingCart className='text-2xl' />
-                            </Link>
+                            
                         </div>
                     </div>
 

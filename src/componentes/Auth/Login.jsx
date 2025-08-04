@@ -74,7 +74,7 @@ const Login = () => {
           console.log('Login exitoso:', data)
           // Usar la función login del contexto para guardar el usuario
           login(data.data)
-          alert('Inicio de sesión exitoso!')
+          /* alert('Inicio de sesión exitoso!') */
           // Redirigir al home después del login
           navigate('/')
         } else {
