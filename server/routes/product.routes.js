@@ -1,18 +1,17 @@
 import express from 'express'
 import productController from '../controllers/product.controller.js'
+import adminMiddleware from '../middlewares/admin.middleware.js'
 
 const router = express.Router();
 
-router.get('/', productController.getAll) // GET /api/products/
+// Rutas públicas (clientes)
+router.get('/', productController.getAll)
+router.get('/:id', productController.getByID)
 
-router.get('/:id', productController.getByID) // GET /api/products/:id
-
-/* router.post('/', productController.create) */ // POST /api/products/
-
-/* router.put('/:id', productController.update) */ // PUT /api/products/:id
-
-/* router.delete('/:id', productController.delete) */ // DELETE /api/products/:id
-
+// Rutas de administración (CRUD completo) - Protegidas con middleware de admin
+router.post('/', adminMiddleware.verifyAdminToken, productController.create)
+router.put('/:id', adminMiddleware.verifyAdminToken, productController.update)
+router.delete('/:id', adminMiddleware.verifyAdminToken, productController.delete)
 
 export default router;
 

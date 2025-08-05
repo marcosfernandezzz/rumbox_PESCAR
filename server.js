@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'
 import clientRoutes from './server/routes/client.routes.js'
 import authRoutes from './server/routes/auth.routes.js'
 import productRoutes from './server/routes/product.routes.js'
-import cors from 'cors'
+import adminRoutes from './server/routes/admin.routes.js'
 
 dotenv.config()
 connectDB()
@@ -26,6 +26,7 @@ app.use(cors())
 app.use('/api/auth', authRoutes)
 app.use('/api/client', clientRoutes)
 app.use('/api/products', productRoutes)
+app.use('/api/admin', adminRoutes)
 
 // Configuración según el entorno
 if (isDevelopment) {
