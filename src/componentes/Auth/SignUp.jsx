@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../contexts/AuthContext'
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,9 @@ const SignUp = () => {
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [apiError, setApiError] = useState('')
+  const navigate = useNavigate()
+  const { login } = useContext(AuthContext)
 
   const validateForm = () => {
     const newErrors = {}
@@ -59,21 +63,55 @@ const SignUp = () => {
         [name]: ''
       }))
     }
+    // Limpiar error de API
+    if (apiError) {
+      setApiError('')
+    }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (validateForm()) {
       setIsSubmitting(true)
-      // Aquí iría la lógica de registro
-      console.log('Datos del formulario:', formData)
-      // Simular envío
-      setTimeout(() => {
+      setApiError('')
+
+      try {
+        // Enviar solo los datos necesarios para el registro
+        const { name, email, password } = formData
+        
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password })
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          console.log('Registro exitoso:', data)
+          // Si el registro incluye datos del usuario, hacer login automático
+          if (data.data) {
+            login(data.data)
+            alert('Cuenta creada exitosamente! Has iniciado sesión automáticamente.')
+            navigate('/')
+          } else {
+            alert('Cuenta creada exitosamente!')
+            navigate('/login')
+          }
+        } else {
+          setApiError(data.message || 'Error al crear la cuenta')
+        }
+      } catch (error) {
+        console.error('Error en registro:', error)
+        setApiError('Error de conexión. Verifica tu conexión a internet.')
+      } finally {
         setIsSubmitting(false)
-        alert('Cuenta creada exitosamente!')
-      }, 1000)
+      }
     }
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -170,6 +208,9 @@ const SignUp = () => {
           )}
           {errors.confirmPassword && (
             <div className="text-red-500 text-sm mt-1">{errors.confirmPassword}</div>
+          )}
+          {apiError && (
+            <div className="text-red-500 text-sm mt-1 text-center">{apiError}</div>
           )}
 
           <div>

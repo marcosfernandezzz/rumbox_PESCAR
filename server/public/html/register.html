@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register - RumBox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)),
+                url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex overflow-hidden">
+    <!-- Sección izquierda - Imagen hero -->
+    <div class="w-1/2 hero-bg relative flex flex-col justify-center items-center text-white">
+        <div class="absolute inset-0 bg-gradient-to-br from-amber-600/20 via-orange-700/30 to-amber-800/40"></div>
+        <div class="relative z-10 text-center px-8">
+            <div class="mb-8">
+                <div
+                    class="w-20 h-20 bg-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h1 class="text-5xl font-bold mb-4 drop-shadow-lg">RumBox</h1>
+                <p class="text-xl font-light drop-shadow-md">Kits para tus viajes</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <h2 class="text-2xl font-semibold mb-2">Tu próxima aventura te espera</h2>
+                <p class="text-lg opacity-90">Descubre kits únicos para cada destino</p>
+            </div>
+        </div>
+
+        <!-- Elementos decorativos -->
+        <div class="absolute bottom-8 left-8 flex gap-2">
+            <div class="w-2 h-2 bg-white rounded-full opacity-60"></div>
+            <div class="w-8 h-2 bg-amber-400 rounded-full"></div>
+            <div class="w-2 h-2 bg-white rounded-full opacity-60"></div>
+        </div>
+    </div>
+
+    <!-- Sección derecha - Formulario de login -->
+    <div
+        class="w-1/2 bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 flex items-center justify-center p-8">
+        <div class="w-full max-w-md">
+            <div class="bg-gradient-to-b from-amber-50 to-orange-50 rounded-3xl shadow-2xl p-8 border-2 border-amber-200/80">
+                <!-- Header -->
+                <div class="text-center mb-8">
+
+                    <img src="/img/logomochi.webp" alt="Logo" class="w-20 h-20 items-center mx-auto">
+
+                    <h2 class="text-3xl font-bold text-amber-900 mb-2">Bienvenido</h2>
+                    <p class="text-amber-700 font-medium">Registrate para iniciar tu aventura</p>
+                </div>
+
+                <!-- Formulario -->
+                <form class="space-y-6">
+                    <div>
+                        <label class="block text-amber-800 font-semibold mb-2" for="email">Nombre</label>
+                        <input id="nombre" type="string" placeholder="Ingresa tu nombre"
+                            class="w-full px-4 py-3 border-2 border-amber-300 rounded-xl focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all duration-200 bg-amber-50/50 hover:bg-white" />
+                    </div>
+                    <div>
+                        <label class="block text-amber-800 font-semibold mb-2" for="email">Correo electrónico</label>
+                        <input id="email" type="email" placeholder="tu@email.com"
+                            class="w-full px-4 py-3 border-2 border-amber-300 rounded-xl focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all duration-200 bg-amber-50/50 hover:bg-white" />
+                    </div>
+
+                    <div>
+                        <label class="block text-amber-800 font-semibold mb-2" for="password">Contraseña</label>
+                        <div class="relative">
+                            <input id="password" type="password" placeholder="Ingresa tu contraseña"
+                                class="w-full px-4 py-3 border-2 border-amber-300 rounded-xl focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all duration-200 bg-amber-50/50 hover:bg-white pr-12" />
+                            <button type="button"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600 hover:text-amber-800 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center gap-2 text-amber-700 cursor-pointer">
+                            <input type="checkbox"
+                                class="w-4 h-4 text-amber-600 border-amber-400 rounded focus:ring-amber-500 focus:ring-2" />
+                            <span>Recordarme</span>
+                        </label>
+                        
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                        Registrarse
+                    </button>
+                </form>
+
+                <!-- Separador -->
+                <div class="flex items-center my-6">
+                    <hr class="flex-grow border-amber-300">
+                    <span class="mx-4 text-amber-600 text-sm font-medium">o continúa con</span>
+                    <hr class="flex-grow border-amber-300">
+                </div>
+
+                <!-- Botones sociales -->
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <button
+                        class="flex items-center justify-center gap-2 py-3 border-2 border-amber-300 rounded-xl bg-amber-50/70 hover:bg-amber-100 transition-colors duration-200 group">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                            <path fill="#4285F4"
+                                d="M21.35 11.1h-9.18v2.92h5.27c-.23 1.22-1.39 3.59-5.27 3.59-3.18 0-5.78-2.63-5.78-5.86s2.6-5.86 5.78-5.86c1.81 0 3.03.77 3.73 1.43l2.55-2.48C16.13 3.98 14.3 3 12.17 3 6.7 3 2.25 7.48 2.25 12.95s4.45 9.95 9.92 9.95c5.47 0 9.92-4.48 9.92-9.95 0-.67-.07-1.32-.19-1.85z" />
+                        </svg>
+                        <span class="text-amber-800 font-medium">Google</span>
+                    </button>
+
+                    <button
+                        class="flex items-center justify-center gap-2 py-3 border-2 border-amber-300 rounded-xl bg-amber-50/70 hover:bg-amber-100 transition-colors duration-200 group">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                            <path fill="#1877F2"
+                                d="M22.675 0h-21.35C.6 0 0 .6 0 1.326v21.348C0 23.4.6 24 1.326 24h11.495v-9.294H9.692v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.4 24 24 23.4 24 22.674V1.326C24 .6 23.4 0 22.675 0" />
+                        </svg>
+                        <span class="text-amber-800 font-medium">Facebook</span>
+                    </button>
+                </div>
+
+                <!-- Footer -->
+                <p class="text-center text-amber-700 text-sm">
+                    ¿Ya tienes una cuenta?
+                    <a href="/"
+                        class="font-semibold text-amber-800 hover:text-amber-900 hover:underline transition-colors">
+                        Iniciar sesion aquí 
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="../js/register.js"></script>
+</body>
+
+</html>

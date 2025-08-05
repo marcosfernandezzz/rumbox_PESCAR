@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route , Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from './pages/client/Home'
 import Nosotros from './pages/client/Nosotros'
 import Paquetes from './pages/client/Paquetes'
@@ -9,6 +9,8 @@ import Carrito from './pages/client/Carrito'
 import LoginIn from './pages/client/LoginIn'
 import SignUpPage from './pages/client/SignUp'
 import Layout from "./layouts/Layout";
+
+import { AuthProvider } from "./contexts/AuthContext.jsx";
 
 export const App = () => {
   return (

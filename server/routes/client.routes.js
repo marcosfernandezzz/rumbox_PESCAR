@@ -6,10 +6,7 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Rutas de API para el cliente
-router.get("/test", (req, res) => {
-  res.json({ message: "API del cliente funcionando correctamente" });
-});
+
 
 // Ruta para obtener datos del cliente (ejemplo)
 router.get("/data", (req, res) => {

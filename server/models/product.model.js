@@ -21,6 +21,13 @@ const ProductSchema = new mongoose.Schema({
             message: "El precio debe ser un número entero"
         }
     },
+    descripcion: {
+        type: String,
+        required: [true, "La descripción del producto es requerida"],
+        trim: true,
+        maxLength: [50, "La descripción no puede exceder los 50 caracteres"],
+        minLength: [10, "La descripción debe tener al menos 10 caracteres"],
+    },
     categoria: {
         type: String,
         required: [true, "La categoría del producto es requerida"],
