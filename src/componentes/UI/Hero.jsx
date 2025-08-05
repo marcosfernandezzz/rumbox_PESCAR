@@ -3,10 +3,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 const Hero = ({heroImg,title,info,url,refUrl}) => {
   return (
-    <section className="rumbox-grlinear px-4 py-6">
-      <div className="rounded-xl overflow-hidden bg-white shadow-md flex flex-col">
+    <section className="rumbox-grlinear px-4 py-6 md:px-0.5 md:py-0.5">
+      <div className="rounded-xl  overflow-hidden bg-white shadow-md flex flex-col md:max-w-full md:rounded-none">
         {/* Contenedor con fondo imagen y gradiente */}
-        <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px]">
+        <div className="relative w-full h-[200px] sm:h-[300px] md:h-[440px]">
           <img src={heroImg} className="absolute  w-full h-full object-cover" />
           
           {/* Contenido sobre la izquierda */}
