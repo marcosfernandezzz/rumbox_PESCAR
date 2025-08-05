@@ -1,6 +1,6 @@
 import React from 'react'
-import productosDB from '../../../public/json/MOCK_DATA.json'
-import card from '../../componentes/UI/card'
+import productosDB from '../../json/MOCK_DATA.json'
+/* import card from '../../componentes/UI/card' */
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 

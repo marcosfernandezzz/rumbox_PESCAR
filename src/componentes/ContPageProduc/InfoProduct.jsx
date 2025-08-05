@@ -1,5 +1,5 @@
 import React from 'react'
-import productosDB from '../../../public/json/MOCK_DATA.json'
+import productosDB from '../../json/MOCK_DATA.json'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 
