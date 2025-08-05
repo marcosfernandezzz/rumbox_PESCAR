@@ -9,7 +9,7 @@ const CardList = ({title,Products,url,btn}) => {
             <h2 className="text-xl md:text-2xl text-center font-bold m-6 md:m-12">{title}</h2>
             <div className='grid grid-cols-2 gap-2 items-center justify-center sm:grid-cols-2 md:grid-cols-4  sm:gap-2 md:gap-2 px-2 sm:px-4 md:px-0'>
             {items.slice(0, 8).map((item) => (
-                <Card key={item.id}  title={item.title && item.title.length > 15 ? item.title.slice(0, 12) + "…" : item.title} precio={item.precio} image={item.image} />
+                <Card key={item.id}  title={item.nombre && item.nombre.length > 15 ? item.nombre.slice(0, 12) + "…" : item.nombre} precio={"$"+item.precio} image={item.image} />
             ))}
             </div>
             </div>
