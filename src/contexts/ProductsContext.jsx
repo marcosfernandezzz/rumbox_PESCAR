@@ -7,7 +7,7 @@ export function ProductsProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/products")
+    fetch("/api/products")
       .then((res) => res.json())
       .then((data) => {
         setProductos(Array.isArray(data) ? data : data.data || []);

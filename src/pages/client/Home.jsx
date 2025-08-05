@@ -5,7 +5,7 @@ import SingUpPrompt from '../../componentes/AUTH/SingUpPrompt'
 import CardList from '../../componentes/UI/CardList'
 import Promo from '../../componentes/UI/Promo.jsx'
 
-import KitsData from '../../assets/Mockdata/KitsData.js'
+/* import KitsData from '../../assets/Mockdata/KitsData.js' */
 /* import ProductData from '../../assets/Mockdata/ProductData.js' */
 import PromoImg from '../../assets/imagenes/Promo.png'
 import hero2 from '../../assets/imagenes/hero2.png'
@@ -15,7 +15,7 @@ import { useProductos } from '../../contexts/ProductsContext.jsx'
 export const Home = () => {
     const { usuario } = useContext(AuthContext);
     const { productos, loading } = useProductos();
-    const productosvarios = Array.isArray(productos) ? productos.slice(0, 4) : [];
+    const productosvarios = Array.isArray(productos) ? productos.slice(0, 8) : [];
     
   return (
     <main className=''>
@@ -26,13 +26,21 @@ export const Home = () => {
       
       {!usuario && <SingUpPrompt />}
       
-      <CardList title='Kit Destacados.'  Products= {KitsData} url={'/Paquetes'} btn='Ver mas Kits...' />
+      {/* <CardList title='Kit Destacados.'  Products= {KitsData} url={'/Paquetes'} btn='Ver mas Kits...' /> */}
+      {!loading && (
+        <CardList
+          title='Kits Destacados.'
+          Products={productosvarios}
+          url={'/Productos'}
+          btn='Ver más productos...'
+        />
+      )}
       
       <Promo PromoImg={PromoImg} title='ESENCIALES PARA LA NIEVE!!' info='HASTA 40% OFF!' url={'/Productos'} />
       
       {!loading && (
         <CardList
-          title='Productos Varios.'
+          title='Encuentra lo que buscas.'
           Products={productosvarios}
           url={'/Productos'}
           btn='Ver más productos...'
