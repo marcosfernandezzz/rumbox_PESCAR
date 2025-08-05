@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 import clientRoutes from './server/routes/client.routes.js'
 import authRoutes from './server/routes/auth.routes.js'
 import productRoutes from './server/routes/product.routes.js'
+import kitRoutes from './server/routes/kit.routes.js'
 import adminRoutes from './server/routes/admin.routes.js'
 
 dotenv.config()
@@ -18,6 +19,8 @@ const app = express()
 const PORT = process.env.PORT || 3000
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+
+
 // Middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -26,6 +29,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/auth', authRoutes)
 app.use('/api/client', clientRoutes)
 app.use('/api/products', productRoutes)
+app.use('/api/kits', kitRoutes)
 app.use('/api/admin', adminRoutes)
 
 // Configuración según el entorno
