@@ -1,21 +1,183 @@
-import Producto from "./server/models/product.model.js"
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+// Asegúrate de que la ruta a tu modelo Kit sea correcta
+import Kit from "./server/models/kits.model.js"; 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+dotenv.config();
 
-// Leer el archivo JSON de productos
-const productData = JSON.parse(
-  readFileSync(join(__dirname, 'server', 'public', 'json', 'productos.json'), 'utf8')
-);
+// JSON de los kits a insertar
+const kitsData = [
+  {
+    "id": 1,
+    "nombre": "Kit Aventura en la Nieve",
+    "precio": 272390,
+    "descripcion": "Este kit esta disenado para quienes disfrutan de la nieve y quieren mantenerse protegidos y comodos. Incluye abrigo impermeable, guantes termicos y antiparras para condiciones extremas. Ideal para deportes de invierno y escapadas a la montana.",
+    "caracteristicaUno": "Proteccion termica y confort",
+    "caracteristicaDos": "Resistencia al agua y viento",
+    "caracteristicaTres": "Equipamiento para nieve",
+    "productosIncluidos": ["Campera De Nieve Impermeable", "Guantes Impermeable Nieve", "Antiparra Gadic Ski Snowboard"],
+    "image": "kit_aventura_nieve.png"
+  },
+  {
+    "id": 2,
+    "nombre": "Kit Viajero Urbano",
+    "precio": 136719,
+    "descripcion": "Pensado para quienes se mueven por ciudades, este kit combina funcionalidad y seguridad. Ideal para recorrer con comodidad, llevar objetos esenciales y mantener todo ordenado. Perfecto para viajes en tren, colectivos o escapadas urbanas.",
+    "caracteristicaUno": "Ideal para ciudad y aeropuertos",
+    "caracteristicaDos": "Ligero y multifuncional",
+    "caracteristicaTres": "Disenado para seguridad",
+    "productosIncluidos": ["Rinonera Antirrobo TravelSafe", "Organizador de Cables de Viaje", "Candado TSA para Valija"],
+    "image": "kit_viajero_urbano.png"
+  },
+  {
+    "id": 3,
+    "nombre": "Kit Escapada a la Playa",
+    "precio": 245898,
+    "descripcion": "Todo lo que necesitas para relajarte en la arena. Protegete del sol con sombrero y sombrilla, y lleva tus cosas en un bolso comodo. Ideal para dias de descanso junto al mar, rios o lagos.",
+    "caracteristicaUno": "Proteccion solar incluida",
+    "caracteristicaDos": "Facil de transportar",
+    "caracteristicaTres": "Ideal para climas calidos",
+    "productosIncluidos": ["Sombrero De Sol UPF 50+", "Sombrilla de Playa con funda", "Bolso Organizador"],
+    "image": "kit_escapada_playa.png"
+  },
+  {
+    "id": 4,
+    "nombre": "Kit Senderismo Basico",
+    "precio": 86644,
+    "descripcion": "Ideal para quienes disfrutan de caminatas por senderos, cerros o bosques. Este kit incluye baston de trekking, mochila plegable impermeable y botella deportiva. Pensado para excursiones de dia o escapadas activas.",
+    "caracteristicaUno": "Preparado para exteriores",
+    "caracteristicaDos": "Hidratacion y soporte",
+    "caracteristicaTres": "Resistente y liviano",
+    "productosIncluidos": ["Baston de Trekking Extensible", "Mochila Plegable Impermeable", "Botella Deportiva Montagne"],
+    "image": "kit_senderismo_basico.png"
+  },
+  {
+    "id": 5,
+    "nombre": "Kit Viaje de Larga Distancia",
+    "precio": 76568,
+    "descripcion": "Para vuelos largos o viajes en micro, este kit prioriza el descanso y el orden. Incluye almohada inteligente para el cuello, tapones auditivos y un organizador de cables. Viajar comodo ya no es un lujo.",
+    "caracteristicaUno": "Enfocado en confort",
+    "caracteristicaDos": "Compacto y portatil",
+    "caracteristicaTres": "Ideal para trayectos largos",
+    "productosIncluidos": ["Almohada Inteligente De Cuello", "Tapones Auditivos para Dormir", "Organizador de Cables de Viaje"],
+    "image": "kit_larga_distancia.png"
+  },
+  {
+    "id": 6,
+    "nombre": "Kit Dia de Picnic",
+    "precio": 67210,
+    "descripcion": "Este kit esta pensado para pasar un dia al aire libre sin preocupaciones. Incluye manta impermeable, set de cubiertos reutilizables y botella termica para bebidas. Perfecto para plazas, parques o escapadas a la naturaleza.",
+    "caracteristicaUno": "Practico y ecologico",
+    "caracteristicaDos": "Reutilizable y duradero",
+    "caracteristicaTres": "Ideal para aire libre",
+    "productosIncluidos": ["Manta Compacta de Picnic", "Cubiertos de Viaje Reutilizables", "Termo Inoxidable 500ml"],
+    "image": "kit_picnic_dia.png"
+  },
+  {
+    "id": 7,
+    "nombre": "Kit Climas Lluviosos",
+    "precio": 73950,
+    "descripcion": "Para no depender del clima. Este kit te cubre frente a lluvias inesperadas e incluye un paraguas automatico, impermeable ultraliviano y una bolsa estanca para proteger tus pertenencias.",
+    "caracteristicaUno": "Resistente al agua",
+    "caracteristicaDos": "Ultraliviano y practico",
+    "caracteristicaTres": "Para lluvias imprevistas",
+    "productosIncluidos": ["Impermeable Ultraliviano Unisex", "Paraguas Compacto Automatico", "Bolsa Estanca 10L"],
+    "image": "kit_clima_lluvioso.png"
+  },
+  {
+    "id": 8,
+    "nombre": "Kit Viajero Minimalista",
+    "precio": 19990,
+    "descripcion": "Menos es mas. Este kit reune productos esenciales que no ocupan espacio y resuelven mas de un problema en tu viaje. Ideal para quienes viajan livianos, con mochila o carry-on.",
+    "caracteristicaUno": "Compacto y funcional",
+    "caracteristicaDos": "Ideal para mochileros",
+    "caracteristicaTres": "Todo en poco espacio",
+    "productosIncluidos": ["Mini Kit de Costura de Emergencia", "Cinta de Compresion para Equipaje", "Reposapies Portatil de Avion"],
+    "image": "kit_minimalista.png"
+  },
+  {
+    "id": 9,
+    "nombre": "Kit Explorador Solar",
+    "precio": 480004,
+    "descripcion": "Este kit es ideal para viajes en lugares sin acceso a electricidad o campings. Incluye un cargador solar de alta capacidad, linterna LED recargable y toalla de secado rapido. Pensado para aventuras en la naturaleza.",
+    "caracteristicaUno": "Energia sustentable",
+    "caracteristicaDos": "Luz y secado rapido",
+    "caracteristicaTres": "Autonomia garantizada",
+    "productosIncluidos": ["Cargador Solar Portatil 10.000mAh", "Linterna LED Recargable Compacta", "Toalla de Microfibra Compacta"],
+    "image": "kit_explorador_solar.png"
+  },
+  {
+    "id": 10,
+    "nombre": "Kit Noche en la Montana",
+    "precio": 106959,
+    "descripcion": "Dormi comodo y sin sobresaltos en ambientes frios. Este kit incluye ropa termica, sandalias antideslizantes y una linterna compacta. Ideal para refugios, hostels o carpas en zonas frias.",
+    "caracteristicaUno": "Proteccion termica nocturna",
+    "caracteristicaDos": "Seguridad al caminar",
+    "caracteristicaTres": "Compacto para equipaje",
+    "productosIncluidos": ["Conjunto Termica Unisex", "Sandalias Antideslizantes", "Linterna LED Recargable Compacta"],
+    "image": "kit_noche_montana.png"
+  },
+  {
+    "id": 11,
+    "nombre": "Kit Combo Verano",
+    "precio": 65000,
+    "descripcion": "Tu aliado ideal para dias de playa, picnic o descanso al aire libre. El Kit Combo Verano combina comodidad y practicidad para que disfrutes del sol sin preocupaciones. Todo lo que necesitas para relajarte esta en este combo ligero y facil de transportar.",
+    "caracteristicaUno": "Pensado para actividades al aire libre en verano",
+    "caracteristicaDos": "Ideal para playa, picnic o camping",
+    "caracteristicaTres": "Liviano y practico para transportar.",
+    "productosIncluidos": ["Almohada de tela", "manta y bolso grande de tela"],
+    "image": "kit_combo _verano.png"
+  },
+  {
+    "id": 12,
+    "nombre": "Kit Combo Pesca",
+    "precio": 63163,
+    "descripcion": "Relajate y disfruta de la pesca con nuestro Kit Combo Pesca. Compacto y funcional, incluye herramientas esenciales para una jornada exitosa en rio, lago o mar. Perfecto para quienes aman la tranquilidad del agua y la emocion de la pesca deportiva.",
+    "caracteristicaUno": "Ideal para pesca recreativa o deportiva.",
+    "caracteristicaDos": "Incluye herramientas para multiples modalidades de pesca",
+    "caracteristicaTres": "Facil de transportar y utilizar en campo",
+    "productosIncluidos": ["Soporte para cana", "Linea de pesca (carrete) y Anzuelos y herramientas de montaje"],
+    "image": "kit_combo_pesca.png"
+  },
+  {
+    "id": 13,
+    "nombre": "Kit Combo Alpinismo",
+    "precio": 260700,
+    "descripcion": "Vivi la aventura a gran altura con el Kit Combo Alpinismo. Equipado con elementos clave para escalar de forma segura y eficiente, este combo es perfecto para quienes practican escalada en roca o montana. Resistencia, seguridad y funcionalidad, todo en un solo kit.",
+    "caracteristicaUno": "Orientado a escaladores y actividades de montana",
+    "caracteristicaDos": "Proporciona seguridad y agarre en altura.",
+    "caracteristicaTres": "Elementos resistentes y de alta calidad.",
+    "productosIncluidos": ["Cuerda de escalada", "Arnes de seguridad", "Mosquetones", "Guantes de proteccion y Bolsa de transporte"],
+    "image": "kit _combo_alpinismo.png"
+  },
+  {
+    "id": 14,
+    "nombre": "Kit Combo Esqui",
+    "precio": 489000,
+    "descripcion": "Preparate para conquistar la nieve con nuestro Kit Combo Esqui. Disenado para quienes buscan rendimiento y comodidad en la montana, este combo incluye todo lo necesario para disfrutar del deporte blanco al maximo. Ideal tanto para principiantes como para esquiadores experimentados.",
+    "caracteristicaUno": "Ideal para deportes de nieve.",
+    "caracteristicaDos": "Incluye equipamiento completo para esquiar",
+    "caracteristicaTres": "Apto para uso profesional o recreativo.",
+    "productosIncluidos": ["Un par de esquies", "Bastones de esqui y Botas de esqui."],
+    "image": "kit_combo_esqui.png"
+  },
+  {
+    "id": 15,
+    "nombre": "Kit de Exploracion",
+    "precio": 350000,
+    "descripcion": "Todo lo que necesitas para explorar la naturaleza con seguridad. Este kit incluye elementos esenciales para trekking, campamentos o travesias al aire libre.",
+    "caracteristicaUno": "Compacto y practico para llevar en mochilas.",
+    "caracteristicaDos": "Elementos funcionales para orientacion, seguridad y supervivencia.",
+    "caracteristicaTres": "Ideal para actividades al aire libre como trekking, camping o exploracion.",
+    "productosIncluidos": ["Botas de trekking", "Cantimplora metalica", "Brujula", "Linterna tactica", "Navaja multiusos", "Lupa y un silbato metalico"],
+    "image": "kit-exploracion.png"
+  }
+];
 
 const seedDatabase = async () => {
   try {
-    console.log("🚀 Iniciando inserción de productos...");
-    
+    console.log("🚀 Iniciando inserción de kits...");
+
     // Conectar a MongoDB si no está conectado
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://marcosfernandez2033:P89Qipmlh9S3NHnW@rumboxpescar.biprrti.mongodb.net/RumBox?retryWrites=true&w=majority', {
@@ -24,72 +186,59 @@ const seedDatabase = async () => {
       });
       console.log("📡 Conectado a MongoDB");
     }
-    
+
     // Limpiar la colección antes de insertar (opcional)
-    const deletedCount = await Producto.deleteMany({});
-    console.log(`🧹 Colección limpiada - ${deletedCount.deletedCount} documentos eliminados`);
-    
-    // Insertar productos uno por uno
-    let productosInsertados = 0;
-    let productosConError = 0;
-    
-    for (const producto of productData) {
+    const deletedCount = await Kit.deleteMany({});
+    console.log(`🧹 Colección 'Kits' limpiada - ${deletedCount.deletedCount} documentos eliminados`);
+
+    // Insertar kits uno por uno
+    let kitsInsertados = 0;
+    let kitsConError = 0;
+
+    for (const kit of kitsData) {
       try {
-        // Mapear los datos del JSON a los campos del modelo
-        const nuevoProducto = await Producto.create({
-          // Manejar tanto 'id' como 'ID' debido a inconsistencias en el JSON
-          idOriginal: producto.id || producto.ID,
-          nombre: producto.nombre,
-          precio: parseFloat(producto.precio) || 0,
-          precioConDescuento: producto["precio con descuento"] ? 
-            parseFloat(producto["precio con descuento"]) : null,
-          descuento: producto["descuento (%)"] ? 
-            parseInt(producto["descuento (%)"]) : 0,
-          descripcion: producto.descripción || producto.Descripción || "",
-          caracteristicas: [
-            producto["característicaUno"] || producto["caracteristicaUno"],
-            producto["característicaDos"] || producto["caracteristicaDos"], 
-            producto["característicaTres"] || producto["caracteristicaTres"]
-          ].filter(Boolean), // Filtrar valores vacíos o undefined
-          image: producto.image || "",
-          activo: true,
-          stock: Math.floor(Math.random() * 50) + 1, // Stock aleatorio entre 1-50
-          categoria: determinarCategoria(producto.nombre), // Solo montaña, playa o nieve
-          fechaCreacion: new Date(),
-          fechaActualizacion: new Date()
+        // Mapear los datos del JSON a los campos del modelo Kit
+        const nuevoKit = await Kit.create({
+          nombre: kit.nombre,
+          precio: parseFloat(kit.precio) || 0,
+          descripcion: kit.descripcion || "",
+          caracteristicaUno: kit.caracteristicaUno || "",
+          caracteristicaDos: kit.caracteristicaDos || "",
+          caracteristicaTres: kit.caracteristicaTres || "",
+          productosIncluidos: kit.productosIncluidos || [],
+          image: kit.image || "",
+          activo: true, // Por defecto a true según tu esquema
+          categoria: determinarCategoria(kit.nombre) // Asignar categoría
         });
-        
-        productosInsertados++;
-        console.log(`✅ Insertado: ${nuevoProducto.nombre} (ID: ${nuevoProducto._id})`);
-        
+
+        kitsInsertados++;
+        console.log(`✅ Insertado: ${nuevoKit.nombre} (ID: ${nuevoKit._id})`);
+
       } catch (error) {
-        productosConError++;
-        console.error(`❌ Error al insertar ${producto.nombre}:`, error.message);
+        kitsConError++;
+        console.error(`❌ Error al insertar ${kit.nombre}:`, error.message);
       }
     }
-    
+
     console.log(`\n📊 Resumen de inserción:`);
-    console.log(`  ✅ Productos insertados: ${productosInsertados}`);
-    console.log(`  ❌ Productos con error: ${productosConError}`);
-    console.log(`  📦 Total procesados: ${productData.length}`);
-    
-    // Mostrar algunos productos insertados como confirmación
-    const productosMostrar = await Producto.find({})
+    console.log(`   ✅ Kits insertados: ${kitsInsertados}`);
+    console.log(`   ❌ Kits con error: ${kitsConError}`);
+    console.log(`   📦 Total procesados: ${kitsData.length}`);
+
+    // Mostrar algunos kits insertados como confirmación
+    const kitsMostrar = await Kit.find({})
       .limit(5)
-      .select('nombre categoria precio precioConDescuento descuento');
-    
-    console.log("\n📋 Primeros 5 productos insertados:");
-    productosMostrar.forEach(producto => {
-      const precioMostrar = producto.precioConDescuento ? 
-        `$${producto.precioConDescuento} (desc. ${producto.descuento}%)` : 
-        `$${producto.precio}`;
-      console.log(`  - ${producto._id}: ${producto.nombre}`);
-      console.log(`    📂 Categoría: ${producto.categoria}`);
-      console.log(`    💰 Precio: ${precioMostrar}`);
+      .select('nombre categoria precio');
+
+    console.log("\n📋 Primeros 5 kits insertados:");
+    kitsMostrar.forEach(kit => {
+      console.log(`   - ${kit._id}: ${kit.nombre}`);
+      console.log(`     📂 Categoría: ${kit.categoria}`);
+      console.log(`     💰 Precio: $${kit.precio}`);
     });
-    
+
     // Estadísticas por categoría
-    const estadisticasCategoria = await Producto.aggregate([
+    const estadisticasCategoria = await Kit.aggregate([
       {
         $group: {
           _id: "$categoria",
@@ -99,15 +248,15 @@ const seedDatabase = async () => {
       },
       { $sort: { cantidad: -1 } }
     ]);
-    
+
     console.log("\n📈 Estadísticas por categoría:");
     estadisticasCategoria.forEach(stat => {
-      console.log(`  - ${stat._id}: ${stat.cantidad} productos (Precio prom: $${Math.round(stat.precioPromedio)})`);
+      console.log(`   - ${stat._id}: ${stat.cantidad} kits (Precio prom: $${Math.round(stat.precioPromedio)})`);
     });
-    
+
     console.log("\n🎉 Base de datos poblada exitosamente!");
     process.exit(0);
-    
+
   } catch (error) {
     console.error("❌ Error general al insertar datos:", error.message);
     console.error(error.stack);
@@ -115,99 +264,41 @@ const seedDatabase = async () => {
   }
 };
 
-// Función helper para determinar categoría (solo 3 opciones)
+// Función helper para determinar categoría (solo 3 opciones: Nieve, Playa, Montaña)
 function determinarCategoria(nombre) {
   const nombreLower = nombre.toLowerCase();
-  
+
   // Categoría NIEVE
-  if (nombreLower.includes('nieve') || 
-      nombreLower.includes('snowboard') || 
-      nombreLower.includes('ski') || 
-      nombreLower.includes('antiparra') ||
-      nombreLower.includes('botas') ||
-      nombreLower.includes('guantes') ||
-      nombreLower.includes('campera') ||
-      nombreLower.includes('térmica') ||
-      nombreLower.includes('termica')) {
+  if (nombreLower.includes('nieve') ||
+      nombreLower.includes('snowboard') ||
+      nombreLower.includes('ski') ||
+      nombreLower.includes('esqui') ||
+      nombreLower.includes('termica')) { // 'termica' sin tilde para coincidir con el JSON
     return 'Nieve';
   }
-  
+
   // Categoría PLAYA
-  if (nombreLower.includes('playa') || 
-      nombreLower.includes('sol') || 
+  if (nombreLower.includes('playa') ||
+      nombreLower.includes('sol') ||
       nombreLower.includes('sombrilla') ||
       nombreLower.includes('sombrero') ||
-      nombreLower.includes('gafas') ||
-      nombreLower.includes('toalla') ||
-      nombreLower.includes('sandalias') ||
-      nombreLower.includes('protección solar') ||
-      nombreLower.includes('upf')) {
+      nombreLower.includes('verano') ||
+      nombreLower.includes('picnic')) { // 'picnic' también puede ir a playa/aire libre
     return 'Playa';
   }
-  
-  // Categoría MONTAÑA (por defecto para el resto)
+
+  // Categoría MONTAÑA (por defecto para el resto, o si incluye palabras clave de montaña)
+  if (nombreLower.includes('montana') || // 'montana' sin tilde
+      nombreLower.includes('senderismo') ||
+      nombreLower.includes('alpinismo') ||
+      nombreLower.includes('exploracion') ||
+      nombreLower.includes('trekking')) {
+    return 'Montaña';
+  }
+
+  // Si no coincide con ninguna de las anteriores, por defecto es Montaña
   return 'Montaña';
 }
 
-// Función alternativa para inserción masiva (más rápida)
-const seedDatabaseBulk = async () => {
-  try {
-    console.log("🚀 Iniciando inserción masiva de productos...");
-    
-    // Conectar a MongoDB si no está conectado
-    if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://marcosfernandez2033:P89Qipmlh9S3NHnW@rumboxpescar.biprrti.mongodb.net/RumBox?retryWrites=true&w=majority');
-      console.log("📡 Conectado a MongoDB");
-    }
-    
-    // Limpiar la colección
-    await Producto.deleteMany({});
-    console.log("🧹 Colección limpiada");
-    
-    // Preparar datos para inserción masiva
-    const productosParaInsertar = productData.map(producto => ({
-        idOriginal: producto.id || producto.ID,
-        nombre: producto.nombre,
-        precio: parseFloat(producto.precio) || 0,
-        precioConDescuento: producto["precio con descuento"] ? 
-          parseFloat(producto["precio con descuento"]) : null,
-        descuento: producto["descuento (%)"] ? 
-          parseInt(producto["descuento (%)"]) : 0,
-        descripcion: producto.descripción || producto.Descripción || "",
-        caracteristicas: [
-          producto["característicaUno"] || producto["caracteristicaUno"],
-          producto["característicaDos"] || producto["caracteristicaDos"], 
-          producto["característicaTres"] || producto["caracteristicaTres"]
-        ].filter(Boolean),
-        image: producto.image || "",
-        activo: true,
-        stock: Math.floor(Math.random() * 50) + 1,
-        categoria: determinarCategoria(producto.nombre),
-        fechaCreacion: new Date(),
-        fechaActualizacion: new Date()
-      }));
-    
-    // Inserción masiva
-    const resultado = await Producto.insertMany(productosParaInsertar);
-    
-    console.log(`✅ ${resultado.length} productos insertados exitosamente!`);
-    
-    // Mostrar estadísticas
-    const totalProductos = await Producto.countDocuments();
-    console.log(`📦 Total de productos en la base de datos: ${totalProductos}`);
-    
-    process.exit(0);
-    
-  } catch (error) {
-    console.error("❌ Error en inserción masiva:", error.message);
-    process.exit(1);
-  }
-};
-
 // Ejecutar el seed
-// Usa seedDatabase() para inserción uno por uno (más lenta pero con mejor control de errores)
-// Usa seedDatabaseBulk() para inserción masiva (más rápida)
 seedDatabase();
-
-// Para usar inserción masiva, comenta la línea anterior y descomenta esta:
-// seedDatabaseBulk();

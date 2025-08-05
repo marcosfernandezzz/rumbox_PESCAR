@@ -115,3 +115,4 @@ Puedes usar el archivo `public/test-api.html` para probar las APIs de autenticac
 - **Para desarrollo completo**: Usa `npm run dev` para tener frontend y backend funcionando
 - **Para producción**: Ejecuta `npm run build` antes de `npm run server`
 - **Base de datos**: Asegúrate de tener MongoDB corriendo y configurado
+--*

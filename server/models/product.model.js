@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -16,19 +15,12 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         required: [true, "El precio del producto es requerido"],
         min: [0, "El precio no puede ser negativo"],
-        validate: {
-            validator: Number.isInteger,
-            message: "El precio debe ser un numero entero"
-        }
     },
     precioDescuento: {
         type: Number,
         required: [false, "El precio del producto es requerido"],
         min: [0, "El precio no puede ser negativo"],
-        validate: {
-            validator: Number.isInteger,
-            message: "El precio debe ser un numero entero"
-        }
+        
     },
     descuento: {
         type: Number,
