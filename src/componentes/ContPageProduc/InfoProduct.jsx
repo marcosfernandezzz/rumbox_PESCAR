@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 export const InfoProduct = () => {
 
     const {Id} = useParams();
+    
     const { productos } = useProductos();
     const productosvarios = Array.isArray(productos) ? productos : [];
 
@@ -38,7 +39,7 @@ export const InfoProduct = () => {
                     {/* Columna de la imagen */}
                     <div className="rounded-xl ">
                         <img 
-                            src={image} alt={nombre} className="h-100 w-auto  object-contain rounded-lg shadow-md"
+                            src={`/img/${image}`} alt={nombre} className="h-100 w-auto  object-contain rounded-lg shadow-md"
                         />
                     </div>
                     

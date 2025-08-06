@@ -13,12 +13,13 @@ import hero2 from '../../assets/imagenes/hero2.png'
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useProductos } from '../../contexts/ProductsContext.jsx'
 import { useKits } from '../../contexts/KitsContext.jsx'
+
 export const Home = () => {
     const { usuario } = useContext(AuthContext);
     const { productos, loading } = useProductos();
-    const { kits, Loading } = useKits();
     const productosvarios = Array.isArray(productos) ? productos.slice(0, 8) : [];
-    const KitsList = Array.isArray(kits) ? kits.slice(0,8) : [];
+    const {kits} = useKits();
+    const KitsList = Array.isArray(kits) ? kits.slice(0, 8) : [];
   return (
     <main className=''>
       
@@ -31,14 +32,14 @@ export const Home = () => {
       
       {!usuario && <SingUpPrompt />}
       
-      {!Loading && (
+      
         <CardList
           title='Kits Destacados.'
           Products={KitsList}
-          url={'/Paquetes'}
-          btn='Ver más Kits...'
+          url={'/Productos'}
+          btn='Ver más productos...'
         />
-      )}
+      
       
       <Promo 
           PromoImg={PromoImg} 
