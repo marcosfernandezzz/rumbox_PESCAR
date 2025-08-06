@@ -85,7 +85,7 @@ export const NavBar = () => {
                     <div className='bg-gray-100 text-black h-dvh flex flex-col p-4 justify-start   md:hidden'>
                         <Link to="/" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><FaHome />Inicio</Link>
                         <Link to="/productos" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><TfiMenuAlt />Productos</Link>
-                        <Link to="/paquetes" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><GiSuitcase />Paquetes</Link>
+                        <Link to="/paquetes" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><GiSuitcase />Kits</Link>
                         {usuario ? (
                             <Link to="/carrito" className='text-xl m-2 flex items-center gap-2 p-2 hover:text-orange-500 hover:bg-gray-200'><CgShoppingCart />Carrito</Link>): (<></>)
                             }
@@ -113,7 +113,7 @@ export const NavBar = () => {
                     <div className='flex gap-4'>
                         <Link to="/" className='text-xl hover:text-orange-300'>Inicio</Link>
                         <Link to="/productos" className='text-xl hover:text-orange-300'>Productos</Link>
-                        <Link to="/paquetes" className='text-xl hover:text-orange-300'>Paquetes</Link>
+                        <Link to="/paquetes" className='text-xl hover:text-orange-300'>Kits</Link>
                         
                     </div>
 

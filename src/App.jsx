@@ -11,23 +11,25 @@ import SignUpPage from './pages/client/SignUp'
 import Layout from "./layouts/Layout";
 
 import { AuthProvider } from "./contexts/AuthContext.jsx";
-
+import { ProductsProvider } from "./contexts/ProductsContext.jsx"
 export const App = () => {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="productos" element={<Productos />} />
-          <Route path="productos/:zonaActual" element={<Productos />} />
-          <Route path="InfoProduct/:Id" element={<InfoProduct />} />
-          <Route path="paquetes" element={<Paquetes />} />
-          <Route path="carrito" element={<Carrito />} />
-          <Route path="nosotros" element={<Nosotros />} />
-          <Route path="login" element={<LoginIn />} />
-          <Route path="signup" element={<SignUpPage />} />
-        </Route>
-      </Routes>
+      <ProductsProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="productos" element={<Productos />} />
+            <Route path="productos/:zonaActual" element={<Productos />} />
+            <Route path="paquetes" element={<Paquetes />} />
+            <Route path="InfoProduct/:Id" element={<InfoProduct />} />
+            <Route path="carrito" element={<Carrito />} />
+            <Route path="nosotros" element={<Nosotros />} />
+            <Route path="login" element={<LoginIn />} />
+            <Route path="signup" element={<SignUpPage />} />
+          </Route>
+        </Routes>
+        </ProductsProvider >
     </AuthProvider>
   )
 }

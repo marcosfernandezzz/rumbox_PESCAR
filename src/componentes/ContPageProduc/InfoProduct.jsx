@@ -1,17 +1,25 @@
 import React from 'react'
-import productosDB from '../../json/MOCK_DATA.json'
+
 import { useParams } from 'react-router-dom'
+
+import { useProductos } from '../../contexts/ProductsContext.jsx'
+
 import { Link } from 'react-router-dom';
 
 export const InfoProduct = () => {
-  const {Id} = useParams()
 
-  const ProducX = productosDB.find(p => p.id === parseInt(Id));
+    const {Id} = useParams();
+    const { productos } = useProductos();
+    const productosvarios = Array.isArray(productos) ? productos : [];
+
+  
+
+  const ProducX = productosvarios.find(p => p._id === String(Id));
   if (!ProducX) {
     return <h2>Producto no encontrado.</h2>;
   }
   
-  const { Nombre, Precio, Descripcion, ImgURL } = ProducX;
+  const { nombre, precio, descripcion, image } = ProducX;
 
   return (
     
@@ -30,20 +38,20 @@ export const InfoProduct = () => {
                     {/* Columna de la imagen */}
                     <div className="rounded-xl ">
                         <img 
-                            src={ImgURL} alt={Nombre} className="h-100 w-auto  object-contain rounded-lg shadow-md"
+                            src={image} alt={nombre} className="h-100 w-auto  object-contain rounded-lg shadow-md"
                         />
                     </div>
                     
                     {/* Columna de la información */}
                     <div className="flex flex-col justify-center space-y-6">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2">{Nombre}</h1>
-                            <p className="text-2xl font-bold text-blue-600">${Precio}</p>
+                            <h1 className="text-3xl font-bold text-gray-900 mb-2">{nombre}</h1>
+                            <p className="text-2xl font-bold text-blue-600">${precio}</p>
                         </div>
                     
                         <div>
                             <h2 className="text-lg font-semibold text-gray-800 mb-2">Descripción</h2>
-                            <p className="text-gray-600 leading-relaxed">{Descripcion}</p>
+                            <p className="text-gray-600 leading-relaxed">{descripcion}</p>
                         </div>
                     
                         <div className="flex flex-col sm:flex-row gap-4 pt-4">

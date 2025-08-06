@@ -1,6 +1,9 @@
-import React from 'react'
-import productosDB from '../../json/MOCK_DATA.json'
+import React, { useContext } from 'react'
+/* import productosDB from '../../json/MOCK_DATA.json' */
 /* import card from '../../componentes/UI/card' */
+
+import { useProductos } from '../../contexts/ProductsContext.jsx'
+
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 
@@ -33,50 +36,41 @@ function Filtros() {
 
     <div className="flex flex-col bg-white text-center p-4 border border-gray-300 rounded-xl shrink-0 shadow relative">
       <Link to="/productos" ><div className="">Limpiar Filtros</div></Link>
-      <Link to="/productos/Home" ><div className="">Home</div></Link>
-      <Link to="/productos/Automotive" ><div className="">Automotive</div></Link>
-      <Link to="/productos/Home Security" ><div className="">Home Security</div></Link>
-      <Link to="/productos/Food - Snacks" ><div className="">Food - Snacks</div></Link>
-      <Link to="/productos/Food - Frozen" ><div className="">Food - Frozen</div></Link>
-      <Link to="/productos/Food - Frozen Desserts" ><div className="">Food - Frozen Desserts</div></Link>
-      <Link to="/productos/Food - Spices" ><div className="">Food - Spices</div></Link>
-      <Link to="/productos/Food - Dips" ><div className="">Food - Dips</div></Link>
-      <Link to="/productos/Outdoor" ><div className="">Outdoor</div></Link>
-      <Link to="/productos/Food - Vegetables" ><div className="">Food - Vegetables</div></Link>
-      <Link to="/productos/Food - Condiments" ><div className="">Food - Condiments</div></Link>
-      <Link to="/productos/Photography" ><div className="">Photography</div></Link>
-      <Link to="/productos/Health" ><div className="">Health</div></Link>
-      <Link to="/productos/Food - Pasta" ><div className="">Food - Pasta</div></Link>
-      <Link to="/productos/Food - Bakery" ><div className="">Food - Bakery</div></Link>
-      <Link to="/productos/Accessories" ><div className="">Accessories</div></Link>
-      <Link to="/productos/Food - Grains" ><div className="">Food - Grains</div></Link>
-      <Link to="/productos/Food - Prepared Foods" ><div className="">Food - Prepared Foods</div></Link>
-      <Link to="/productos/Garden" ><div className="">Garden</div></Link>
-      <Link to="/productos/Clothing - Tops" ><div className="">Clothing - Tops</div></Link>
-      <Link to="/productos/Fitness" ><div className="">Fitness</div></Link>
+      <Link to="/productos/Nieve" ><div className="">Nieve</div></Link>
+      <Link to="/productos/Montaña" ><div className="">Montaña</div></Link>
+      <Link to="/productos/Playa" ><div className="">Playa</div></Link>
     </div>
   );
 }
 
 
 export const Productos = () => {
-  let {zonaActual} = useParams()
+  /* 
+  const { usuario } = useContext(AuthContext);
+  */  
+  const { productos } = useProductos();
+  const productosvarios = Array.isArray(productos) ? productos : [];
+
+  let { zonaActual } = useParams();
   if (zonaActual == undefined) {
     zonaActual = true;
   }
+
+  // Depuración: mostrar los ids de los productos
+
   return (
     <section className="flex justify-center gap-4 mx-auto max-w-7xl">
       <div className="w-60 shrink-0">
         <Filtros />
-      </div> 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 justify-items-center">{
-        productosDB.map((producto) => (
-                              ( (zonaActual == producto.Zona || zonaActual == true) && producto.Activo) &&  
-                              <CardUnidad id={producto.id} ImgURL={producto.ImgURL} Nombre={producto.Nombre} Precio={producto.Precio}></CardUnidad>
-                        ))
-      }</div> 
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 justify-items-center">
+        {productosvarios.map((producto) => (
+          ( (zonaActual == producto.categoria || zonaActual == true) && producto.activo) &&  
+          <CardUnidad id={producto._id} ImgURL={producto.image} Nombre={producto.nombre} Precio={producto.precio} />
+        ))}
+      </div>
     </section>
-  )
+  );
 }
 
 export default Productos;
