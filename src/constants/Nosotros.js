@@ -29,8 +29,8 @@ const nosotros = [
         linkedin: 'https://www.linkedin.com/in/marcos-fernandez-dev-/',
         foto: marcos,
         
-        git: '',
-        email:'',
+        git: 'https://github.com/marcosfernandezzz',
+        email:'marcosfernandez2033@gmail.com',
         portfolio:'', 
 
     },
