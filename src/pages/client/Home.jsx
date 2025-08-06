@@ -12,11 +12,14 @@ import hero2 from '../../assets/imagenes/hero2.png'
 
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useProductos } from '../../contexts/ProductsContext.jsx'
+import { useKits } from '../../contexts/KitsContext.jsx'
+
 export const Home = () => {
     const { usuario } = useContext(AuthContext);
     const { productos, loading } = useProductos();
     const productosvarios = Array.isArray(productos) ? productos.slice(0, 8) : [];
-    
+    const {kits} = useKits();
+    const KitsList = Array.isArray(kits) ? kits.slice(0, 8) : [];
   return (
     <main className=''>
       
@@ -30,7 +33,7 @@ export const Home = () => {
       {!loading && (
         <CardList
           title='Kits Destacados.'
-          Products={productosvarios}
+          Products={KitsList}
           url={'/Productos'}
           btn='Ver más productos...'
         />
