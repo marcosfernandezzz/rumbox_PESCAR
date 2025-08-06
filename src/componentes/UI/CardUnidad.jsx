@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../contexts/AuthContext.jsx'
+
 import { Link } from 'react-router-dom';
 
 const CardUnidad = ({id, ImgURL, Nombre, Precio}) =>{
+    const { usuario } = useContext(AuthContext);
   return(
-  
+    
       <div key={id} className="bg-white text-center p-4 h-75 w-60 border border-gray-300 rounded-xl shrink-0 shadow relative" >
         <Link to={`/InfoProduct/${id}`}>
           <img src={ImgURL} alt={Nombre} className="h-24 w-full object-contain rounded bg-gray-50" />

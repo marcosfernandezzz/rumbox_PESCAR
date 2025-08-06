@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext.jsx'
 import { useProductos } from '../../contexts/ProductsContext.jsx'
-
+import  CardUnidad  from '../../componentes/UI/CardUnidad.jsx';
 
 const Carrito = () => {
     const { usuario } = useContext(AuthContext);
     if (!usuario) {
         return <div className="text-center p-4">Por favor, inicia sesión para ver tu carrito.</div>;
     }
-    const carritoUser = usuario.inventario;
+    const carritoUser = Array.isArray(usuario.inventario) ? usuario.inventario : [];
     
     const { productos } = useProductos();
     const productosvarios = Array.isArray(productos) ? productos : [];
@@ -18,11 +18,19 @@ const Carrito = () => {
     <section>
       <div>
         <h2>Productos en el carrito</h2>
+        {console.log('info de usuario:'+ usuario);}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 justify-items-center">
-        {productosvarios.map((item) => (
-          ( productosvarios.find(p => p._id === String(item))) &&  
-          <CardUnidad id={productos._id} ImgURL={producto.image} Nombre={producto.nombre} Precio={producto.precio} />
-        ))}
+        {carritoUser.map((itemID) => {
+        const producto = productosvarios.find(p => String(p._id) === String(itemID));
+            return producto ? (
+              <CardUnidad
+                id={producto._id}
+                ImgURL={producto.image}
+                Nombre={producto.nombre}
+                Precio={producto.precio}
+              />
+            ) : null;
+        })}
       </div>
         
       </div>
