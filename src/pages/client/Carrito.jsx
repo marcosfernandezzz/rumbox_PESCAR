@@ -7,7 +7,7 @@ const Carrito = () => {
     const { usuario } = useContext(AuthContext);
     if (!usuario) {
         return <div className="text-center p-4">Por favor, inicia sesión para ver tu carrito.</div>;
-    }
+      }
     const carritoUser = Array.isArray(usuario.inventario) ? usuario.inventario : [];
     
     const { productos } = useProductos();
@@ -18,7 +18,7 @@ const Carrito = () => {
     <section>
       <div>
         <h2>Productos en el carrito</h2>
-        {console.log('info de usuario:'+ usuario);}
+        {console.log(usuario)}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 justify-items-center">
         {carritoUser.map((itemID) => {
         const producto = productosvarios.find(p => String(p._id) === String(itemID));
