@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 
 
-router.use(express.static(path.join(__dirname, 'public', 'img')))
+router.use('/img', express.static(path.join(__dirname, 'public', 'img')))
 
 
 export default router;
