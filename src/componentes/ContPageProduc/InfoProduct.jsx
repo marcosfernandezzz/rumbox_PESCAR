@@ -39,7 +39,7 @@ export const InfoProduct = () => {
                     {/* Columna de la imagen */}
                     <div className="rounded-xl ">
                         <img 
-                            src={image} alt={nombre} className="h-100 w-auto  object-contain rounded-lg shadow-md"
+                            src={`/img/${image}`} alt={nombre} className="h-100 w-auto  object-contain rounded-lg shadow-md"
                         />
                     </div>
                     

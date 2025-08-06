@@ -9,7 +9,7 @@ const CardUnidad = ({id, ImgURL, Nombre, Precio}) =>{
     
       <div key={id} className="bg-white text-center p-4 h-75 w-60 border border-gray-300 rounded-xl shrink-0 shadow relative" >
         <Link to={`/InfoProduct/${id}`}>
-          <img src={ImgURL} alt={Nombre} className="h-24 w-full object-contain rounded bg-gray-50" />
+          <img src={`/img/${ImgURL}`} alt={Nombre} className="h-24 w-full object-contain rounded bg-gray-50" />
           <h3 className="text-lg font-semibold mt-2">{Nombre}</h3>
           <p className="text-lg font-bold text-blue-600 mt-2">${Precio}</p>
         </Link>
