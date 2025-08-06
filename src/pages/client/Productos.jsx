@@ -3,10 +3,11 @@ import React, { useContext } from 'react'
 /* import card from '../../componentes/UI/card' */
 
 import { useProductos } from '../../contexts/ProductsContext.jsx'
-
+import  CardUnidad  from '../../componentes/UI/CardUnidad.jsx'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 
+/* 
 function CardUnidad(props) {
   return(
   
@@ -18,22 +19,18 @@ function CardUnidad(props) {
         </Link>
         <div className="absolute bottom-0 left-0 right-0 m-4">
           <div className="flex justify-center items-end m-4 gap-2">
-            
-            
             <button className="mt-3 px-3 py-1 bg-orange-500 text-white rounded hover:bg-green-600 text-sm">
                 Añadir al carrito
             </button>
           </div>
         </div>
       </div> 
-    
   );
-}
+} */
 
 
 function Filtros() {
   return(
-
     <div className="flex flex-col bg-white text-center p-4 border border-gray-300 rounded-xl shrink-0 shadow relative">
       <Link to="/productos" ><div className="">Limpiar Filtros</div></Link>
       <Link to="/productos/Nieve" ><div className="">Nieve</div></Link>
