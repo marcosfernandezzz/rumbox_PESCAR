@@ -5,12 +5,14 @@ import  CardUnidad  from '../../componentes/UI/CardUnidad.jsx';
 
 const Carrito = () => {
     const { usuario } = useContext(AuthContext);
+    const { productos } = useProductos();
+    
     if (!usuario) {
         return <div className="text-center p-4">Por favor, inicia sesión para ver tu carrito.</div>;
       }
     const carritoUser = Array.isArray(usuario.inventario) ? usuario.inventario : [];
     
-    const { productos } = useProductos();
+    
     const productosvarios = Array.isArray(productos) ? productos : [];
 
 

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 export const InfoProduct = () => {
 
     const {Id} = useParams();
+    
     const { productos } = useProductos();
     const productosvarios = Array.isArray(productos) ? productos : [];
 

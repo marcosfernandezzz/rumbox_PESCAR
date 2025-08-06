@@ -17,6 +17,7 @@ const CardUnidad = ({id, ImgURL, Nombre, Precio}) =>{
           <div className="flex justify-center items-end m-4 gap-2">
             <button className="mt-3 px-3 py-1 bg-orange-500 text-white rounded hover:bg-green-600 text-sm">
                 Añadir al carrito
+                {}
             </button>
           </div>
         </div>
