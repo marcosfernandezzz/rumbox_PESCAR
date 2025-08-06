@@ -6,13 +6,46 @@ import { SiGmail } from "react-icons/si";
 import { VscGithubInverted } from "react-icons/vsc";
 import { TfiBriefcase } from "react-icons/tfi";
 
-
+/* import AnimatedUs from "../../componentes/UI/AnimatedUs"; */
 
 
 
 
 export const Nosotros = () => {
+/*   const testimonios = [
+    {
+      quote: "Este sitio es increíble, me ayudó mucho.",
+      name: "Lucas Fernández",
+      designation: "Frontend Developer",
+      src: nosotros[0].foto,
+    },
+    {
+      quote: "Excelente experiencia, muy recomendado.",
+      name: "Marcos",
+      designation: "Backend Developer",
+      src: nosotros[2].foto,
+    },
+    {
+      quote: "Este sitio es increíble, me ayudó mucho.",
+      name: "Kevin Laura",
+      designation: "Desarrollador Frontend",
+      src: nosotros[3].foto,
+    },
+    {
+      quote: "Excelente experiencia, muy recomendado.",
+      name: "Karen Flores",
+      designation: "UX Designer",
+      src: nosotros[1].foto,
+    },
+    {
+      quote: "Este sitio es increíble, me ayudó mucho.",
+      name: "Micaela Gordillo",
+      designation: "Desarrollador Frontend",
+      src: nosotros[4].foto,
+    }, */
+    
 
+  /* ]; */
   const [integrantes, setIntegrantes] = useState(nosotros)
 
   return (
@@ -45,7 +78,7 @@ export const Nosotros = () => {
             </div>
           </div>
         </div>
-
+        
         {/* ¿QUÉ ES RUMBOX? */}
         <div className="w-full flex justify-center px-4 py-8">
           <div className="w-full max-w-6xl">
@@ -62,7 +95,11 @@ export const Nosotros = () => {
           </div>
         </div>
 
-
+        {/* <div>
+          <div className="min-h-screen flex items-center justify-center bg-black rounded-2xl text-white">
+            <AnimatedUs testimonials={testimonios} autoplay />
+          </div>
+        </div> */}
 
         {/* NUESTRO EQUIPO */}
         <h3 className='text-3xl font-bold text-center pt-8 mb-10 '>Nuestro equipo</h3>
