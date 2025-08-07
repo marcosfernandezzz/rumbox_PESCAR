@@ -26,6 +26,7 @@ const Carrito = () => {
         const producto = productosvarios.find(p => String(p._id) === String(itemID));
             return producto ? (
               <CardUnidad
+              key={producto._id}
                 id={producto._id}
                 ImgURL={producto.image}
                 Nombre={producto.nombre}

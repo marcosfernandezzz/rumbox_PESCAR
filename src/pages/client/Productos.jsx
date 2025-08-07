@@ -57,13 +57,13 @@ export const Productos = () => {
 
   return (
     <section className="flex justify-center gap-4 mx-auto max-w-7xl">
-      <div className="w-60 shrink-0">
+      <div className="w-60 shrink-0 p-4">
         <Filtros />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 justify-items-center">
         {productosvarios.map((producto) => (
           ( (zonaActual == producto.categoria || zonaActual == true) && producto.activo) &&  
-          <CardUnidad id={producto._id} ImgURL={producto.image} Nombre={producto.nombre} Precio={producto.precio} />
+          <CardUnidad key={producto._id} id={producto._id} ImgURL={producto.image} Nombre={producto.nombre} Precio={producto.precio} />
         ))}
       </div>
     </section>

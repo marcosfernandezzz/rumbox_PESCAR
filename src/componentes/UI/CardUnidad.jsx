@@ -1,13 +1,19 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext.jsx'
-
+import { useUser } from '../../contexts/UserContext.jsx';
 import { Link } from 'react-router-dom';
+
+const actuUser =() => {
+
+}
 
 const CardUnidad = ({id, ImgURL, Nombre, Precio}) =>{
     const { usuario } = useContext(AuthContext);
-    const addCart = () => {
-      usuario.inventario.push(id);
-    }
+  const { addToCart } = useUser();
+  
+  const handleAddToCart = () => {
+    addToCart(id); // id del producto
+  };
     
   return(
     
@@ -19,10 +25,11 @@ const CardUnidad = ({id, ImgURL, Nombre, Precio}) =>{
         </Link>
         <div className="absolute bottom-0 left-0 right-0 m-4">
           <div className="flex justify-center items-end m-4 gap-2">
-            <button className="mt-3 px-3 py-1 bg-orange-500 text-white rounded hover:bg-green-600 text-sm" 
-                onClick={addCart}>
-                Añadir al carrito
-                
+            <button
+              className="mt-3 px-3 py-1 bg-orange-500 text-white rounded hover:bg-green-600 text-sm"
+              onClick={handleAddToCart}
+            >
+              Añadir al carrito
             </button>
           </div>
         </div>
