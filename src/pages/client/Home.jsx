@@ -12,31 +12,41 @@ import hero2 from '../../assets/imagenes/hero2.png'
 
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useProductos } from '../../contexts/ProductsContext.jsx'
+import { useKits } from '../../contexts/KitsContext.jsx'
+
 export const Home = () => {
     const { usuario } = useContext(AuthContext);
     const { productos, loading } = useProductos();
     const productosvarios = Array.isArray(productos) ? productos.slice(0, 8) : [];
-    
+    const {kits} = useKits();
+    const KitsList = Array.isArray(kits) ? kits.slice(0, 8) : [];
   return (
     <main className=''>
       
-      <Hero heroImg={hero2} title='¡Listo para tu próxima aventura?' info='Productos prácticos para viajeros curiosos.' refUrl ='Explorá nuestros productos'/>
-      
+      <Hero heroImg={hero2} 
+            title='¡Listo para tu próxima aventura?' 
+            info='Productos prácticos para viajeros curiosos.' 
+            refUrl ='Explorá nuestros productos'
+            url={'/Productos'}/>
+            
       <Slider/>
       
       {!usuario && <SingUpPrompt />}
       
-      {/* <CardList title='Kit Destacados.'  Products= {KitsData} url={'/Paquetes'} btn='Ver mas Kits...' /> */}
-      {!loading && (
+      
         <CardList
           title='Kits Destacados.'
-          Products={productosvarios}
+          Products={KitsList}
           url={'/Productos'}
           btn='Ver más productos...'
         />
-      )}
       
-      <Promo PromoImg={PromoImg} title='ESENCIALES PARA LA NIEVE!!' info='HASTA 40% OFF!' url={'/Productos'} />
+      
+      <Promo 
+          PromoImg={PromoImg} 
+          title='ESENCIALES PARA LA NIEVE!!' 
+          info='HASTA 40% OFF!' 
+          url={'/Productos'} />
       
       {!loading && (
         <CardList

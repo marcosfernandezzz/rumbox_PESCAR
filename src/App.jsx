@@ -13,11 +13,13 @@ import Layout from "./layouts/Layout";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import { UserProvider } from "./contexts/UserContext.jsx";
 import { ProductsProvider } from "./contexts/ProductsContext.jsx"
+import { KitsProvider } from './contexts/KitsContext.jsx';
 export const App = () => {
   return (
     <AuthProvider>
-      <UserProvider>
-        <ProductsProvider>
+      <ProductsProvider>
+        <UserProvider>
+        <KitsProvider>
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
@@ -31,8 +33,9 @@ export const App = () => {
               <Route path="signup" element={<SignUpPage />} />
             </Route>
           </Routes>
-          </ProductsProvider >
-      </UserProvider>
+        </KitsProvider>
+        </UserProvider>
+      </ProductsProvider >
     </AuthProvider>
   )
 }

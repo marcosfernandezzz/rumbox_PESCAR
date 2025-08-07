@@ -5,7 +5,8 @@ import img3 from '../../assets/imagenes/SliderImgs/gafas-de-sol-polarizadas.png'
 import img4 from '../../assets/imagenes/SliderImgs/guantes-impermeable-nieve.png'
 import img5 from '../../assets/imagenes/SliderImgs/mochila_buffalo_75.png'
 
-
+import {abrirWhatsApp} from '../../utils/Whatsapp.js'
+import { IoIosCart } from "react-icons/io";
 
 
 function Slider() {
@@ -71,6 +72,9 @@ function Slider() {
   }
         
     ];
+     const addCart = () => {
+      usuario.inventario.push(id);
+    }
 
     const buttonClasses = ` w-12 h-12 flex justify-center items-center rounded-full 
           bg-gradient-to-r from-slate-300 to-blue-100 shadow-md disabled:cursor-not-allowed
@@ -101,9 +105,17 @@ function Slider() {
                                     <p className="text-xs  font-semibold text-green-500 p-0.5 rounded-xl mt-1">{card.descuento}</p>
                                 </div>
                                 
-                                <div className="flex justify-center items-end m-4 ">
-                                  <p className='text-xs bg-orange-50 p-0.5 rounded-s  font-semibold md:text-sm'>{card.descripción && card.descripción.length > 15 ? card.descripción.slice(0, 30) + "..." : card.descripción}</p>  
-                                </div>
+                                <div className='flex  gap-2 justify-center items-center'>
+                                            <button className="mt-2 p-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-blue-500 text-xs"
+                                              onClick={abrirWhatsApp}>
+                                              Comprar Ahora!
+                                            </button>
+                                            <button className="mt-2  bg-white text-orange-500 p-1 border  rounded hover:bg-blue-500 hover:text-white text-xs"
+                                              onClick={addCart}>
+                                              <IoIosCart className='text-2xl' />
+                                
+                                            </button>
+                                          </div>
 
                             </div>
                         ))

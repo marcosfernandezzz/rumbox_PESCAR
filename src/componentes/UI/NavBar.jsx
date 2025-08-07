@@ -34,10 +34,10 @@ export const NavBar = () => {
         <section className='text-white'>
             {/* mobile first */}
             <div className='flex justify-between items-center p-4 bg-rumbox  md:hidden'>
-                <div className='flex items-center gap-2'>
+                <Link to="/"><div className='flex items-center gap-2'>
                     <img src={logo} alt="logo" className='w-12 h-12 rounded-full' />
                     <h1 className='text-3xl font-bold'>Rumbox</h1>
-                </div>
+                </div></Link>
                 <div className='flex gap-4'>
                     <button onClick={() => setOpen(!open)}>
                         <MdMenu className='text-2xl cursor-pointer md:hidden' />
@@ -48,8 +48,8 @@ export const NavBar = () => {
             {/* Menú desplegable mobile */}
             {open && (
                 <>
-                    <hr />
-                    <div className=' bg-[#1A68FF] flex flex-col items-start gap-2 p-4  md:hidden'>
+                    <hr className='relative z-20'/>
+                    <div className='relative z-20 bg-[#1A68FF] flex flex-col items-start gap-2 p-4  md:hidden'>
                         <div className='flex justify-center-safe gap-4 items-center '>
                             <FaUserCircle className='text-5xl' />
                             <div className='flex-row'>
@@ -106,10 +106,12 @@ export const NavBar = () => {
             {/* desktop version */}
             <div className='hidden md:flex flex-col justify-around items-center p-4 bg-rumbox '>
                 <div className='flex items-center w-full justify-around'>
-                    <div className='flex items-center gap-2'>
+                    <Link to="/">
+                    <div className='flex items-center gap-2 cursor-pointer'>
                         <img src={logo} alt="logo" className='w-12 h-12 rounded-full' />
                         <h1 className='text-4xl font-bold'>Rumbox</h1>
                     </div>
+                    </Link>
                     <div className='flex gap-4'>
                         <Link to="/" className='text-xl hover:text-orange-300'>Inicio</Link>
                         <Link to="/productos" className='text-xl hover:text-orange-300'>Productos</Link>
