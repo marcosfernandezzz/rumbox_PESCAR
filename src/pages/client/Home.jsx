@@ -26,8 +26,9 @@ export const Home = () => {
       <Hero heroImg={hero2} 
             title='¡Listo para tu próxima aventura?' 
             info='Productos prácticos para viajeros curiosos.' 
-            refUrl ='Explorá nuestros productos'/>
-      
+            refUrl ='Explorá nuestros productos'
+            url={'/Productos'}/>
+            
       <Slider/>
       
       {!usuario && <SingUpPrompt />}
