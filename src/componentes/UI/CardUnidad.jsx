@@ -11,7 +11,7 @@ const CardUnidad = ({id, ImgURL, Nombre, Precio, descripcion, productosIncluidos
     
   return(
     
-      <div key={id} className="bg-white  text-center p-2 md:p-4  h-80 w-46 md:h-88 md:w-60 border border-gray-300 rounded-xl shrink-0 shadow relative" >
+      <div key={id} className="bg-white  text-center p-2 md:p-4  h-80 w-44 md:h-88 md:w-60 border border-gray-300 rounded-xl shrink-0 shadow relative" >
         <Link to={`/InfoProduct/${id}`}>
           <img src={`/img/${ImgURL}`} alt={Nombre} className="h-24  w-full object-contain md:h-30 rounded bg-gray-50" />
           <h3 className=" font-semibold mt-2 md:text-xl">{Nombre}</h3>
