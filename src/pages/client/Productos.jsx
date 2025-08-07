@@ -27,7 +27,7 @@ export const Productos = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 p-4 justify-items-center">
           {productosvarios.map((producto) => (
             ((zonaActual == producto.categoria || zonaActual == true) && producto.activo) &&
-            <CardUnidad key={producto._id} id={producto._id} ImgURL={producto.image} Nombre={producto.nombre} Precio={producto.precio} descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion} />
+            <CardUnidad id={producto._id} ImgURL={producto.image} Nombre={producto.nombre} Precio={producto.precio} descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion} />
           ))}
         </div>
       </div>
