@@ -23,6 +23,12 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'La contraseña es requerida'],
         minlength: [6, 'La contraseña debe tener al menos 6 caracteres']
     },
+    role: {
+        type: String,
+        required: true,
+        enum: ['cliente', 'admin'],
+        default: 'cliente'
+    },
     inventario: {
         type: Array,
         required: false
@@ -56,6 +62,4 @@ UserSchema.methods.toJSON = function() {
     return user
 }
 
-export default mongoose.model('User', UserSchema) 
-
-
+export default mongoose.model('User', UserSchema)
