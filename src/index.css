@@ -1,10 +1,10 @@
 @import "tailwindcss";
-.bg-rumbox {           /* color de fondo predeterminado*/
-    background-color: #0057FF;
+.bg-rumbox {           /* color de fondo predeterminado 1A68FF   0057FF*/
+    background-color: #052f81;
     
   }
 .rumbox-grlinear{
-  background-image: linear-gradient(to bottom, #1a68ff, #3f7cff, #5b8eff, #75a1ff, #8fb3ff, #a3bdfc, #b5c7fa, #c6d2f7, #d2d8f4, #dcdef0, #e5e4ee, #ebebeb);
+  background-image: linear-gradient(to bottom, #052f81, #0c44be, #2056ca, #3067dd, #4e80ec, #82a6fa, #b5c7fa, #c6d2f7, #d2d8f4, #dcdef0, #e5e4ee, #ebebeb);
 }
 
 

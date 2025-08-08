@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import logo from "../../assets/imagenes/rumbi.png";
+import logo from "../../assets/imagenes/rumbi.svg";
 import '../../index.css'
 import { MdMenu } from "react-icons/md"; {/* <MdMenu /> */ }
 import { CgShoppingCart } from "react-icons/cg"; {/* <CgShoppingCart /> */ }
@@ -49,7 +49,7 @@ export const NavBar = () => {
             {open && (
                 <>
                     <hr className='relative z-20'/>
-                    <div className='relative z-20 bg-[#1A68FF] flex flex-col items-start gap-2 p-4  md:hidden'>
+                    <div className='relative z-20 bg-[#052f81] flex flex-col items-start gap-2 p-4  md:hidden'>
                         <div className='flex justify-center-safe gap-4 items-center '>
                             <FaUserCircle className='text-5xl' />
                             <div className='flex-row'>

@@ -8,7 +8,7 @@ import Promo from '../../componentes/UI/Promo.jsx'
 /* import KitsData from '../../assets/Mockdata/KitsData.js' */
 /* import ProductData from '../../assets/Mockdata/ProductData.js' */
 import PromoImg from '../../assets/imagenes/Promo.png'
-import hero2 from '../../assets/imagenes/hero2.png'
+import hero2 from '../../assets/imagenes/bg3.jpg'
 
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useProductos } from '../../contexts/ProductsContext.jsx'
