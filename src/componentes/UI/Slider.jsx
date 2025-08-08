@@ -1,4 +1,5 @@
 import SliderContainer from "react-cards-slider";
+import { IoIosArrowForward } from "react-icons/io";
 import img1 from '../../assets/imagenes/SliderImgs/botas-snowboard.png'
 import img2 from '../../assets/imagenes/SliderImgs/sombrilla-de-playa-con-funda.png'
 import img3 from '../../assets/imagenes/SliderImgs/gafas-de-sol-polarizadas.png'
@@ -86,13 +87,14 @@ function Slider() {
                 <h3 className="text-2xl text-center font-bold m-12" >Ofertas del Mes!</h3>
             </div>
             <div className='w-3/4 h-[400px] m-auto mt-10'>
-                <SliderContainer
-                    containerClasses='flex justify-center items-center  bg-gray-100  '
-                    leftButtonClasses={`${buttonClasses} mr-3`}
-                    rightButtonClasses={`${buttonClasses} ml-3`}
-                    cardsWrapperClasses='gap-4'
-                    
-                >
+        <SliderContainer
+          containerClasses='flex justify-center items-center  bg-gray-100  '
+          leftButtonClasses={`${buttonClasses} mr-3`}
+          rightButtonClasses={`${buttonClasses} ml-3`}
+          leftIcon={<IoIosArrowForward style={{transform: 'rotate(180deg)'}} size={32} className="text-white bg-orange-500 hover:bg-blue-800 rounded-full p-1 shadow" />}
+          rightIcon={<IoIosArrowForward size={32} className="text-white bg-orange-500 hover:bg-blue-800 rounded-full p-1 shadow" />}
+          cardsWrapperClasses='gap-4'
+        >
                     {
                         cards.map((card) => (
                             <div key={card.id} className="bg-white text-center text-shadow-2xs p-4 h-70 w-52 border border-gray-300 rounded-xl shrink-0 shadow" >
