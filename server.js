@@ -7,7 +7,6 @@ import clientRoutes from './server/routes/client.routes.js'
 import authRoutes from './server/routes/auth.routes.js'
 import productRoutes from './server/routes/product.routes.js'
 import kitRoutes from './server/routes/kit.routes.js'
-import adminRoutes from './server/routes/admin.routes.js'
 import userRoutes from './server/routes/user.routes.js'
 import cors from 'cors'
 
@@ -38,7 +37,6 @@ app.use('/api/auth', authRoutes)
 app.use('/api/client', clientRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/kits', kitRoutes)
-app.use('/api/admin', adminRoutes)
 
 // Configuración según el entorno
 if (isDevelopment) {
