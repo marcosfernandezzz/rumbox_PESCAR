@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 // Asegúrate de que la ruta a tu modelo Kit sea correcta
 import Kit from "./server/models/kits.model.js"; 
+import User from './server/models/user.model.js';
 
 dotenv.config();
 
@@ -255,6 +256,26 @@ const seedDatabase = async () => {
     });
 
     console.log("\n🎉 Base de datos poblada exitosamente!");
+    
+    // Crear usuario administrador si no existe
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'password123';
+
+    const adminExists = await User.findOne({ email: adminEmail });
+
+    if (!adminExists) {
+      const adminUser = new User({
+        name: 'Admin',
+        email: adminEmail,
+        password: adminPassword,
+        role: 'admin'
+      });
+      await adminUser.save();
+      console.log(`\n🔑 Usuario administrador creado con email: ${adminEmail}`);
+    } else {
+      console.log(`\n🔑 Usuario administrador ya existe con email: ${adminEmail}`);
+    }
+
     process.exit(0);
 
   } catch (error) {
