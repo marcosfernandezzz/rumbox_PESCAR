@@ -94,8 +94,7 @@ function Slider() {
           leftIcon={<IoIosArrowForward style={{transform: 'rotate(180deg)'}} size={32} className="text-white bg-orange-500 hover:bg-blue-800 rounded-full p-1 shadow" />}
           rightIcon={<IoIosArrowForward size={32} className="text-white bg-orange-500 hover:bg-blue-800 rounded-full p-1 shadow" />}
           cardsWrapperClasses='gap-4'
-        >
-                    {
+        >                    {
                         cards.map((card) => (
                             <div key={card.id} className="bg-white text-center text-shadow-2xs p-4 h-70 w-52 border border-gray-300 rounded-xl shrink-0 shadow" >
                                 <img src={card.image} alt={card.nombre} className="h-24 w-full object-contain rounded bg-gray-50" />

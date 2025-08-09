@@ -75,8 +75,12 @@ const Login = () => {
           // Usar la función login del contexto para guardar el usuario
           login(data.data)
           /* alert('Inicio de sesión exitoso!') */
-          // Redirigir al home después del login
-          navigate('/')
+          // Redirigir según el rol
+          if (data.data.role === 'admin') {
+            navigate('/admin')
+          } else {
+            navigate('/')
+          }
         } else {
           setApiError(data.message || 'Error al iniciar sesión')
         }
