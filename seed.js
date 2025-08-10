@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 // Asegúrate de que la ruta a tu modelo Kit sea correcta
 import Kit from "./server/models/kits.model.js"; 
 import User from './server/models/user.model.js';
+import Product from './server/models/product.model.js';
 
 dotenv.config();
 
@@ -177,7 +180,7 @@ const kitsData = [
 
 const seedDatabase = async () => {
   try {
-    console.log("🚀 Iniciando inserción de kits...");
+    console.log("🚀 Iniciando inserción de datos...");
 
     // Conectar a MongoDB si no está conectado
     if (mongoose.connection.readyState === 0) {
@@ -188,17 +191,16 @@ const seedDatabase = async () => {
       console.log("📡 Conectado a MongoDB");
     }
 
-    // Limpiar la colección antes de insertar (opcional)
-    const deletedCount = await Kit.deleteMany({});
-    console.log(`🧹 Colección 'Kits' limpiada - ${deletedCount.deletedCount} documentos eliminados`);
+    // --- SEED DE KITS ---
+    console.log("\n--- Iniciando inserción de KITS ---");
+    const deletedKits = await Kit.deleteMany({});
+    console.log(`🧹 Colección 'Kits' limpiada - ${deletedKits.deletedCount} documentos eliminados`);
 
-    // Insertar kits uno por uno
     let kitsInsertados = 0;
     let kitsConError = 0;
 
     for (const kit of kitsData) {
       try {
-        // Mapear los datos del JSON a los campos del modelo Kit
         const nuevoKit = await Kit.create({
           nombre: kit.nombre,
           precio: parseFloat(kit.precio) || 0,
@@ -208,74 +210,72 @@ const seedDatabase = async () => {
           caracteristicaTres: kit.caracteristicaTres || "",
           productosIncluidos: kit.productosIncluidos || [],
           image: kit.image || "",
-          activo: true, // Por defecto a true según tu esquema
-          categoria: determinarCategoria(kit.nombre) // Asignar categoría
+          activo: true,
+          categoria: determinarCategoria(kit.nombre)
         });
-
         kitsInsertados++;
-        console.log(`✅ Insertado: ${nuevoKit.nombre} (ID: ${nuevoKit._id})`);
-
       } catch (error) {
         kitsConError++;
-        console.error(`❌ Error al insertar ${kit.nombre}:`, error.message);
+        console.error(`❌ Error al insertar kit ${kit.nombre}:`, error.message);
       }
     }
+    console.log(`\n📊 Resumen de KITS: ${kitsInsertados} insertados, ${kitsConError} con error.`);
 
-    console.log(`\n📊 Resumen de inserción:`);
-    console.log(`   ✅ Kits insertados: ${kitsInsertados}`);
-    console.log(`   ❌ Kits con error: ${kitsConError}`);
-    console.log(`   📦 Total procesados: ${kitsData.length}`);
-
-    // Mostrar algunos kits insertados como confirmación
-    const kitsMostrar = await Kit.find({})
-      .limit(5)
-      .select('nombre categoria precio');
-
-    console.log("\n📋 Primeros 5 kits insertados:");
-    kitsMostrar.forEach(kit => {
-      console.log(`   - ${kit._id}: ${kit.nombre}`);
-      console.log(`     📂 Categoría: ${kit.categoria}`);
-      console.log(`     💰 Precio: $${kit.precio}`);
-    });
-
-    // Estadísticas por categoría
-    const estadisticasCategoria = await Kit.aggregate([
-      {
-        $group: {
-          _id: "$categoria",
-          cantidad: { $sum: 1 },
-          precioPromedio: { $avg: "$precio" }
-        }
-      },
-      { $sort: { cantidad: -1 } }
-    ]);
-
-    console.log("\n📈 Estadísticas por categoría:");
-    estadisticasCategoria.forEach(stat => {
-      console.log(`   - ${stat._id}: ${stat.cantidad} kits (Precio prom: $${Math.round(stat.precioPromedio)})`);
-    });
-
-    console.log("\n🎉 Base de datos poblada exitosamente!");
+    // --- SEED DE PRODUCTOS ---
+    console.log("\n--- Iniciando inserción de PRODUCTOS ---");
+    const productsPath = path.join(process.cwd(), 'server', 'public', 'json', 'productos.json');
+    const productsData = JSON.parse(fs.readFileSync(productsPath, 'utf-8'));
     
-    // Crear usuario administrador si no existe
+    const deletedProducts = await Product.deleteMany({});
+    console.log(`🧹 Colección 'Products' limpiada - ${deletedProducts.deletedCount} documentos eliminados`);
+
+    let productsInsertados = 0;
+    let productsConError = 0;
+
+    for (const product of productsData) {
+      try {
+        const productData = {
+          nombre: product.nombre,
+          precio: product.precio,
+          precioDescuento: product.precioDescuento,
+          descripcion: product.descripción, // Ojo con la tilde
+          categoria: determinarCategoria(product.nombre),
+          caracteristicaUno: product.caracteristicaUno,
+          caracteristicaDos: product.caracteristicaDos,
+          caracteristicaTres: product.caracteristicaTres,
+          cantidad: 1, // Agregamos cantidad por defecto
+          image: product.image,
+          activo: true
+        };
+
+        if (Number.isInteger(product.descuento)) {
+          productData.descuento = product.descuento;
+        }
+
+        await Product.create(productData);
+        productsInsertados++;
+      } catch (error) {
+        productsConError++;
+        console.error(`❌ Error al insertar producto ${product.nombre}:`, error.message);
+      }
+    }
+    console.log(`\n📊 Resumen de PRODUCTOS: ${productsInsertados} insertados, ${productsConError} con error.`);
+
+
+    // --- CREACIÓN DE USUARIO ADMIN ---
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
     const adminPassword = process.env.ADMIN_PASSWORD || 'password123';
-
     const adminExists = await User.findOne({ email: adminEmail });
 
     if (!adminExists) {
-      const adminUser = new User({
-        name: 'Admin',
-        email: adminEmail,
-        password: adminPassword,
-        role: 'admin'
-      });
+      const adminUser = new User({ name: 'Admin', email: adminEmail, password: adminPassword, role: 'admin' });
       await adminUser.save();
       console.log(`\n🔑 Usuario administrador creado con email: ${adminEmail}`);
     } else {
       console.log(`\n🔑 Usuario administrador ya existe con email: ${adminEmail}`);
     }
 
+    console.log("\n🎉 Base de datos poblada exitosamente!");
     process.exit(0);
 
   } catch (error) {

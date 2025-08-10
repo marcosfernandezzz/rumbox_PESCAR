@@ -65,6 +65,11 @@ const ProductSchema = new mongoose.Schema({
         trim: true,
         maxLenght:[20, "La caracteristica no puede exceder de los 20 caracteres"]
     },
+    cantidad: {
+        type: Number,
+        min: [0, "La cantidad no puede ser negativa"],
+        default: 1
+    },
     image: {
         type: String,
         required: true,
