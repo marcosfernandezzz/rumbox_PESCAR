@@ -2,7 +2,7 @@ import User from "../models/user.model.js";
 
 const userService = {
   // Registrar un usuario
-  async register(name, email, password) {
+  async register(name, email, password, role) {
     try {
       // Verificar si el usuario ya existe
       const existingUser = await User.findOne({ email });
@@ -15,7 +15,8 @@ const userService = {
       const newUser = new User({
         name,
         email,
-        password
+        password,
+        role
       });
 
       await newUser.save();
