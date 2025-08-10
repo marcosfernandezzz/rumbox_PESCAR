@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useProductos } from '../../contexts/ProductsContext.jsx'
 import { Link } from 'react-router-dom';
+import { useKits } from '../../contexts/KitsContext';
 import { abrirWhatsApp } from "../../utils/Whatsapp.js";
 export const InfoProduct = () => {
 
@@ -10,14 +11,20 @@ export const InfoProduct = () => {
     const { productos } = useProductos();
     const productosvarios = Array.isArray(productos) ? productos : [];
 
+    const {kits}  = useKits();
+      const KitsList = Array.isArray(kits) ? kits : [];
 
+    const KitX = KitsList.find(p => p._id === String(Id));
 
     const ProducX = productosvarios.find(p => p._id === String(Id));
-    if (!ProducX) {
+    if (!ProducX && !KitX) {
+
         return <h2>Producto no encontrado.</h2>;
     }
 
-    const { nombre, precio, descripcion, image ,caracteristicaUno, caracteristicaDos, caracteristicaTres } = ProducX;
+    const ObjetoX = ProducX || KitX;
+
+    const { nombre, precio, descripcion, image ,caracteristicaUno, caracteristicaDos, caracteristicaTres } = ObjetoX;
 
  
 

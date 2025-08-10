@@ -3,11 +3,14 @@ import { AuthContext } from '../../contexts/AuthContext.jsx'
 import { Link } from 'react-router-dom';
 import {abrirWhatsApp} from '../../utils/Whatsapp.js'
 import { IoIosCart } from "react-icons/io";
+
 const CardUnidad = ({id, ImgURL, Nombre, Precio, descripcion, productosIncluidos}) =>{
     const { usuario } = useContext(AuthContext);
     const addCart = () => {
+      if (!usuario.inventario.find(item => item === id)) {
       usuario.inventario.push(id);
-    }
+      localStorage.setItem('usuarioActual', JSON.stringify(usuario));
+    }}
     
   return(
     
