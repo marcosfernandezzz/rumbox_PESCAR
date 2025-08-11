@@ -52,7 +52,10 @@ const productController = {
   //POST - crear un nuevo producto
   async create(req, res) {
     try {
-      const productoData = req.body;
+      const productoData = { ...req.body };
+      if (req.file) {
+        productoData.image = req.file.filename; // Guardar el nombre del archivo subido
+      }
       const nuevoProducto = await productService.create(productoData);
 
       res.status(201).json({
@@ -74,7 +77,10 @@ const productController = {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const productoData = req.body;
+      const productoData = { ...req.body };
+      if (req.file) {
+        productoData.image = req.file.filename; // Guardar el nombre del archivo subido
+      }
       
       const productoActualizado = await productService.update(id, productoData);
 

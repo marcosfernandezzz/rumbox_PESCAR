@@ -1,6 +1,7 @@
 import express from 'express'
 import kitController from '../controllers/kit.controller.js'
 import authMiddleware from '../middlewares/auth.middleware.js'
+import upload from '../middlewares/upload.middleware.js'; // Importar el middleware de subida
 
 const router = express.Router()
 
@@ -11,10 +12,10 @@ router.get('/', kitController.getAll)
 router.get('/:id', kitController.getByID)
 
 //POST - 'api/kits/'
-router.post('/', authMiddleware.verifyToken, authMiddleware.verifyAdmin, kitController.create)
+router.post('/', authMiddleware.verifyToken, authMiddleware.verifyAdmin, upload.single('image'), kitController.create)
 
 //PUT - 'api/kits/:id'
-router.put('/:id', authMiddleware.verifyToken, authMiddleware.verifyAdmin, kitController.update)
+router.put('/:id', authMiddleware.verifyToken, authMiddleware.verifyAdmin, upload.single('image'), kitController.update)
 
 //PUT - 'api/kits/:id'
 router.delete('/:id', authMiddleware.verifyToken, authMiddleware.verifyAdmin, kitController.delete)

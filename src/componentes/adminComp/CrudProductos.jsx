@@ -8,36 +8,48 @@ const CrudProductos = () => {
   const [form, setForm] = useState({ 
     nombre: "", 
     precio: "", 
-    cantidad: "", // Cambiado de stock a cantidad
+    cantidad: "", 
     descripcion: "", 
     categoria: "", 
-    image: "" 
+    image: null // Cambiado a null para manejar el objeto File
   });
   const [editId, setEditId] = useState(null);
 
   const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: files ? files[0] : value // Si es un archivo, guarda el objeto File
+    }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => { // Añadir async
     e.preventDefault();
+
+    const formData = new FormData();
+    for (const key in form) {
+      if (form[key] !== null && form[key] !== undefined) { // No añadir campos nulos o indefinidos
+        formData.append(key, form[key]);
+      }
+    }
+
     if (editId) {
-      updateProduct(editId, form);
+      await updateProduct(editId, formData); // Enviar FormData
       setEditId(null);
     } else {
-      addProduct(form);
+      await addProduct(formData); // Enviar FormData
     }
-    setForm({ nombre: "", precio: "", cantidad: "", descripcion: "", categoria: "", image: "" }); // Resetear todos los campos
+    setForm({ nombre: "", precio: "", cantidad: "", descripcion: "", categoria: "", image: null }); // Resetear todos los campos, image a null
   };
 
   const handleEdit = prod => {
     setForm({ 
       nombre: prod.nombre, 
       precio: prod.precio, 
-      cantidad: prod.cantidad, // Cambiado de stock a cantidad
+      cantidad: prod.cantidad, 
       descripcion: prod.descripcion, 
       categoria: prod.categoria, 
-      image: prod.image 
+      image: null // No precargar la imagen, el usuario deberá seleccionar una nueva si desea cambiarla
     });
     setEditId(prod._id);
   };
@@ -56,7 +68,7 @@ const CrudProductos = () => {
           <option value="Playa">Playa</option>
           <option value="Montaña">Montaña</option>
         </select>
-        <input name="image" value={form.image} onChange={handleChange} placeholder="URL de Imagen" required className="border px-2 py-1 rounded" />
+        <input name="image" type="file" onChange={handleChange} className="border px-2 py-1 rounded" />
         
         <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded">{editId ? "Editar" : "Agregar"}</button>
         {editId && <button type="button" onClick={()=>{setEditId(null);setForm({nombre:"",precio:"",cantidad:"",descripcion:"",categoria:"",image:""})}} className="bg-gray-400 text-white px-2 py-1 rounded">Cancelar</button>}

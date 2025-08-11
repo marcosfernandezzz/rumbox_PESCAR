@@ -36,7 +36,7 @@ const kitController = {
     
             res.status(200).json({
                 success: true,
-                data: producto,
+                data: kit, // Corregido de 'producto' a 'kit'
                 message: "Kit obtenido correctamente"
             });
     
@@ -52,8 +52,11 @@ const kitController = {
       //POST - crear un nuevo kit
       async create(req, res) {
         try {
-          const kitData = req.body;
-          const nuevoKit = await productKit.create(kitData);
+          const kitData = { ...req.body };
+          if (req.file) {
+            kitData.image = req.file.filename; // Guardar el nombre del archivo subido
+          }
+          const nuevoKit = await kitService.create(kitData); // Corregido de 'productKit' a 'kitService'
     
           res.status(201).json({
             success: true,
@@ -74,9 +77,12 @@ const kitController = {
       async update(req, res) {
         try {
           const { id } = req.params;
-          const kitData = req.body;
+          const kitData = { ...req.body };
+          if (req.file) {
+            kitData.image = req.file.filename; // Guardar el nombre del archivo subido
+          }
           
-          const kitActualizado = await productService.update(id, kitData);
+          const kitActualizado = await kitService.update(id, kitData); // Corregido de 'productService' a 'kitService'
     
           if (!kitActualizado) {
             return res.status(404).json({
@@ -106,7 +112,7 @@ const kitController = {
           const { id } = req.params;
           const kitEliminado = await kitService.delete(id);
     
-          if (!kitoEliminado) {
+          if (!kitEliminado) { // Corregido de 'kitoEliminado' a 'kitEliminado'
             return res.status(404).json({
               success: false,
               message: "Kit no encontrado"

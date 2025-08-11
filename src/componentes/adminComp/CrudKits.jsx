@@ -10,30 +10,45 @@ const CrudKits = () => {
     precio: "", 
     descripcion: "", 
     categoria: "", 
-    productosIncluidos: "", // Se manejará como string separado por comas
-    image: "" 
+    productosIncluidos: "", 
+    image: null // Cambiado a null para manejar el objeto File
   });
   const [editId, setEditId] = useState(null);
 
   const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: files ? files[0] : value // Si es un archivo, guarda el objeto File
+    }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => { // Añadir async
     e.preventDefault();
-    const kitData = {
-      ...form,
-      precio: Number(form.precio), // Convertir a número
-      productosIncluidos: form.productosIncluidos.split(',').map(item => item.trim()).filter(item => item !== '') // Convertir string a array
-    };
+
+    const formData = new FormData();
+    for (const key in form) {
+      if (form[key] !== null && form[key] !== undefined) { // No añadir campos nulos o indefinidos
+        if (key === "productosIncluidos") {
+          // Convertir string a array y luego añadir cada elemento individualmente
+          form[key].split(',').map(item => item.trim()).filter(item => item !== '').forEach(prodId => {
+            formData.append(key, prodId);
+          });
+        } else if (key === "precio") {
+          formData.append(key, Number(form[key])); // Convertir precio a número
+        } else {
+          formData.append(key, form[key]);
+        }
+      }
+    }
 
     if (editId) {
-      updateKit(editId, kitData);
+      await updateKit(editId, formData); // Enviar FormData
       setEditId(null);
     } else {
-      addKit(kitData);
+      await addKit(formData); // Enviar FormData
     }
-    setForm({ nombre: "", precio: "", descripcion: "", categoria: "", productosIncluidos: "", image: "" }); // Resetear todos los campos
+    setForm({ nombre: "", precio: "", descripcion: "", categoria: "", productosIncluidos: "", image: null }); // Resetear todos los campos, image a null
   };
 
   const handleEdit = kit => {
@@ -42,8 +57,8 @@ const CrudKits = () => {
       precio: kit.precio, 
       descripcion: kit.descripcion, 
       categoria: kit.categoria, 
-      productosIncluidos: kit.productosIncluidos.join(', '), // Convertir array a string para el input
-      image: kit.image 
+      productosIncluidos: kit.productosIncluidos?.join(', ') || "", // Convertir array a string para el input, manejar undefined
+      image: null // No precargar la imagen, el usuario deberá seleccionar una nueva si desea cambiarla
     });
     setEditId(kit._id);
   };
@@ -62,7 +77,7 @@ const CrudKits = () => {
           <option value="Montaña">Montaña</option>
         </select>
         <input name="productosIncluidos" value={form.productosIncluidos} onChange={handleChange} placeholder="Productos (IDs separados por comas)" required className="border px-2 py-1 rounded" />
-        <input name="image" value={form.image} onChange={handleChange} placeholder="URL de Imagen" required className="border px-2 py-1 rounded" />
+        <input name="image" type="file" onChange={handleChange} className="border px-2 py-1 rounded" />
         
         <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded">{editId ? "Editar" : "Agregar"}</button>
         {editId && <button type="button" onClick={()=>{setEditId(null);setForm({nombre:"",precio:"",descripcion:"",categoria:"",productosIncluidos:"",image:""})}} className="bg-gray-400 text-white px-2 py-1 rounded">Cancelar</button>}
