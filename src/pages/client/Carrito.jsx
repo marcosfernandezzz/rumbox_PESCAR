@@ -3,10 +3,10 @@ import { AuthContext } from '../../contexts/AuthContext.jsx'
 import { useProductos } from '../../contexts/ProductsContext.jsx'
 import { useKits } from '../../contexts/KitsContext';
 import { Link } from 'react-router-dom';
-import  CardCarrito  from '../../componentes/UI/CardCarrito.jsx';
+import CardCarrito from '../../componentes/UI/CardCarrito.jsx';
 
 const Carrito = () => {
-    const { usuario } = useContext(AuthContext);
+    const { usuario, setUsuario } = useContext(AuthContext); // Asegurarse de que setUsuario esté disponible
     const { productos } = useProductos();
     const { kits } = useKits();
 
@@ -56,7 +56,8 @@ const Carrito = () => {
         const item = productosvarios.find(p => String(p._id) === String(id)) || KitsList.find(k => String(k._id) === String(id));
         if (!item) return;
 
-        if (nuevaCantidad > item.cantidad) {
+        // Asumiendo que 'cantidad' en el producto/kit es el stock disponible
+        if (nuevaCantidad > item.cantidad) { 
             alert(`No puedes agregar más de ${item.cantidad} unidades de este producto.`);
             return;
         }
@@ -76,21 +77,10 @@ const Carrito = () => {
         setCarritoUser([]);
         setMontoTotal(0);
         // Si el contexto del usuario existe, lo actualizamos también
-       /*  if (usuario) {
-            setUsuario(null);
-        } */
+        if (usuario) {
+            setUsuario(null); // Limpiar el usuario en el contexto
+        }
     };
-
- /*    useEffect(() => {
-    const totalInicial = carritoUser.reduce((acc, itemID) => {
-      const producto = productosvarios.find(p => String(p._id) === String(itemID));
-      if (producto) return acc + producto.precio;
-      const kit = KitsList.find(p => String(p._id) === String(itemID));
-      if (kit) return acc + kit.precio;
-      return acc;
-    }, 0);
-    setMontoTotal(totalInicial);
-  }, [carritoUser, productosvarios, KitsList]); */
     
   if (!usuario) {
         return <div className="text-center p-4">Por favor, inicia sesión para ver tu carrito.</div>;
@@ -100,15 +90,15 @@ const Carrito = () => {
     <section className="flex  justify-center p-4">
       <div>
         <h2>Productos en el carrito</h2>
-        {console.log(copiaUser)}
         <div className="flex flex-col gap-2 justify-items-center">
-        {carritoUser.map((item) => { // <-- Itera una sola vez sobre el array
+        {carritoUser.map((item) => {
           const producto = productosvarios.find(p => String(p._id) === String(item.id));
           const kit = KitsList.find(p => String(p._id) === String(item.id));
           
           if (producto) {
             return (
               <CardCarrito
+                key={producto._id} // Añadir key prop
                 id={producto._id}
                 ImgURL={producto.image}
                 Nombre={producto.nombre}
@@ -124,6 +114,7 @@ const Carrito = () => {
           if (kit) {
             return (
               <CardCarrito
+                key={kit._id} // Añadir key prop
                 id={kit._id}
                 ImgURL={kit.image}
                 Nombre={kit.nombre}

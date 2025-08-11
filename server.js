@@ -38,7 +38,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/client', clientRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/kits', kitRoutes)
-app.use('/api/sales', saleRoutes) // Usar las rutas de ventas
+app.use('/api/sales', saleRoutes) 
 
 // Configuración según el entorno
 if (isDevelopment) {

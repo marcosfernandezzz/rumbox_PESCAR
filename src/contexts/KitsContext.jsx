@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { AuthContext } from "./AuthContext"; // Importar AuthContext
 
 const KitsContext = createContext();
 
 export function KitsProvider({ children }) {
+  const { usuario } = useContext(AuthContext); // Obtener el usuario del AuthContext
   const [kits, setKits] = useState([]);
 
   useEffect(() => {
@@ -19,9 +21,13 @@ export function KitsProvider({ children }) {
   // Crear kit
   const addKit = async (nuevo) => {
     try {
+      console.log("KitsContext: Enviando token para addKit:", usuario?.token);
       const res = await fetch("/api/kits", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        },
         body: JSON.stringify(nuevo)
       });
       const data = await res.json();
@@ -36,9 +42,13 @@ export function KitsProvider({ children }) {
   // Editar kit
   const updateKit = async (id, actualizado) => {
     try {
-      const res = await fetch(`/api/kits/${id}`, {
+      console.log("KitsContext: Enviando token para updateKit:", usuario?.token);
+      const res = await await fetch(`/api/kits/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        },
         body: JSON.stringify(actualizado)
       });
       const data = await res.json();
@@ -53,7 +63,13 @@ export function KitsProvider({ children }) {
   // Borrar kit
   const deleteKit = async (id) => {
     try {
-      const res = await fetch(`/api/kits/${id}`, { method: "DELETE" });
+      console.log("KitsContext: Enviando token para deleteKit:", usuario?.token);
+      const res = await fetch(`/api/kits/${id}`, { 
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        }
+      });
       if (res.ok) {
         setKits((prev) => prev.filter(k => k.id !== id));
       }
