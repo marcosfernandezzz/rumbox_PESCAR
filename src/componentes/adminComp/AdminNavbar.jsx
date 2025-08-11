@@ -13,12 +13,12 @@ const AdminNavbar = () => {
 
   return (
     <nav className="bg-gray-800 p-4 flex justify-between items-center">
-      <div className="text-white font-bold text-xl">Panel Admin</div>
+      <div className="text-white font-bold text-xl">Rumbox Dashboard</div>
       <div className="flex items-center gap-4">
         <span className="text-gray-300">{usuario?.name}</span>
         <button
           onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+          className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
         >
           Logout
         </button>
