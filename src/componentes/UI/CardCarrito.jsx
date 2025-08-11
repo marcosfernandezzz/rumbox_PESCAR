@@ -1,25 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TiPlus , TiMinus , TiTrash } from "react-icons/ti";
 
-const CardCarrito = ({id, ImgURL, Nombre, Precio, descripcion, ActualizarMonto, EliminarItem}) =>{
+const CardCarrito = ({id, ImgURL, Nombre, Precio,cantidad, descripcion,ActualizarCantidad, ActualizarMonto, EliminarItem}) =>{
 
-    const [cantidad, setCantidad] = useState(1);
-
-    /*  useEffect(() => {
+      const Mas = () => {
+        ActualizarCantidad(id, cantidad + 1);
         ActualizarMonto(Precio);
-        }, [Precio, ActualizarMonto]); */
-
-    const mas = () => {
-        ActualizarMonto(Precio);
-        setCantidad(cantidad + 1);
     };
-    const menos = () => {
-    
+
+    const Menos = () => {
         if (cantidad > 1) {
+            ActualizarCantidad(id, cantidad - 1);
             ActualizarMonto(-Precio); 
-            setCantidad(cantidad - 1);
         }
-        
+    };
+    
+    const Eliminar = () => {
+        EliminarItem(id);
     };
 
 
@@ -36,14 +33,14 @@ const CardCarrito = ({id, ImgURL, Nombre, Precio, descripcion, ActualizarMonto, 
                 <div className=''>
                     <h3 className=" font-semibold mt-2 md:text-xl">{Nombre}</h3>
                     <p className='text-xs  md:text-sm  text-start  text-gray-400'>{descripcion}</p>
-                    <button className='flex justify-center items-center' onClick={() => EliminarItem(id)}> Eliminar <TiTrash /></button>
+                    <button className='flex justify-center items-center' onClick={Eliminar}> Eliminar <TiTrash /></button>
                 </div>
 
                 <p className="text-lg md:text-xl text-start text-shadow-md font-bold text-blue-600 mt-2">${Precio}</p>
                 
                 <div className='flex flex-col gap-0 justify-center items-center'>
                     <button className="mt-2 px-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-blue-500 text-xs"
-                    onClick={mas}>
+                    onClick={Mas}>
                     <TiPlus />
                 
                     </button>
@@ -51,7 +48,7 @@ const CardCarrito = ({id, ImgURL, Nombre, Precio, descripcion, ActualizarMonto, 
                         {cantidad}
                     </div>
                     <button className="mt-2 px-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-blue-500 text-xs"
-                    onClick={menos}>
+                    onClick={Menos}>
                     <TiMinus />
 
                     </button>

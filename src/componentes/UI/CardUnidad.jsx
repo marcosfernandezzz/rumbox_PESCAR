@@ -3,14 +3,39 @@ import { AuthContext } from '../../contexts/AuthContext.jsx'
 import { Link } from 'react-router-dom';
 import {abrirWhatsApp} from '../../utils/Whatsapp.js'
 import { IoIosCart } from "react-icons/io";
+import e from 'cors';
 
 const CardUnidad = ({id, ImgURL, Nombre, Precio, descripcion, productosIncluidos}) =>{
     const { usuario } = useContext(AuthContext);
-    const addCart = () => {
-      if (!usuario.inventario.find(item => item === id)) {
-      usuario.inventario.push(id);
-      localStorage.setItem('usuarioActual', JSON.stringify(usuario));
-    }}
+    const addCart = (id) => {
+      const copiaUser = localStorage.getItem('usuarioActual');
+      if (!copiaUser){
+        if (!usuario.inventario.find(item => item.id === id)) {
+        usuario.inventario.push({
+          "id": id,
+          "cant": 1 
+        });
+          localStorage.setItem('usuarioActual', JSON.stringify(usuario));
+        } else {
+          const productoExistente = usuario.inventario.find(item => item.id === id);
+          productoExistente.cant += 1;
+          localStorage.setItem('usuarioActual', JSON.stringify(usuario));
+        }
+      } else {
+        const usuarioActual = JSON.parse(copiaUser);
+        if (!usuarioActual.inventario.find(item => item.id === id)) {
+          usuarioActual.inventario.push({
+            "id": id,
+            "cant": 1 
+          });
+          localStorage.setItem('usuarioActual', JSON.stringify(usuarioActual));
+        } else {
+          const productoExistente = usuarioActual.inventario.find(item => item.id === id);
+          productoExistente.cant += 1;
+          localStorage.setItem('usuarioActual', JSON.stringify(usuarioActual));
+        }
+      }
+    }
     
   return(
     
@@ -32,7 +57,7 @@ const CardUnidad = ({id, ImgURL, Nombre, Precio, descripcion, productosIncluidos
               Comprar Ahora!
             </button>
             <button className="mt-2  bg-white text-orange-500 p-1 border  rounded hover:bg-blue-500 hover:text-white text-xs"
-              onClick={addCart}>
+              onClick={() => addCart(id)}>
               <IoIosCart className='text-2xl' />
 
             </button>
