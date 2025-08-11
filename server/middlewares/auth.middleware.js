@@ -13,10 +13,12 @@ const authMiddleware = {
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'tu_secreto_jwt'); // Usar el secreto del .env o el fallback
       req.user = decoded;
+      console.log("AuthMiddleware: Token decodificado:", decoded);
       next();
     } catch (error) {
+      console.error("AuthMiddleware: Error al verificar token:", error.message);
       return res.status(401).json({
         success: false,
         message: "Token inválido"
@@ -26,6 +28,7 @@ const authMiddleware = {
 
   // Verificar si el usuario es administrador
   verifyAdmin: (req, res, next) => {
+    console.log("AuthMiddleware: Verificando rol de administrador para usuario:", req.user);
     if (!req.user || req.user.role !== 'admin') {
       return res.status(403).json({
         success: false,
@@ -36,4 +39,4 @@ const authMiddleware = {
   }
 };
 
-export default authMiddleware; 
+export default authMiddleware;

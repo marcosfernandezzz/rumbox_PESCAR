@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { AuthContext } from "./AuthContext"; // Importar AuthContext
 
 const ProductsContext = createContext();
 
 export function ProductsProvider({ children }) {
+  const { usuario } = useContext(AuthContext); // Obtener el usuario del AuthContext
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,9 +24,13 @@ export function ProductsProvider({ children }) {
   // Crear producto
   const addProduct = async (nuevo) => {
     try {
+      console.log("ProductsContext: Enviando token para addProduct:", usuario?.token);
       const res = await fetch("/api/products", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        },
         body: JSON.stringify(nuevo)
       });
       const data = await res.json();
@@ -39,14 +45,20 @@ export function ProductsProvider({ children }) {
   // Editar producto
   const updateProduct = async (id, actualizado) => {
     try {
+      console.log("ProductsContext: Enviando token para updateProduct:", usuario?.token);
       const res = await fetch(`/api/products/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        },
         body: JSON.stringify(actualizado)
       });
       const data = await res.json();
+      console.log("ProductsContext: ID de producto a actualizar:", id);
+      console.log("ProductsContext: Datos recibidos de la actualización:", data);
       if (res.ok) {
-        setProductos((prev) => prev.map(p => p.id === id ? data.data || data : p));
+        setProductos((prev) => prev.map(p => p._id === id ? data.data || data : p)); // Cambiado p.id a p._id
       }
     } catch (err) {
       console.error("Error al editar producto:", err);
@@ -56,7 +68,13 @@ export function ProductsProvider({ children }) {
   // Borrar producto
   const deleteProduct = async (id) => {
     try {
-      const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+      console.log("ProductsContext: Enviando token para deleteProduct:", usuario?.token);
+      const res = await fetch(`/api/products/${id}`, { 
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        }
+      });
       if (res.ok) {
         setProductos((prev) => prev.filter(p => p.id !== id));
       }

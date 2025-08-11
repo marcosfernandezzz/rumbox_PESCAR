@@ -72,8 +72,8 @@ const Login = () => {
 
         if (response.ok) {
           console.log('Login exitoso:', data)
-          // Usar la función login del contexto para guardar el usuario
-          login(data.data)
+          // Usar la función login del contexto para guardar el usuario y el token
+          login({ ...data.data, token: data.token }) // Pasar el token junto con los datos del usuario
           /* alert('Inicio de sesión exitoso!') */
           // Redirigir según el rol
           if (data.data.role === 'admin') {
@@ -178,4 +178,4 @@ const Login = () => {
   )
 }
 
-export default Login 
+export default Login
