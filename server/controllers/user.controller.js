@@ -5,7 +5,7 @@ const userController = {
   // Registrar un usuario
   async register(req, res) {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, role } = req.body;
 
       // Validaciones
       if (!name || !email || !password) {
@@ -22,7 +22,7 @@ const userController = {
         });
       }
 
-      const user = await userService.register(name, email, password);
+      const user = await userService.register(name, email, password, role);
 
       return res.status(201).json({
         success: true,
@@ -55,7 +55,7 @@ const userController = {
 
       // Generar JWT token
       const token = jwt.sign(
-        { userId: user._id, email: user.email },
+        { userId: user._id, email: user.email, role: user.role },
         process.env.JWT_SECRET || 'tu_secreto_jwt',
         { expiresIn: '24h' }
       );
