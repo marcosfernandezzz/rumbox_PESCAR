@@ -4,7 +4,7 @@ import React  from 'react'
 import { RiResetRightFill } from "react-icons/ri";
 
 import { useProductos } from '../../contexts/ProductsContext.jsx'
-import  CardUnidad  from '../../componentes/UI/CardUnidad.jsx'
+import Card from '../../componentes/UI/Card.jsx'
 import { useParams, Link } from 'react-router-dom'
 
 export const Productos = () => {
@@ -27,7 +27,7 @@ export const Productos = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 p-4 justify-items-center">
           {productosvarios.map((producto) => (
             ((zonaActual == producto.categoria || zonaActual == true) && producto.activo) &&
-            <CardUnidad id={producto._id} ImgURL={producto.image} Nombre={producto.nombre} Precio={producto.precio} descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion} />
+            <Card key={producto._id} id={producto._id} image={producto.image} title={producto.nombre} precio={producto.precio} descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion} />
           ))}
         </div>
       </div>

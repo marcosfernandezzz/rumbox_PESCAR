@@ -1,18 +1,15 @@
 import React from 'react';
 import { TiPlus , TiMinus , TiTrash } from "react-icons/ti";
 
-const CardCarrito = ({id, ImgURL, Nombre, Precio,cantidad, descripcion,ActualizarCantidad, ActualizarMonto, EliminarItem}) =>{
+const CardCarrito = ({id, ImgURL, Nombre, Precio,cantidad, descripcion,ActualizarCantidad, EliminarItem}) =>{
 
       const Mas = () => {
         ActualizarCantidad(id, cantidad + 1);
-        ActualizarMonto(Precio);
     };
 
     const Menos = () => {
-        if (cantidad > 1) {
-            ActualizarCantidad(id, cantidad - 1);
-            ActualizarMonto(-Precio); 
-        }
+        // La lógica en Carrito.jsx ahora maneja el caso de cantidad <= 0
+        ActualizarCantidad(id, cantidad - 1);
     };
     
     const Eliminar = () => {

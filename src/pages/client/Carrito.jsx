@@ -2,10 +2,11 @@ import React, { useState , useContext , useEffect } from 'react'
 import { AuthContext } from '../../contexts/AuthContext.jsx'
 import { useProductos } from '../../contexts/ProductsContext.jsx'
 import { useKits } from '../../contexts/KitsContext';
+import { Link } from 'react-router-dom';
 import  CardCarrito  from '../../componentes/UI/CardCarrito.jsx';
 
 const Carrito = () => {
-    const { usuario, setUsuario } = useContext(AuthContext); // <-- Obtén setUsuario para actualizar
+    const { usuario } = useContext(AuthContext);
     const { productos } = useProductos();
     const { kits } = useKits();
 
@@ -15,17 +16,14 @@ const Carrito = () => {
     const productosvarios = Array.isArray(productos) ? productos : [];
     const KitsList = Array.isArray(kits) ? kits : [];
 
-    // Este useEffect se ejecuta una vez al inicio para cargar el carrito
-    // y cada vez que el 'usuario' del contexto cambia.
+    // Este useEffect se ejecuta cada vez que el 'usuario' del contexto cambia.
     useEffect(() => {
-        const storedUser = localStorage.getItem('usuarioActual');
-        if (storedUser) {
-            const parsedUser = JSON.parse(storedUser);
-            if (parsedUser && Array.isArray(parsedUser.inventario)) {
-                setCarritoUser(parsedUser.inventario);
-            }
+        if (usuario && Array.isArray(usuario.inventario)) {
+            setCarritoUser(usuario.inventario);
+        } else {
+            setCarritoUser([]);
         }
-    }, []);
+    }, [usuario]);
 
     // Este useEffect recalcula el monto total cada vez que 'carritoUser' cambia.
     useEffect(() => {
@@ -39,43 +37,48 @@ const Carrito = () => {
         setMontoTotal(nuevoTotal);
     }, [carritoUser, productosvarios, KitsList]);
 
-    const ActualizarCantidad = (id, nuevaCantidad) => {
-        if (!usuario) return;
-        const inventarioActualizado = carritoUser.map(item =>
-            item.id === id ? { ...item, cant: nuevaCantidad } : item
-        );
-        setCarritoUser(inventarioActualizado);
-        
-        // Actualiza el usuario en el contexto y localStorage
-        const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
-        setUsuario(usuarioActualizado); // Si tienes un setUsuario en el contexto
-        localStorage.setItem('usuarioActual', JSON.stringify(usuarioActualizado));
-    };
-    
-    const ActualizarMonto = (diferencia) => {
-        setMontoTotal(prev => prev + diferencia);
-    };
-
     const EliminarDelCarrito = (id) => {
         if (!usuario) return;
-        const inventarioActualizado = carritoUser.filter(item => item.id !== id);
-        setCarritoUser(inventarioActualizado);
-
-        // Actualiza el usuario en el contexto y localStorage
+        const inventarioActualizado = usuario.inventario.filter(item => item.id !== id);
         const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
         setUsuario(usuarioActualizado);
-        localStorage.setItem('usuarioActual', JSON.stringify(usuarioActualizado));
+        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+    };
+
+    const ActualizarCantidad = (id, nuevaCantidad) => {
+        if (!usuario) return;
+
+        if (nuevaCantidad <= 0) {
+            EliminarDelCarrito(id);
+            return;
+        }
+
+        const item = productosvarios.find(p => String(p._id) === String(id)) || KitsList.find(k => String(k._id) === String(id));
+        if (!item) return;
+
+        if (nuevaCantidad > item.cantidad) {
+            alert(`No puedes agregar más de ${item.cantidad} unidades de este producto.`);
+            return;
+        }
+
+        const inventarioActualizado = usuario.inventario.map(prod =>
+            prod.id === id ? { ...prod, cant: nuevaCantidad } : prod
+        );
+        
+        const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
+        setUsuario(usuarioActualizado);
+        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
     };
     
     const borrarLocalS = () => {
-        localStorage.removeItem('usuarioActual');
+        localStorage.removeItem('usuario');
         // También limpiamos el estado para que se refleje inmediatamente en la UI
         setCarritoUser([]);
         setMontoTotal(0);
         // Si el contexto del usuario existe, lo actualizamos también
-        if (usuario) {
+       /*  if (usuario) {
             setUsuario(null);
-        }
+        } */
     };
 
  /*    useEffect(() => {
@@ -97,7 +100,7 @@ const Carrito = () => {
     <section className="flex  justify-center p-4">
       <div>
         <h2>Productos en el carrito</h2>
-        {console.log(usuario)}
+        {console.log(copiaUser)}
         <div className="flex flex-col gap-2 justify-items-center">
         {carritoUser.map((item) => { // <-- Itera una sola vez sobre el array
           const producto = productosvarios.find(p => String(p._id) === String(item.id));
@@ -113,7 +116,6 @@ const Carrito = () => {
                 descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion}
                 cantidad={item.cant}
                 ActualizarCantidad={ActualizarCantidad}
-                ActualizarMonto={ActualizarMonto}
                 EliminarItem={EliminarDelCarrito}
               />
             );
@@ -129,7 +131,6 @@ const Carrito = () => {
                 descripcion={kit.descripcion && kit.descripcion.length > 15 ? kit.descripcion.slice(0, 35) + "..." : kit.descripcion}
                 cantidad={item.cant}
                 ActualizarCantidad={ActualizarCantidad}
-                ActualizarMonto={ActualizarMonto}
                 EliminarItem={EliminarDelCarrito}
               />
             );
@@ -147,6 +148,11 @@ const Carrito = () => {
         <button onClick={borrarLocalS}>
           Reiniciar
         </button>
+        <Link to="/DescripCompra">
+          <button>
+            "Finalizar Compra"
+          </button>
+        </Link>
 
       </div>
     </section>
