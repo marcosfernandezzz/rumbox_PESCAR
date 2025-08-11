@@ -8,6 +8,7 @@ import authRoutes from './server/routes/auth.routes.js'
 import productRoutes from './server/routes/product.routes.js'
 import kitRoutes from './server/routes/kit.routes.js'
 import userRoutes from './server/routes/user.routes.js'
+import saleRoutes from './server/routes/sale.routes.js' // Importar las rutas de ventas
 import cors from 'cors'
 
 dotenv.config()
@@ -37,6 +38,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/client', clientRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/kits', kitRoutes)
+app.use('/api/sales', saleRoutes) // Usar las rutas de ventas
 
 // Configuración según el entorno
 if (isDevelopment) {

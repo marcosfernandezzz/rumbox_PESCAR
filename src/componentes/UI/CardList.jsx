@@ -1,5 +1,5 @@
 import React from 'react'
-import  Card  from './card'
+import Card from './Card'
 import { Link } from 'react-router-dom';
 const CardList = ({title,Products,url,btn}) => {
     const items = Array.isArray(Products) ? Products : [];
