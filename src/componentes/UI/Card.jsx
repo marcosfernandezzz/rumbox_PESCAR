@@ -1,13 +1,48 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
+import { useProductos } from '../../contexts/ProductsContext.jsx';
 import {abrirWhatsApp} from '../../utils/Whatsapp.js'
 import { IoIosCart } from "react-icons/io";
- const Card = ({id, image, title, precio, descripcion}) => {
+
+const Card = ({id, image, title, precio, descripcion}) => {
+    const { usuario, setUsuario } = useContext(AuthContext);
+    const { productos } = useProductos();
+
     const addCart = () => {
-      usuario.inventario.push(id);
-    }
+      if (!usuario) {
+        alert("Por favor, inicia sesión para agregar productos al carrito.");
+        return;
+      }
+
+      const producto = productos.find(p => p._id === id);
+      if (!producto) return;
+
+      const productoEnCarrito = usuario.inventario.find(item => item.id === id);
+      const cantidadEnCarrito = productoEnCarrito ? productoEnCarrito.cant : 0;
+
+      if (cantidadEnCarrito >= producto.cantidad) {
+        alert("No hay suficiente stock disponible.");
+        return;
+      }
+
+      let inventarioActualizado;
+      if (productoEnCarrito) {
+        inventarioActualizado = usuario.inventario.map(item =>
+          item.id === id ? { ...item, cant: item.cant + 1 } : item
+        );
+      } else {
+        inventarioActualizado = [...usuario.inventario, { id: id, cant: 1 }];
+      }
+      
+      const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
+      
+      setUsuario(usuarioActualizado);
+      localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+    };
+
   return (
       <div key={id} className="bg-white mx-auto text-center text-shadow-2xs p-4 h-80 w-46 md:h-88 md:w-60 my-2 border border-gray-300 rounded-xl shrink-0 shadow" >
-          <img src={image} alt={title} className="h-24  w-full object-contain md:h-30 rounded bg-gray-50" />
+          <img src={`/img/${image}`} alt={title} className="h-24  w-full object-contain md:h-30 rounded bg-gray-50" />
           <h3 className="text-lg font-semibold mt-2 md:text-xl">{title}</h3>
           
           <div className="flex flex-col justify-center  m-4 ">

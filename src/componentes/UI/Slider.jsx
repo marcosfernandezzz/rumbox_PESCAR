@@ -73,8 +73,15 @@ function Slider() {
   }
         
     ];
-     const addCart = () => {
-      usuario.inventario.push(id);
+     const addCart = (productId) => {
+      if (usuario && usuario.inventario) {
+        usuario.inventario.push(productId);
+        // Optionally, update the state if 'usuario' is managed by React state
+    setUsuario({ ...usuario, inventario: usuario.inventario });
+        console.log(`Added product ${productId} to cart. Current inventory:`, usuario.inventario);
+      } else {
+        console.error("User or user inventory not found.");
+      }
     }
 
     const buttonClasses = ` w-12 h-12 flex justify-center items-center rounded-full 
@@ -112,7 +119,7 @@ function Slider() {
                                               Comprar Ahora!
                                             </button>
                                             <button className="mt-2  bg-white text-orange-500 p-1 border  rounded hover:bg-blue-500 hover:text-white text-xs"
-                                              onClick={addCart}>
+                                              onClick={() => addCart(card.id)}>
                                               <IoIosCart className='text-2xl' />
                                 
                                             </button>
