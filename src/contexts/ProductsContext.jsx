@@ -24,14 +24,20 @@ export function ProductsProvider({ children }) {
   // Crear producto
   const addProduct = async (nuevo) => {
     try {
-      console.log("ProductsContext: Enviando token para addProduct:", usuario?.token);
+      const formData = new FormData();
+      Object.entries(nuevo).forEach(([key, value]) => {
+        if (key === "image" && value instanceof File) {
+          formData.append("image", value);
+        } else {
+          formData.append(key, value);
+        }
+      });
       const res = await fetch("/api/products", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        headers: {
+          "Authorization": `Bearer ${usuario?.token}`
         },
-        body: JSON.stringify(nuevo)
+        body: formData
       });
       const data = await res.json();
       if (res.ok) {
@@ -45,20 +51,24 @@ export function ProductsProvider({ children }) {
   // Editar producto
   const updateProduct = async (id, actualizado) => {
     try {
-      console.log("ProductsContext: Enviando token para updateProduct:", usuario?.token);
+      const formData = new FormData();
+      Object.entries(actualizado).forEach(([key, value]) => {
+        if (key === "image" && value instanceof File) {
+          formData.append("image", value);
+        } else {
+          formData.append(key, value);
+        }
+      });
       const res = await fetch(`/api/products/${id}`, {
         method: "PUT",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        headers: {
+          "Authorization": `Bearer ${usuario?.token}`
         },
-        body: JSON.stringify(actualizado)
+        body: formData
       });
       const data = await res.json();
-      console.log("ProductsContext: ID de producto a actualizar:", id);
-      console.log("ProductsContext: Datos recibidos de la actualización:", data);
       if (res.ok) {
-        setProductos((prev) => prev.map(p => p._id === id ? data.data || data : p)); // Cambiado p.id a p._id
+        setProductos((prev) => prev.map(p => p._id === id ? data.data || data : p));
       }
     } catch (err) {
       console.error("Error al editar producto:", err);
