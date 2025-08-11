@@ -37,8 +37,9 @@ export const Home = () => {
         <CardList
           title='Kits Destacados.'
           Products={KitsList}
-          url={'/Productos'}
-          btn='Ver más productos...'
+          url={'/Paquetes'}
+          btn='Ver más kits...'
+          type='kit'
         />
       
       
@@ -54,6 +55,7 @@ export const Home = () => {
           Products={productosvarios}
           url={'/Productos'}
           btn='Ver más productos...'
+          type='producto'
         />
       )}
     </main>

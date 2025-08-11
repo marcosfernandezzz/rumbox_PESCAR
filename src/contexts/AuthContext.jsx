@@ -14,8 +14,13 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (datosUsuario) => {
-    setUsuario(datosUsuario);
-    localStorage.setItem("usuario", JSON.stringify(datosUsuario));
+    // Asegurarse de que el inventario siempre sea un array
+    const usuarioNormalizado = {
+      ...datosUsuario,
+      inventario: Array.isArray(datosUsuario.inventario) ? datosUsuario.inventario : [],
+    };
+    setUsuario(usuarioNormalizado);
+    localStorage.setItem("usuario", JSON.stringify(usuarioNormalizado));
   };
 
   const logout = () => {
@@ -24,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ usuario, login, logout }}>
+    <AuthContext.Provider value={{ usuario, setUsuario, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
