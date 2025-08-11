@@ -2,10 +2,11 @@ import React, { useState , useContext , useEffect } from 'react'
 import { AuthContext } from '../../contexts/AuthContext.jsx'
 import { useProductos } from '../../contexts/ProductsContext.jsx'
 import { useKits } from '../../contexts/KitsContext';
+import { Link } from 'react-router-dom';
 import  CardCarrito  from '../../componentes/UI/CardCarrito.jsx';
 
 const Carrito = () => {
-    const { usuario, setUsuario } = useContext(AuthContext); // <-- Obtén setUsuario para actualizar
+    const { usuario } = useContext(AuthContext);
     const { productos } = useProductos();
     const { kits } = useKits();
 
@@ -14,6 +15,8 @@ const Carrito = () => {
 
     const productosvarios = Array.isArray(productos) ? productos : [];
     const KitsList = Array.isArray(kits) ? kits : [];
+
+    const copiaUser = localStorage.getItem('usuarioActual');
 
     // Este useEffect se ejecuta una vez al inicio para cargar el carrito
     // y cada vez que el 'usuario' del contexto cambia.
@@ -41,30 +44,40 @@ const Carrito = () => {
 
     const ActualizarCantidad = (id, nuevaCantidad) => {
         if (!usuario) return;
+        
+        // Actualizar el estado local del carrito
         const inventarioActualizado = carritoUser.map(item =>
             item.id === id ? { ...item, cant: nuevaCantidad } : item
         );
         setCarritoUser(inventarioActualizado);
         
-        // Actualiza el usuario en el contexto y localStorage
+        // Actualizar localStorage directamente
         const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
-        setUsuario(usuarioActualizado); // Si tienes un setUsuario en el contexto
         localStorage.setItem('usuarioActual', JSON.stringify(usuarioActualizado));
+        
+        // Console log para verificar la actualización
+        console.log('Usuario actualizado en localStorage:', JSON.stringify(usuarioActualizado));
     };
     
-    const ActualizarMonto = (diferencia) => {
-        setMontoTotal(prev => prev + diferencia);
+    // Esta función ya no es necesaria porque el monto se recalcula automáticamente
+    // en el useEffect cuando cambia carritoUser
+    const ActualizarMonto = () => {
+        // Función vacía - el monto se recalcula automáticamente
     };
 
     const EliminarDelCarrito = (id) => {
         if (!usuario) return;
+        
+        // Actualizar el estado local del carrito
         const inventarioActualizado = carritoUser.filter(item => item.id !== id);
         setCarritoUser(inventarioActualizado);
 
-        // Actualiza el usuario en el contexto y localStorage
+        // Actualizar localStorage directamente
         const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
-        setUsuario(usuarioActualizado);
         localStorage.setItem('usuarioActual', JSON.stringify(usuarioActualizado));
+        
+        // Console log para verificar la eliminación
+        console.log('Producto eliminado, usuario actualizado:', JSON.stringify(usuarioActualizado));
     };
     
     const borrarLocalS = () => {
@@ -73,9 +86,9 @@ const Carrito = () => {
         setCarritoUser([]);
         setMontoTotal(0);
         // Si el contexto del usuario existe, lo actualizamos también
-        if (usuario) {
+       /*  if (usuario) {
             setUsuario(null);
-        }
+        } */
     };
 
  /*    useEffect(() => {
@@ -97,7 +110,7 @@ const Carrito = () => {
     <section className="flex  justify-center p-4">
       <div>
         <h2>Productos en el carrito</h2>
-        {console.log(usuario)}
+        {console.log(copiaUser)}
         <div className="flex flex-col gap-2 justify-items-center">
         {carritoUser.map((item) => { // <-- Itera una sola vez sobre el array
           const producto = productosvarios.find(p => String(p._id) === String(item.id));
@@ -147,6 +160,11 @@ const Carrito = () => {
         <button onClick={borrarLocalS}>
           Reiniciar
         </button>
+        <Link to="/DescripCompra">
+          <button>
+            "Finalizar Compra"
+          </button>
+        </Link>
 
       </div>
     </section>
