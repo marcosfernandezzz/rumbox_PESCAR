@@ -113,7 +113,7 @@ function Slider() {
                                 </div>
                                 
                                 <div className='flex  gap-2 justify-center items-center'>
-                                            <button className="mt-2 p-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-orange-800 cursor-pointer text-xs"
+                                            <button className="mt-2 p-2  md:py-0.5 md:px-4 md:text-lg  bg-orange-500 text-white rounded hover:bg-orange-800 cursor-pointer text-xs"
                                               onClick={abrirWhatsApp}>
                                               Comprar
                                             </button>
