@@ -61,7 +61,7 @@ const CrudKits = () => {
   };
 
   return (
-    <div className="my-8 p-6 bg-gray-900 rounded-lg shadow-lg max-w-2xl mx-auto text-white">
+    <div className="my-8 p-6 bg-white rounded-lg shadow-lg max-w-2xl mx-auto text-gray-900">
       <h1 className="text-3xl font-bold mb-6 text-center">{editId ? "Editar Kit" : "Agregar Kit"}</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
@@ -71,22 +71,22 @@ const CrudKits = () => {
 
         <div>
           <label htmlFor="nombre" className="block text-lg font-semibold mb-2">Nombre del kit</label>
-          <input name="nombre" id="nombre" value={form.nombre} onChange={handleChange} placeholder="Nombre del kit" required className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500" />
+          <input name="nombre" id="nombre" value={form.nombre} onChange={handleChange} placeholder="Nombre del kit" required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
         </div>
 
         <div>
           <label htmlFor="precio" className="block text-lg font-semibold mb-2">Precio</label>
-          <input name="precio" id="precio" value={form.precio} onChange={handleChange} placeholder="Precio" required type="number" className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500" />
+          <input name="precio" id="precio" value={form.precio} onChange={handleChange} placeholder="Precio" required type="number" className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
         </div>
 
         <div>
           <label htmlFor="descripcion" className="block text-lg font-semibold mb-2">Descripción</label>
-          <textarea name="descripcion" id="descripcion" value={form.descripcion} onChange={handleChange} placeholder="Descripción" required className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 h-24 resize-y" />
+          <textarea name="descripcion" id="descripcion" value={form.descripcion} onChange={handleChange} placeholder="Descripción" required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 h-24 resize-y" />
         </div>
 
         <div>
           <label htmlFor="categoria" className="block text-lg font-semibold mb-2">Categoría</label>
-          <select name="categoria" id="categoria" value={form.categoria} onChange={handleChange} required className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500">
+          <select name="categoria" id="categoria" value={form.categoria} onChange={handleChange} required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500">
             <option value="">Selecciona Categoría</option>
             <option value="Nieve">Nieve</option>
             <option value="Playa">Playa</option>
@@ -94,10 +94,7 @@ const CrudKits = () => {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="productosIncluidos" className="block text-lg font-semibold mb-2">Productos Incluidos (IDs separados por comas)</label>
-          <input name="productosIncluidos" id="productosIncluidos" value={form.productosIncluidos} onChange={handleChange} placeholder="Ej: id1, id2, id3" required className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500" />
-        </div>
+  {/* Campo de productos incluidos oculto */}
         
         <button type="submit" className="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md hover:bg-blue-500 transition duration-300">{editId ? "Editar Kit" : "Agregar Kit"}</button>
       </form>

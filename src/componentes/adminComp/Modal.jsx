@@ -6,11 +6,12 @@ const Modal = ({ open, onClose, children }) => {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      onClick={onClose} // Cierra el modal si se hace clic en el fondo
+      onClick={onClose}
     >
+  <div className="absolute inset-0 backdrop-blur-sm" />
       <div
-        className="bg-white rounded-lg shadow-lg p-6 min-w-[350px] w-full max-w-4xl relative"
-        onClick={(e) => e.stopPropagation()} // Evita que el clic se propague al fondo
+        className="bg-white rounded-lg shadow-lg p-6 min-w-[350px] w-full max-w-md relative overflow-y-auto max-h-[90vh]"
+        onClick={(e) => e.stopPropagation()}
       >
         {children}
       </div>

@@ -119,62 +119,62 @@ const CrudProductos = ({ onClose, productToEdit }) => {
   };
 
   return (
-    <div className="relative p-6 rounded-lg shadow-lg"> {/* Eliminar bg-white para que sea transparente, mantener padding y sombra */}
-      <button onClick={onClose} className="absolute top-0 right-0 text-gray-500 hover:text-gray-700"> {/* Ajustar posición del botón de cerrar */}
+  <div className="my-8 p-6 bg-white rounded-lg shadow-lg max-w-md mx-auto text-gray-900 relative">
+      <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
         <IoClose className="text-2xl" />
       </button>
-      <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">{isEditing ? "Editar Producto" : "Agregar Producto"}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">{isEditing ? "Editar Producto" : "Agregar Producto"}</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-1">Nombre del producto *</label>
-          <input name="nombre" id="nombre" value={form.nombre} onChange={handleChange} placeholder="Ej: Botas Snowboard Pro" required className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <label htmlFor="image" className="block text-lg font-semibold mb-2">Imagen del producto</label>
+          <DragDropImage onFile={handleImage} preview={form.image && typeof form.image !== "string" ? URL.createObjectURL(form.image) : (typeof form.image === "string" ? `/img/${form.image}` : null)} />
         </div>
 
         <div>
-          <label htmlFor="precio" className="block text-sm font-medium text-gray-700 mb-1">Precio Final *</label>
-          <input name="precio" id="precio" value={form.precio} onChange={handleChange} placeholder="Ej: 480000" required type="number" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <label htmlFor="nombre" className="block text-lg font-semibold mb-2">Nombre del producto</label>
+          <input name="nombre" id="nombre" value={form.nombre} onChange={handleChange} placeholder="Ej: Botas Snowboard Pro" required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
         </div>
 
         <div>
-          <label htmlFor="precioDescuento" className="block text-sm font-medium text-gray-700 mb-1">Precio Original (opcional)</label>
-          <input name="precioDescuento" id="precioDescuento" value={form.precioDescuento} onChange={handleChange} placeholder="Ej: 800000" type="number" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <label htmlFor="precio" className="block text-lg font-semibold mb-2">Precio Final</label>
+          <input name="precio" id="precio" value={form.precio} onChange={handleChange} placeholder="Ej: 480000" required type="number" className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
         </div>
 
         <div>
-          <label htmlFor="cantidad" className="block text-sm font-medium text-gray-700 mb-1">Stock *</label>
-          <input name="cantidad" id="cantidad" value={form.cantidad} onChange={handleChange} placeholder="Ej: 8" required type="number" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <label htmlFor="precioDescuento" className="block text-lg font-semibold mb-2">Precio Original (opcional)</label>
+          <input name="precioDescuento" id="precioDescuento" value={form.precioDescuento} onChange={handleChange} placeholder="Ej: 800000" type="number" className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
         </div>
 
         <div>
-          <label htmlFor="descuento" className="block text-sm font-medium text-gray-700 mb-1">Descuento(%)</label>
-          <input name="descuento" id="descuento" value={form.descuento} onChange={handleChange} placeholder="Ej: 40" type="number" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <label htmlFor="cantidad" className="block text-lg font-semibold mb-2">Stock</label>
+          <input name="cantidad" id="cantidad" value={form.cantidad} onChange={handleChange} placeholder="Ej: 8" required type="number" className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
         </div>
 
         <div>
-          <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700 mb-1">Descripción *</label>
-          <textarea name="descripcion" id="descripcion" value={form.descripcion} onChange={handleChange} placeholder="Describe las características del producto..." required className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24 resize-y" />
+          <label htmlFor="descuento" className="block text-lg font-semibold mb-2">Descuento (%)</label>
+          <input name="descuento" id="descuento" value={form.descuento} onChange={handleChange} placeholder="Ej: 40" type="number" className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
         </div>
 
         <div>
-          <label htmlFor="categoria" className="block text-sm font-medium text-gray-700 mb-1">Categoría *</label>
-          <select name="categoria" id="categoria" value={form.categoria} onChange={handleChange} required className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label htmlFor="descripcion" className="block text-lg font-semibold mb-2">Descripción</label>
+          <textarea name="descripcion" id="descripcion" value={form.descripcion} onChange={handleChange} placeholder="Describe las características del producto..." required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 h-24 resize-y" />
+        </div>
+
+        <div>
+          <label htmlFor="categoria" className="block text-lg font-semibold mb-2">Categoría</label>
+          <select name="categoria" id="categoria" value={form.categoria} onChange={handleChange} required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500">
             <option value="">Selecciona Categoría</option>
             <option value="Nieve">Nieve</option>
             <option value="Playa">Playa</option>
             <option value="Montaña">Montaña</option>
           </select>
         </div>
-        
-        <div>
-          <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Imagen del producto</label>
-          <DragDropImage onFile={handleImage} preview={form.image && typeof form.image !== "string" ? URL.createObjectURL(form.image) : (typeof form.image === "string" ? `/img/${form.image}` : null)} />
-        </div>
 
         <div className="flex justify-end gap-4 mt-6">
-          <button type="button" onClick={onClose} className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100">
+          <button type="button" onClick={onClose} className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100">
             Cancelar
           </button>
-          <button type="submit" className="px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700">
+          <button type="submit" className="px-4 py-2 rounded-md bg-orange-500 text-white font-semibold hover:bg-blue-500">
             {isEditing ? "Actualizar" : "Guardar"}
           </button>
         </div>
