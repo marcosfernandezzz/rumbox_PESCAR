@@ -19,7 +19,7 @@ const Hero = ({heroImg,title,info,url,refUrl}) => {
               {info}
             </div>
 
-            <Link to={url} className="mt-2 text-sm text-semibold underline underline-offset-2 md:text-xl md:p-2">
+            <Link to={url} className="mt-2 text-sm text-semibold underline underline-offset-2 md:text-xl md:p-2 hover:text-orange-800">
               {refUrl}
             </Link>
           </div> */}

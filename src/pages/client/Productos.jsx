@@ -29,7 +29,7 @@ export const Productos = () => {
       
       <div className='flex flex-col p-4 mt-4'>
 
-        <h2 className='text-start ml-10 p-4 font-bold text-shadow-2xs text-3xl md:text-4xl'>Catalogo Completo!</h2>
+        <h2 className='text-center p-4 font-bold text-shadow-2xs text-3xl md:text-4xl'>Catálogo Completo</h2>
         <div className="">
           <Filtros />
         </div>
@@ -56,11 +56,11 @@ export default Productos;
 
 function Filtros() {
   return(
-    <div className='rounded-xs  border-black bg-gray-100'>
+    <div className='rounded-xs  border-black bg-orange-500'>
       <div className='text-center text-2xl'>
-        <h3 className='font-semibold text-shadow-md'>Categorias</h3>
+        
       </div>
-      <div className="flex justify-around  text-center p-2 text-shadow-md md:text-xl  ">
+      <div className="flex justify-around  text-center p-2 text-shadow-md md:text-xl text-white ">
       
       
       <Link to="/productos/Nieve" ><div className="">Nieve</div></Link>
