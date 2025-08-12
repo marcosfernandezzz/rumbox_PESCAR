@@ -59,10 +59,10 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
             {precioDescuento ? (
               <>
                 <p className="text-sm text-start text-gray-500 line-through">${formattedPrecio}</p>
-<p className="text-xl text-start md:text-2xl font-semibold text-cyan-400 p-0.5 rounded-xl mt-1">${formattedPrecioDescuento}</p>
+                <p className="text-xl text-start md:text-2xl font-semibold text-cyan-400 p-0.5 rounded-xl mt-1">${formattedPrecioDescuento}</p>
               </>
             ) : (
-<p className="text-xl text-start md:text-2xl font-semibold text-blue-600 p-0.5 rounded-xl mt-1">${formattedPrecio}</p>
+                <p className="text-xl text-start md:text-2xl font-semibold text-blue-600 p-0.5 rounded-xl mt-1">${formattedPrecio}</p>
             )}
             
             {isAdminView && (
@@ -84,11 +84,11 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
               </>
             ) : (
               <>
-<button className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-blue-500 text-xs flex-grow"
+                <button className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-orange-700 text-xs flex-grow cursor-pointer"
                   onClick={abrirWhatsApp}>
-                  Comprar Ahora!
+                  Comprar
                 </button>
-                <button className="bg-blue-500 text-white p-1 border rounded hover:bg-orange-500 hover:text-white text-xs md:p-1.5"
+                <button className="bg-blue-500 text-white p-1 border rounded hover:bg-blue-800 hover:text-white text-xs md:p-1.5 cursor-pointer"
                   onClick={addCart}>
                   <IoIosCart className='text-2xl' />
                 </button>

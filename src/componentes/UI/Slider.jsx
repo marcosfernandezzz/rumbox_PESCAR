@@ -91,7 +91,7 @@ function Slider() {
     return (
         <section className="m-10 bg-gray-100 shadow-md h-[450px] rounded-xl md:h-94">
             <div>
-                <h3 className="text-2xl text-center font-bold m-12" >Ofertas del Mes!</h3>
+                <h3 className="text-2xl text-center font-bold m-12" >Ofertas del Mes</h3>
             </div>
             <div className='w-3/4 h-[400px] m-auto mt-10'>
         <SliderContainer
@@ -114,11 +114,11 @@ function Slider() {
                                 </div>
                                 
                                 <div className='flex  gap-2 justify-center items-center'>
-                                            <button className="mt-2 p-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-blue-500 text-xs"
+                                            <button className="mt-2 p-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-orange-800 cursor-pointer text-xs"
                                               onClick={abrirWhatsApp}>
-                                              Comprar Ahora!
+                                              Comprar
                                             </button>
-                                            <button className="mt-2  bg-blue-500 text-white p-1 border  rounded hover:bg-orange-500 hover:text-white text-xs"
+                                            <button className="mt-2  bg-blue-500 text-white p-1 border  rounded hover:bg-blue-800 cursor-pointer hover:text-white text-xs"
                                               onClick={() => addCart(card.id)}>
                                               <IoIosCart className='text-2xl' />
                                 

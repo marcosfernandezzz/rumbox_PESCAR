@@ -138,7 +138,7 @@ export const NavBar = () => {
                             ) : (
                                 <>
                                     <Link to="/signup" className='text-xl '>Crea tu cuenta</Link>
-                                    <Link to="/login" className='text-xl '>Ingresa</Link>
+                                    <Link to="/login" className='text-xl '>Ingresá</Link>
                                 </>
                             )}
 

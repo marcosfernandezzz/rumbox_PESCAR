@@ -47,16 +47,16 @@ const CardUnidad = ({ id, ImgURL, nombre, precio, descripcion }) => {
                 <img src={`/img/${ImgURL}`} alt={nombre} className="h-24 w-full object-contain md:h-30 rounded bg-gray-50" />
                 <h3 className="font-semibold mt-2 md:text-xl">{nombre}</h3>
             </Link>
-            <div className="flex flex-col justify-start m-4 h-20">
-                <p className='text-xs md:text-sm text-start text-gray-400 overflow-hidden text-ellipsis line-clamp-3'>{descripcion}</p>
+            <div className="flex flex-col justify-start m-4 flex-grow min-h-[70px]">
+                <p className='text-xs md:text-sm text-start text-gray-400 overflow-hidden text-ellipsis'>{descripcion}</p>
                 <p className="text-xl text-start md:text-2xl font-semibold text-blue-600 p-0.5 rounded-xl mt-1">${new Intl.NumberFormat('es-AR').format(precio)}</p>
             </div>
             <div className='flex gap-2 justify-center items-center mt-auto'>
-                <button className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-blue-500 text-xs flex-grow"
+                <button className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-orange-800 text-xs flex-grow cursor-pointer"
                     onClick={abrirWhatsApp}>
-                    Comprar Ahora!
+                    Comprar
                 </button>
-                <button className="bg-blue-500 text-white p-1 border rounded hover:bg-orange-500 hover:text-white text-xs md:p-1.5"
+                <button className="bg-blue-500 text-white p-1 border rounded hover:bg-blue-800 hover:text-white text-xs md:p-1.5 cursor-pointer"
                     onClick={addCart}>
                     <IoIosCart className='text-2xl' />
                 </button>

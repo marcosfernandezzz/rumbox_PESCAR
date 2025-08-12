@@ -45,7 +45,7 @@ export const Home = () => {
       
       <Promo 
           PromoImg={PromoImg} 
-          title='ESENCIALES PARA LA NIEVE!!' 
+          title='ESENCIALES PARA LA NIEVE' 
           info='HASTA 40% OFF!' 
           url={'/Productos'} />
       
