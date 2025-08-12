@@ -80,12 +80,13 @@ const Carrito = () => {
     };
     
     const borrarLocalS = () => {
-        localStorage.removeItem('usuario');
-        // También limpiamos el estado para que se refleje inmediatamente en la UI
-        setCarritoUser([]);
-        setMontoTotal(0);
-        // Si el contexto del usuario existe, lo actualizamos también
-        // REMOVED: setUsuario(null); // Limpiar el usuario en el contexto - this caused logout
+    if (usuario) {
+      const usuarioActualizado = { ...usuario, inventario: [] };
+      setUsuario(usuarioActualizado);
+      localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+    }
+    setCarritoUser([]);
+    setMontoTotal(0);
     };
     
   if (!usuario) {
@@ -96,57 +97,57 @@ const Carrito = () => {
     <section className="flex flex-col justify-center p-4 gap-4">
       <div className="md:w-3/4"> {/* Cart items container */}
         <h2 className="text-2xl font-bold mb-4">Productos en el carrito</h2>
-        <div className="flex flex-col gap-4 mb-8"> {/* Increased gap for better spacing + margin before buttons */}
-        {carritoUser.map((item) => {
-          const producto = productosvarios.find(p => String(p._id) === String(item.id));
-          const kit = KitsList.find(p => String(p._id) === String(item.id));
-          
-          if (producto) {
-            return (
-              <CardCarrito
-                key={producto._id}
-                id={producto._id}
-                ImgURL={producto.image}
-                Nombre={producto.nombre}
-                Precio={producto.precio}
-                descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion}
-                cantidad={item.cant}
-                ActualizarCantidad={ActualizarCantidad}
-                EliminarItem={EliminarDelCarrito}
-              />
-            );
-          }
-          
-          if (kit) {
-            return (
-              <CardCarrito
-                key={kit._id}
-                id={kit._id}
-                ImgURL={kit.image}
-                Nombre={kit.nombre}
-                Precio={kit.precio}
-                descripcion={kit.descripcion && kit.descripcion.length > 15 ? kit.descripcion.slice(0, 35) + "..." : producto.descripcion}
-                cantidad={item.cant}
-                ActualizarCantidad={ActualizarCantidad}
-                EliminarItem={EliminarDelCarrito}
-              />
-            );
-          }
-          
-          return null;
-        })}
-      </div>
-      <div className="flex justify-between items-end md:w-3/4 self-center"> {/* Buttons and total price container */}
-        <button onClick={borrarLocalS} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400">
-          Reiniciar Carrito
-        </button>
-        <div className="flex flex-col items-end"> {/* Total price and Finalizar Compra */}
-          <Link to="/DescripCompra">
-            <button className="px-6 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600">
-              Finalizar Compra
-            </button>
-          </Link>
-          <p className="text-2xl font-bold text-blue-600 text-right">${new Intl.NumberFormat('es-AR').format(montoTotal)}</p>
+      <div className="flex flex-col md:flex-row gap-8 mb-8"> {/* Carrito y resumen a la derecha */}
+        <div className="flex-1 flex flex-col gap-4"> {/* Items del carrito */}
+          {carritoUser.map((item) => {
+            const producto = productosvarios.find(p => String(p._id) === String(item.id));
+            const kit = KitsList.find(p => String(p._id) === String(item.id));
+            if (producto) {
+              return (
+                <CardCarrito
+                  key={producto._id}
+                  id={producto._id}
+                  ImgURL={producto.image}
+                  Nombre={producto.nombre}
+                  Precio={producto.precio}
+                  descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion}
+                  cantidad={item.cant}
+                  ActualizarCantidad={ActualizarCantidad}
+                  EliminarItem={EliminarDelCarrito}
+                />
+              );
+            }
+            if (kit) {
+              return (
+                <CardCarrito
+                  key={kit._id}
+                  id={kit._id}
+                  ImgURL={kit.image}
+                  Nombre={kit.nombre}
+                  Precio={kit.precio}
+                  descripcion={kit.descripcion && kit.descripcion.length > 15 ? kit.descripcion.slice(0, 35) + "..." : producto.descripcion}
+                  cantidad={item.cant}
+                  ActualizarCantidad={ActualizarCantidad}
+                  EliminarItem={EliminarDelCarrito}
+                />
+              );
+            }
+            return null;
+          })}
+        </div>
+        <div className="w-full md:w-1/3 flex flex-col gap-4 items-end"> {/* Resumen a la derecha */}
+          <button onClick={borrarLocalS} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 w-full md:w-auto">
+            Reiniciar Carrito
+          </button>
+          <div className="bg-blue-100 rounded-lg px-6 py-4 shadow flex flex-col items-center w-full text-center">
+            <p className="text-lg font-semibold text-gray-700 mb-2">Total a pagar:</p>
+            <p className="text-3xl font-bold text-blue-700 mb-4">${new Intl.NumberFormat('es-AR').format(montoTotal)}</p>
+            <Link to="/DescripCompra" className="w-full flex justify-center">
+              <button className="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 text-lg font-bold shadow-md transition-all w-full">
+                Finalizar Compra
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
       </div>

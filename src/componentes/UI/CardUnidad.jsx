@@ -37,8 +37,9 @@ const CardUnidad = ({ id, ImgURL, nombre, precio, descripcion }) => {
 
         const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
 
-        setUsuario(usuarioActualizado);
-        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+    setUsuario(usuarioActualizado);
+    localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+    if (window.rumboxToast) window.rumboxToast('¡Kit agregado al carrito!');
     };
 
     return (

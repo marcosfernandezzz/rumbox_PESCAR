@@ -36,8 +36,9 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
       
       const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
       
-      setUsuario(usuarioActualizado);
-      localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+  setUsuario(usuarioActualizado);
+  localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+  if (window.rumboxToast) window.rumboxToast('¡Producto agregado al carrito!');
     };
 
   const formattedPrecio = new Intl.NumberFormat('es-AR').format(precio);

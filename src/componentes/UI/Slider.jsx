@@ -76,9 +76,8 @@ function Slider() {
      const addCart = (productId) => {
       if (usuario && usuario.inventario) {
         usuario.inventario.push(productId);
-        // Optionally, update the state if 'usuario' is managed by React state
-    setUsuario({ ...usuario, inventario: usuario.inventario });
-        console.log(`Added product ${productId} to cart. Current inventory:`, usuario.inventario);
+        setUsuario({ ...usuario, inventario: usuario.inventario });
+        if (window.rumboxToast) window.rumboxToast('¡Producto agregado al carrito!');
       } else {
         console.error("User or user inventory not found.");
       }
