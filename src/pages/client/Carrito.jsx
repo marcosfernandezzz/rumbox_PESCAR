@@ -29,9 +29,17 @@ const Carrito = () => {
     useEffect(() => {
         const nuevoTotal = carritoUser.reduce((acc, item) => {
             const producto = productosvarios.find(p => String(p._id) === String(item.id));
-            if (producto) return acc + producto.precio * item.cant;
+            if (producto) {
+                const precioNumerico = parseFloat(producto.precio);
+                const cantidadNumerica = parseInt(item.cant, 10);
+                return acc + (isNaN(precioNumerico) || isNaN(cantidadNumerica) ? 0 : precioNumerico * cantidadNumerica);
+            }
             const kit = KitsList.find(p => String(p._id) === String(item.id));
-            if (kit) return acc + kit.precio * item.cant;
+            if (kit) {
+                const precioNumerico = parseFloat(kit.precio);
+                const cantidadNumerica = parseInt(item.cant, 10);
+                return acc + (isNaN(precioNumerico) || isNaN(cantidadNumerica) ? 0 : precioNumerico * cantidadNumerica);
+            }
             return acc;
         }, 0);
         setMontoTotal(nuevoTotal);
@@ -77,9 +85,7 @@ const Carrito = () => {
         setCarritoUser([]);
         setMontoTotal(0);
         // Si el contexto del usuario existe, lo actualizamos también
-        if (usuario) {
-            setUsuario(null); // Limpiar el usuario en el contexto
-        }
+        // REMOVED: setUsuario(null); // Limpiar el usuario en el contexto - this caused logout
     };
     
   if (!usuario) {
@@ -87,10 +93,10 @@ const Carrito = () => {
       }
 
   return (
-    <section className="flex  justify-center p-4">
-      <div>
-        <h2>Productos en el carrito</h2>
-        <div className="flex flex-col gap-2 justify-items-center">
+    <section className="flex flex-col justify-center p-4 gap-4">
+      <div className="md:w-3/4"> {/* Cart items container */}
+        <h2 className="text-2xl font-bold mb-4">Productos en el carrito</h2>
+        <div className="flex flex-col gap-4 mb-8"> {/* Increased gap for better spacing + margin before buttons */}
         {carritoUser.map((item) => {
           const producto = productosvarios.find(p => String(p._id) === String(item.id));
           const kit = KitsList.find(p => String(p._id) === String(item.id));
@@ -98,7 +104,7 @@ const Carrito = () => {
           if (producto) {
             return (
               <CardCarrito
-                key={producto._id} // Añadir key prop
+                key={producto._id}
                 id={producto._id}
                 ImgURL={producto.image}
                 Nombre={producto.nombre}
@@ -114,12 +120,12 @@ const Carrito = () => {
           if (kit) {
             return (
               <CardCarrito
-                key={kit._id} // Añadir key prop
+                key={kit._id}
                 id={kit._id}
                 ImgURL={kit.image}
                 Nombre={kit.nombre}
                 Precio={kit.precio}
-                descripcion={kit.descripcion && kit.descripcion.length > 15 ? kit.descripcion.slice(0, 35) + "..." : kit.descripcion}
+                descripcion={kit.descripcion && kit.descripcion.length > 15 ? kit.descripcion.slice(0, 35) + "..." : producto.descripcion}
                 cantidad={item.cant}
                 ActualizarCantidad={ActualizarCantidad}
                 EliminarItem={EliminarDelCarrito}
@@ -130,21 +136,19 @@ const Carrito = () => {
           return null;
         })}
       </div>
-        
-      </div>
-      <div className="bg-white  text-center p-2 md:p-4  h-40 w-80 md:h-44 md:w-200 border border-gray-300 rounded-xl shrink-0 shadow relative">
-        <h2>El Monto Total es</h2>
-        <p>${new Intl.NumberFormat('es-AR').format(montoTotal)}</p>
-
-        <button onClick={borrarLocalS}>
-          Reiniciar
+      <div className="flex justify-between items-end md:w-3/4 self-center"> {/* Buttons and total price container */}
+        <button onClick={borrarLocalS} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400">
+          Reiniciar Carrito
         </button>
-        <Link to="/DescripCompra">
-          <button>
-            "Finalizar Compra"
-          </button>
-        </Link>
-
+        <div className="flex flex-col items-end"> {/* Total price and Finalizar Compra */}
+          <Link to="/DescripCompra">
+            <button className="px-6 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600">
+              Finalizar Compra
+            </button>
+          </Link>
+          <p className="text-2xl font-bold text-blue-600 text-right">${new Intl.NumberFormat('es-AR').format(montoTotal)}</p>
+        </div>
+      </div>
       </div>
     </section>
   )
