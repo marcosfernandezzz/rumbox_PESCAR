@@ -46,7 +46,7 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
   return (
       <div key={id} className="bg-white mx-auto text-center text-shadow-2xs p-4 h-80 w-46 md:h-88 md:w-60 my-2 border border-gray-300 rounded-xl shrink-0 shadow relative" >
           {descuento > 0 && (
-            <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+            <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
               -{descuento}%
             </div>
           )}
@@ -84,11 +84,11 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
               </>
             ) : (
               <>
-<button className="p-2 md:p-0.5 md:text-lg bg-orange-500 text-white rounded hover:bg-blue-500 text-xs flex-grow"
+<button className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-blue-500 text-xs flex-grow"
                   onClick={abrirWhatsApp}>
                   Comprar Ahora!
                 </button>
-                <button className="bg-white text-orange-500 p-1 border rounded hover:bg-blue-500 hover:text-white text-xs"
+                <button className="bg-blue-500 text-white p-1 border rounded hover:bg-orange-500 hover:text-white text-xs md:p-1.5"
                   onClick={addCart}>
                   <IoIosCart className='text-2xl' />
                 </button>

@@ -26,7 +26,7 @@ const CardList = ({ title, Products, url, btn, type = 'producto' }) => {
         <section className="m-4 py-2 md:m-10 bg-gray-100 shadow-md md:min-h-[450px] rounded-xl">
             <div>
                 <h2 className="text-xl md:text-2xl text-center font-bold m-6 md:m-12">{title}</h2>
-                <div className='grid grid-cols-2 gap-2 items-center justify-center sm:grid-cols-2 md:grid-cols-4 sm:gap-2 md:gap-2 px-2 sm:px-4 md:px-0'>
+                <div className='grid grid-cols-2 gap-2 items-center justify-center justify-items-center sm:grid-cols-2 md:grid-cols-4 sm:gap-2 md:gap-2 px-2 sm:px-4 md:px-0'>
                     {items.slice(0, 10).map((item) => (
                         <div key={item._id}>
                             {renderCard(item)}

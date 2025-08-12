@@ -118,7 +118,7 @@ function Slider() {
                                               onClick={abrirWhatsApp}>
                                               Comprar Ahora!
                                             </button>
-                                            <button className="mt-2  bg-white text-orange-500 p-1 border  rounded hover:bg-blue-500 hover:text-white text-xs"
+                                            <button className="mt-2  bg-blue-500 text-white p-1 border  rounded hover:bg-orange-500 hover:text-white text-xs"
                                               onClick={() => addCart(card.id)}>
                                               <IoIosCart className='text-2xl' />
                                 
