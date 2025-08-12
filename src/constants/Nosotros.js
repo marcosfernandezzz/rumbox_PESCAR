@@ -1,8 +1,8 @@
-import marcos from '../assets/imagenes/Team/marcos.jpg'
-import kevin from '../assets/imagenes/Team/kevin.jpg'
-import lucas from '../assets/imagenes/Team/lucas.jpg'
-import mica from '../assets/imagenes/Team/mica.webp'
-import karen from '../assets/imagenes/Team/karen.jpg'
+import marcos from '../assets/imagenes/Team/Marcos.jpg'
+import kevin from '../assets/imagenes/Team/Kevin.jpg'
+import lucas from '../assets/imagenes/Team/Lucas.jpg'
+import mica from '../assets/imagenes/Team/Mica.jpg'
+import karen from '../assets/imagenes/Team/Karen.jpg'
 
 
 
