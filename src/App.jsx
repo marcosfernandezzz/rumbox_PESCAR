@@ -40,6 +40,16 @@ export const App = () => {
                   <Productos />
                 </ClienteRoute>
               } />
+              <Route path="productos/:descuentoActivo" element={
+                <ClienteRoute>
+                  <Productos />
+                </ClienteRoute>
+              } />
+              <Route path="productos/:zonaActual/:descuentoActivo" element={
+                <ClienteRoute>
+                  <Productos />
+                </ClienteRoute>
+              } />
               <Route path="paquetes" element={
                 <ClienteRoute>
                   <Paquetes />

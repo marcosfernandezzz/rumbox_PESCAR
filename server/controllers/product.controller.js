@@ -53,9 +53,17 @@ const productController = {
   async create(req, res) {
     try {
       const productoData = { ...req.body };
-      if (req.file) {
-        productoData.image = req.file.filename; // Guardar el nombre del archivo subido
+      
+      // Verificar si se subió una imagen
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "La imagen del producto es requerida."
+        });
       }
+      
+      productoData.image = req.file.filename; // Guardar el nombre del archivo subido
+      
       const nuevoProducto = await productService.create(productoData);
 
       res.status(201).json({
@@ -65,6 +73,7 @@ const productController = {
       });
 
     } catch (error) {
+      console.error("Error detallado al crear producto:", error); // Log detallado del error
       res.status(400).json({
         success: false,
         message: "Error al crear el producto",

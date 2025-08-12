@@ -94,7 +94,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -102,7 +102,7 @@ const Login = () => {
           </h2>
         </div>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md shadow-sm space-y-4"> {/* Added space-y-4 for input spacing */}
             <div>
               <label htmlFor="email-address" className="sr-only">
                 Correo electrónico
@@ -115,8 +115,8 @@ const Login = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm ${
-                  errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'
+                className={`appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-2 focus:ring-white focus:z-10 sm:text-sm ${
+                  errors.email ? 'border-red-500 focus:border-red-500' : 'border-white focus:border-white'
                 }`}
                 placeholder="Correo electrónico"
               />
@@ -133,8 +133,8 @@ const Login = () => {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm ${
-                  errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'
+                className={`appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-2 focus:ring-white focus:z-10 sm:text-sm ${
+                  errors.password ? 'border-red-500 focus:border-red-500' : 'border-white focus:border-white'
                 }`}
                 placeholder="Contraseña"
               />
@@ -156,9 +156,9 @@ const Login = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                isSubmitting ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
-              }`}
+className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 ${
+  isSubmitting ? 'bg-cyan-400 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'
+}`}
             >
               {isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
@@ -168,7 +168,7 @@ const Login = () => {
         <div className="text-center mt-4">
           <p className="text-gray-600">
             ¿No tienes cuenta?{' '}
-            <Link to="/signup" className="text-indigo-600 hover:text-indigo-500 font-medium">
+            <Link to="/signup" className="text-cyan-400 hover:text-cyan-500 font-medium">
               Regístrate aquí
             </Link>
           </p>

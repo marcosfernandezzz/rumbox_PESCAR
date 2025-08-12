@@ -8,17 +8,21 @@ export function ProductsProvider({ children }) {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/products");
+      const data = await res.json();
+      setProductos(Array.isArray(data) ? data : data.data || []);
+    } catch (error) {
+      console.error("Error al cargar productos:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetch("/api/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProductos(Array.isArray(data) ? data : data.data || []);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error al cargar productos:", error);
-        setLoading(false);
-      });
+    fetchProducts();
   }, []);
 
   // Crear producto
@@ -39,12 +43,26 @@ export function ProductsProvider({ children }) {
         },
         body: formData
       });
-      const data = await res.json();
-      if (res.ok) {
-        setProductos((prev) => [...prev, data.data || data]);
+      console.log("ProductsContext: Respuesta HTTP cruda:", res); // Log de depuración de la respuesta HTTP
+      console.log("ProductsContext: res.ok:", res.ok); // Log de depuración de res.ok
+      console.log("ProductsContext: res.status:", res.status); // Log de depuración de res.status
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ message: "Error desconocido o respuesta no JSON" }));
+        console.error("ProductsContext: Error de respuesta del servidor:", errorData);
+        throw new Error(errorData.message || `Error al agregar producto: ${res.status}`);
       }
+      
+      const data = await res.json();
+      console.log("ProductsContext: Respuesta del servidor al agregar producto (JSON):", data); // Log de depuración
+      
+      // Después de agregar, recargar la lista de productos
+      await fetchProducts(); 
+      // Después de agregar, recargar la lista de productos
+      await fetchProducts(); 
     } catch (err) {
       console.error("Error al crear producto:", err);
+      throw err; // Re-lanzar el error para que el componente que llama pueda manejarlo
     }
   };
 
@@ -67,11 +85,14 @@ export function ProductsProvider({ children }) {
         body: formData
       });
       const data = await res.json();
-      if (res.ok) {
-        setProductos((prev) => prev.map(p => p._id === id ? data.data || data : p));
+      if (!res.ok) {
+        throw new Error(data.message || "Error al editar producto");
       }
+      // Después de editar, recargar la lista de productos
+      await fetchProducts();
     } catch (err) {
       console.error("Error al editar producto:", err);
+      throw err; // Re-lanzar el error
     }
   };
 
@@ -86,10 +107,12 @@ export function ProductsProvider({ children }) {
         }
       });
       if (res.ok) {
-        setProductos((prev) => prev.filter(p => p.id !== id));
+        setProductos((prev) => prev.filter(p => p._id !== id)); // Cambiar p.id a p._id
+        await fetchProducts(); // Recargar la lista después de eliminar para asegurar la sincronización
       }
     } catch (err) {
       console.error("Error al borrar producto:", err);
+      throw err; // Re-lanzar el error
     }
   };
 

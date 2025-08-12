@@ -9,8 +9,8 @@ const CardList = ({ title, Products, url, btn, type = 'producto' }) => {
     const renderCard = (item) => {
         const cardProps = {
             id: item._id,
-            Nombre: item.nombre && item.nombre.length > 20 ? item.nombre.slice(0, 20) + "..." : item.nombre,
-            Precio: item.precio,
+            nombre: item.nombre && item.nombre.length > 20 ? item.nombre.slice(0, 20) + "..." : item.nombre,
+            precio: item.precio,
             descripcion: item.descripcion && item.descripcion.length > 25 ? item.descripcion.slice(0, 25) + "..." : item.descripcion,
         };
 
@@ -19,7 +19,7 @@ const CardList = ({ title, Products, url, btn, type = 'producto' }) => {
         }
         
         // Por defecto, renderiza la tarjeta de producto
-        return <Card {...cardProps} title={cardProps.Nombre} image={item.image} />;
+        return <Card {...cardProps} title={cardProps.nombre} image={item.image} />;
     };
 
     return (

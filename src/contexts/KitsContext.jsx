@@ -21,19 +21,33 @@ export function KitsProvider({ children }) {
   // Crear kit
   const addKit = async (nuevo) => {
     try {
-      console.log("KitsContext: Enviando token para addKit:", usuario?.token);
+      const formData = new FormData();
+      Object.entries(nuevo).forEach(([key, value]) => {
+        if (key === "image" && value instanceof File) {
+          formData.append("image", value);
+        } else if (key === "productosIncluidos" && Array.isArray(value)) {
+          value.forEach(item => formData.append(key, item));
+        } else if (key === "productosIncluidos" && typeof value === 'string') {
+          value.split(',').map(item => item.trim()).filter(item => item !== '').forEach(prodId => {
+            formData.append(key, prodId);
+          });
+        } else {
+          formData.append(key, value);
+        }
+      });
+
       const res = await fetch("/api/kits", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        headers: {
+          "Authorization": `Bearer ${usuario?.token}`
         },
-        body: JSON.stringify(nuevo)
+        body: formData
       });
       const data = await res.json();
-      if (res.ok) {
-        setKits((prev) => [...prev, data.data || data]);
+      if (!res.ok) {
+        throw new Error(data.message || "Error al agregar kit");
       }
+      setKits((prev) => [...prev, data.data || data]);
     } catch (err) {
       console.error("Error al crear kit:", err);
     }
@@ -42,18 +56,31 @@ export function KitsProvider({ children }) {
   // Editar kit
   const updateKit = async (id, actualizado) => {
     try {
-      console.log("KitsContext: Enviando token para updateKit:", usuario?.token);
-      const res = await await fetch(`/api/kits/${id}`, {
+      const formData = new FormData();
+      Object.entries(actualizado).forEach(([key, value]) => {
+        if (key === "image" && value instanceof File) {
+          formData.append("image", value);
+        } else if (key === "productosIncluidos" && Array.isArray(value)) {
+          value.forEach(item => formData.append(key, item));
+        } else if (key === "productosIncluidos" && typeof value === 'string') {
+          value.split(',').map(item => item.trim()).filter(item => item !== '').forEach(prodId => {
+            formData.append(key, prodId);
+          });
+        } else {
+          formData.append(key, value);
+        }
+      });
+
+      const res = await fetch(`/api/kits/${id}`, {
         method: "PUT",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
+        headers: {
+          "Authorization": `Bearer ${usuario?.token}`
         },
-        body: JSON.stringify(actualizado)
+        body: formData
       });
       const data = await res.json();
       if (res.ok) {
-        setKits((prev) => prev.map(k => k.id === id ? data.data || data : k));
+        setKits((prev) => prev.map(k => k._id === id ? data.data || data : k));
       }
     } catch (err) {
       console.error("Error al editar kit:", err);

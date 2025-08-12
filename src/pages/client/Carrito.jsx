@@ -134,7 +134,7 @@ const Carrito = () => {
       </div>
       <div className="bg-white  text-center p-2 md:p-4  h-40 w-80 md:h-44 md:w-200 border border-gray-300 rounded-xl shrink-0 shadow relative">
         <h2>El Monto Total es</h2>
-        <p>$ {montoTotal}</p>
+        <p>${new Intl.NumberFormat('es-AR').format(montoTotal)}</p>
 
         <button onClick={borrarLocalS}>
           Reiniciar

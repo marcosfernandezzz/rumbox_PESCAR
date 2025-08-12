@@ -33,7 +33,7 @@ const CardCarrito = ({id, ImgURL, Nombre, Precio,cantidad, descripcion,Actualiza
                     <button className='flex justify-center items-center' onClick={Eliminar}> Eliminar <TiTrash /></button>
                 </div>
 
-                <p className="text-lg md:text-xl text-start text-shadow-md font-bold text-blue-600 mt-2">${Precio}</p>
+                <p className="text-lg md:text-xl text-start text-shadow-md font-bold text-blue-600 mt-2">${new Intl.NumberFormat('es-AR').format(Precio)}</p>
                 
                 <div className='flex flex-col gap-0 justify-center items-center'>
                     <button className="mt-2 px-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-blue-500 text-xs"
@@ -50,7 +50,7 @@ const CardCarrito = ({id, ImgURL, Nombre, Precio,cantidad, descripcion,Actualiza
 
                     </button>
                 </div>
-                <p className="text-lg md:text-xl text-start text-shadow-md font-bold text-blue-600 mt-2">${Precio*cantidad}</p>
+                <p className="text-lg md:text-xl text-start text-shadow-md font-bold text-blue-600 mt-2">${new Intl.NumberFormat('es-AR').format(Precio * cantidad)}</p>
             </div>
         </div>
       </div> 

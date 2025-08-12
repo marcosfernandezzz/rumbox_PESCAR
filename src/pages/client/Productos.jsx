@@ -10,11 +10,20 @@ import { useParams, Link } from 'react-router-dom'
 export const Productos = () => {
   const { productos } = useProductos();
   const productosvarios = Array.isArray(productos) ? productos : [];
-  let { zonaActual } = useParams();
-  if (zonaActual == undefined) {
+  let { zonaActual, descuentoActivo } = useParams();
+
+  if (zonaActual === undefined) {
     zonaActual = true;
   }
-  // Depuración: mostrar los ids de los productos
+
+  const productosFiltrados = productosvarios.filter(producto => {
+    const cumpleCategoria = (zonaActual === true || zonaActual === producto.categoria);
+    const cumpleActivo = producto.activo;
+    const cumpleDescuento = (descuentoActivo === 'descuento' ? producto.descuento > 0 : true);
+    return cumpleCategoria && cumpleActivo && cumpleDescuento;
+  });
+
+  console.log("Productos recibidos en Productos.jsx:", productosvarios); // Log de depuración
   return (
     <section className="flex justify-center gap-4 mx-auto max-w-7xl">
       
@@ -25,9 +34,16 @@ export const Productos = () => {
           <Filtros />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 p-4 justify-items-center">
-          {productosvarios.map((producto) => (
-            ((zonaActual == producto.categoria || zonaActual == true) && producto.activo) &&
-            <Card key={producto._id} id={producto._id} image={producto.image} title={producto.nombre} precio={producto.precio} descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion} />
+          {productosFiltrados.map((producto) => (
+            <Card 
+              key={producto._id} 
+              id={producto._id} 
+              image={producto.image} 
+              title={producto.nombre} 
+              precio={producto.precio} 
+              precioDescuento={producto.precioDescuento}
+              descuento={producto.descuento}
+              descripcion={producto.descripcion && producto.descripcion.length > 15 ? producto.descripcion.slice(0, 35) + "..." : producto.descripcion} />
           ))}
         </div>
       </div>
@@ -50,6 +66,7 @@ function Filtros() {
       <Link to="/productos/Nieve" ><div className="">Nieve</div></Link>
       <Link to="/productos/Montaña" ><div className="">Montaña</div></Link>
       <Link to="/productos/Playa" ><div className="">Playa</div></Link>
+      <Link to="/productos/descuento" ><div className="">Descuentos</div></Link>
       <Link to="/productos" ><p><RiResetRightFill /></p> </Link>
     </div>
     </div>
