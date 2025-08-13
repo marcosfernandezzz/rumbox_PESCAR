@@ -16,6 +16,7 @@
     "Content-Type" = "application/javascript"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/api/*"
+  to = "https://rumbox-pescar.onrender.com/:splat"
   status = 200
+  force = true
