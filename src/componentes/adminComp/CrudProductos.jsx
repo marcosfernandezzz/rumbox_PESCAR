@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useProductos } from "../../contexts/ProductsContext.jsx";
 import DragDropImage from "./DragDropImage.jsx";
 import { IoClose } from "react-icons/io5"; // Icono de cerrar
+import { FaHistory } from "react-icons/fa"; // Icono de historial
+import Modal from "./Modal.jsx";
+import SalesHistory from "./SalesHistory.jsx";
 
 const CrudProductos = ({ onClose, productToEdit }) => {
   const { addProduct, updateProduct } = useProductos();
@@ -16,6 +19,7 @@ const CrudProductos = ({ onClose, productToEdit }) => {
     image: null 
   });
   const [isEditing, setIsEditing] = useState(false); // Usar isEditing en lugar de editId
+  const [showSalesHistoryModal, setShowSalesHistoryModal] = useState(false); // Estado para controlar la visibilidad del modal de historial
 
   useEffect(() => {
     if (productToEdit) {
@@ -35,6 +39,10 @@ const CrudProductos = ({ onClose, productToEdit }) => {
       setForm({ nombre: "", precio: "", precioDescuento: "", descuento: "", cantidad: "", descripcion: "", categoria: "", image: null });
     }
   }, [productToEdit]);
+
+  const handleShowSalesHistory = () => {
+    setShowSalesHistoryModal(true);
+  };
 
   // Cambios en los inputs
   const handleChange = e => {
@@ -119,16 +127,24 @@ const CrudProductos = ({ onClose, productToEdit }) => {
   };
 
   return (
-  <div className="my-8 p-6 bg-white rounded-lg shadow-lg max-w-md mx-auto text-gray-900 relative">
-      <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
-        <IoClose className="text-2xl" />
-      </button>
-      <h1 className="text-3xl font-bold mb-6 text-center">{isEditing ? "Editar Producto" : "Agregar Producto"}</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div>
-          <label htmlFor="image" className="block text-lg font-semibold mb-2">Imagen del producto</label>
-          <DragDropImage onFile={handleImage} preview={form.image && typeof form.image !== "string" ? URL.createObjectURL(form.image) : (typeof form.image === "string" ? `/img/${form.image}` : null)} />
-        </div>
+    <>
+      <div className="my-8 p-6 bg-white rounded-lg shadow-lg max-w-md mx-auto text-gray-900 relative">
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+          <IoClose className="text-2xl" />
+        </button>
+        <h1 className="text-3xl font-bold mb-6 text-center">{isEditing ? "Editar Producto" : "Agregar Producto"}</h1>
+        <button 
+          className="absolute top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 flex items-center gap-2"
+          onClick={handleShowSalesHistory}
+        >
+          <FaHistory className="text-xl" />
+          Historial
+        </button>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label htmlFor="image" className="block text-lg font-semibold mb-2">Imagen del producto</label>
+            <DragDropImage onFile={handleImage} preview={form.image && typeof form.image !== "string" ? URL.createObjectURL(form.image) : (typeof form.image === "string" ? `/img/${form.image}` : null)} />
+          </div>
 
         <div>
           <label htmlFor="nombre" className="block text-lg font-semibold mb-2">Nombre del producto</label>
@@ -171,6 +187,14 @@ const CrudProductos = ({ onClose, productToEdit }) => {
         </div>
 
         <div className="flex justify-end gap-4 mt-6">
+          <button 
+            type="button" 
+            onClick={handleShowSalesHistory} 
+            className="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700"
+          >
+            <FaHistory className="inline-block mr-2" />
+            Historial de Ventas
+          </button>
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100">
             Cancelar
           </button>
@@ -178,8 +202,13 @@ const CrudProductos = ({ onClose, productToEdit }) => {
             {isEditing ? "Actualizar" : "Guardar"}
           </button>
         </div>
-      </form>
-    </div>
+        </form>
+      </div>
+
+      <Modal open={showSalesHistoryModal} onClose={() => setShowSalesHistoryModal(false)}>
+        <SalesHistory />
+      </Modal>
+    </>
   );
 };
 

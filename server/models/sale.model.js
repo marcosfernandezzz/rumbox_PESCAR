@@ -8,10 +8,15 @@ const saleSchema = new mongoose.Schema({
     },
     products: [
         {
-            productId: {
+            itemId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Product',
-                required: true
+                required: true,
+                refPath: 'products.itemType'
+            },
+            itemType: {
+                type: String,
+                required: true,
+                enum: ['Product', 'Kit']
             },
             quantity: {
                 type: Number,

@@ -2,6 +2,7 @@ import React, { useState } from "react"; // Fragment no necesita ser importado e
 import AdminNavbar from "../../componentes/adminComp/AdminNavbar.jsx";
 import CrudProductos from "../../componentes/adminComp/CrudProductos.jsx"; // Mantener para el modal
 import CrudKits from "../../componentes/adminComp/CrudKits.jsx";
+import SalesHistory from "../../componentes/adminComp/SalesHistory.jsx";
 import Modal from "../../componentes/adminComp/Modal.jsx";
 import { useProductos } from '../../contexts/ProductsContext.jsx';
 import { useKits } from '../../contexts/KitsContext.jsx';
@@ -13,6 +14,7 @@ const AdminDashboard = () => {
   const { kits, deleteKit } = useKits();
   const [tab, setTab] = useState("productos");
   const [showModal, setShowModal] = useState(false);
+  const [showSalesHistory, setShowSalesHistory] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
 
   // Productos
@@ -67,6 +69,12 @@ const AdminDashboard = () => {
           >
             Kits
           </button>
+          <button
+            className={`px-6 py-2 rounded-t-lg font-bold border-b-2 ${tab === "ventas" ? "border-purple-600 text-purple-700 bg-purple-100" : "border-transparent text-gray-600 bg-gray-100"}`}
+            onClick={() => setTab("ventas")}
+          >
+            Ventas
+          </button>
         </div>
 
         {/* Gestión de Productos */}
@@ -102,6 +110,24 @@ const AdminDashboard = () => {
                   isAdminView={true}
                 />
               ))}
+            </div>
+          </>
+        )}
+
+        {/* Gestión de Ventas */}
+        {tab === "ventas" && (
+          <>
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800">HISTORIAL DE VENTAS</h1>
+                <p className="text-gray-600">Consulta el historial de ventas realizadas</p>
+              </div>
+              <button
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 flex items-center gap-2"
+                onClick={() => setShowSalesHistory(true)}
+              >
+                Ver Historial
+              </button>
             </div>
           </>
         )}
@@ -149,6 +175,11 @@ const AdminDashboard = () => {
         ) : (
           <CrudKits onClose={() => setShowModal(false)} kitToEdit={editingItem} />
         )}
+      </Modal>
+
+      {/* Modal para el historial de ventas */}
+      <Modal open={showSalesHistory} onClose={() => setShowSalesHistory(false)}>
+        <SalesHistory />
       </Modal>
 
     </>

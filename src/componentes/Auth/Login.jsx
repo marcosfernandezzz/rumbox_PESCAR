@@ -72,6 +72,8 @@ const Login = () => {
 
         if (response.ok) {
           console.log('Login exitoso:', data)
+
+          localStorage.setItem('authToken', data.token);
           // Usar la función login del contexto para guardar el usuario y el token
           login({ ...data.data, token: data.token }) // Pasar el token junto con los datos del usuario
           /* alert('Inicio de sesión exitoso!') */

@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import { useKits } from "../../contexts/KitsContext.jsx";
 import DragDropImage from "./DragDropImage.jsx";
+import { IoClose } from "react-icons/io5"; // Icono de cerrar
+import { FaHistory } from "react-icons/fa"; // Icono de historial
+import SalesHistory from "./SalesHistory.jsx";
+import Modal from "./Modal.jsx";
 
 const CrudKits = () => {
   const { addKit, updateKit } = useKits(); // No necesitamos deleteKit ni kits para esta vista
   const [form, setForm] = useState({ nombre: "", precio: "", descripcion: "", categoria: "", productosIncluidos: "", image: null });
   const [editId, setEditId] = useState(null); // Mantener editId para la lógica de agregar/editar
+  const [showSalesHistoryModal, setShowSalesHistoryModal] = useState(false); // Estado para controlar la visibilidad del modal de historial
+
+  const handleShowSalesHistory = () => {
+    setShowSalesHistoryModal(true);
+  };
 
   // Cambios en los inputs
   const handleChange = e => {
@@ -62,6 +71,9 @@ const CrudKits = () => {
 
   return (
     <div className="my-8 p-6 bg-white rounded-lg shadow-lg max-w-2xl mx-auto text-gray-900">
+      <button onClick={() => setEditId(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+        <IoClose className="text-2xl" />
+      </button>
       <h1 className="text-3xl font-bold mb-6 text-center">{editId ? "Editar Kit" : "Agregar Kit"}</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
@@ -96,8 +108,21 @@ const CrudKits = () => {
 
   {/* Campo de productos incluidos oculto */}
         
-        <button type="submit" className="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md hover:bg-blue-500 transition duration-300">{editId ? "Editar Kit" : "Agregar Kit"}</button>
+        <div className="flex justify-end gap-4 mt-6">
+          <button 
+            type="button" 
+            onClick={handleShowSalesHistory} 
+            className="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700"
+          >
+            <FaHistory className="inline-block mr-2" />
+            Historial de Ventas
+          </button>
+          <button type="submit" className="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md hover:bg-blue-500 transition duration-300">{editId ? "Editar Kit" : "Agregar Kit"}</button>
+        </div>
       </form>
+      <Modal open={showSalesHistoryModal} onClose={() => setShowSalesHistoryModal(false)}>
+        <SalesHistory />
+      </Modal>
     </div>
   );
 };
