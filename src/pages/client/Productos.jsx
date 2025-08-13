@@ -10,17 +10,21 @@ import { useParams, Link } from 'react-router-dom'
 export const Productos = () => {
   const { productos } = useProductos();
   const productosvarios = Array.isArray(productos) ? productos : [];
-  let { zonaActual, descuentoActivo } = useParams();
+  let { zonaActual } = useParams();
 
   if (zonaActual === undefined) {
     zonaActual = true;
   }
 
   const productosFiltrados = productosvarios.filter(producto => {
-    const cumpleCategoria = (zonaActual === true || zonaActual === producto.categoria);
-    const cumpleActivo = producto.activo;
-    const cumpleDescuento = (descuentoActivo === 'descuento' ? producto.descuento > 0 : true);
-    return cumpleCategoria && cumpleActivo && cumpleDescuento;
+    let cumpleFiltro = false;
+    if (zonaActual === "descuento") {
+      cumpleFiltro = producto.descuento > 0;
+    } else {
+      cumpleFiltro = (zonaActual === true || zonaActual === producto.categoria || producto.zonaActual === true);
+    }
+    const isActive = producto.activo;
+    return cumpleFiltro && isActive;
   });
 
   console.log("Productos recibidos en Productos.jsx:", productosvarios); // Log de depuración

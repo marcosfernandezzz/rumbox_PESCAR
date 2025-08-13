@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom'
 import { useProductos } from '../../contexts/ProductsContext.jsx'
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useKits } from '../../contexts/KitsContext';
 import { abrirWhatsApp } from "../../utils/Whatsapp.js";
 export const InfoProduct = () => {
+    const { usuario, setUsuario } = useContext(AuthContext);
 
     const { Id } = useParams();
 
@@ -25,6 +27,39 @@ export const InfoProduct = () => {
     const ObjetoX = ProducX || KitX;
 
     const { nombre, precio, descripcion, image ,caracteristicaUno, caracteristicaDos, caracteristicaTres } = ObjetoX;
+
+    const addCart = () => {
+      if (!usuario) {
+        alert("Por favor, inicia sesión para agregar productos al carrito.");
+        return;
+      }
+
+      const producto = (productos.find(p => p._id === Id) || kits.find(k => k._id === Id));
+      if (!producto) return;
+
+      const productoEnCarrito = usuario.inventario.find(item => item.id === Id);
+      const cantidadEnCarrito = productoEnCarrito ? productoEnCarrito.cant : 0;
+
+      if (cantidadEnCarrito >= producto.cantidad) {
+        alert("No hay suficiente stock disponible.");
+        return;
+      }
+
+      let inventarioActualizado;
+      if (productoEnCarrito) {
+        inventarioActualizado = usuario.inventario.map(item =>
+          item.id === Id ? { ...item, cant: item.cant + 1 } : item
+        );
+      } else {
+        inventarioActualizado = [...usuario.inventario, { id: Id, cant: 1 }];
+      }
+      
+      const usuarioActualizado = { ...usuario, inventario: inventarioActualizado };
+      
+    setUsuario(usuarioActualizado);
+    localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+    if (window.rumboxToast) window.rumboxToast('¡Producto agregado al carrito!');
+        };
 
  
 
@@ -66,7 +101,8 @@ export const InfoProduct = () => {
                         </button>
                 
                         
-                        <button className="flex-1 bg-white text-orange-400 border border-orange-400 py-3 px-6 rounded-sm hover:bg-orange-400 hover:text-white transition-colors font-semibold cursor-pointer">
+                        <button className="flex-1 bg-white text-orange-400 border border-orange-400 py-3 px-6 rounded-sm hover:bg-orange-400 hover:text-white transition-colors font-semibold cursor-pointer"
+                            onClick={addCart}>
                             Añadir al carrito
                         </button>
                     </div>

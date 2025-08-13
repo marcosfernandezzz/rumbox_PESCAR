@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useProductos } from '../../contexts/ProductsContext.jsx';
 import {abrirWhatsApp} from '../../utils/Whatsapp.js'
+import { Link } from 'react-router-dom';
 import { IoIosCart } from "react-icons/io";
 
 const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento, cantidad, onEdit, onDelete, isAdminView}) => {
@@ -51,8 +52,10 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
               -{descuento}%
             </div>
           )}
-          <img src={`/img/${image}`} alt={title} className="h-24  w-full object-contain md:h-30 rounded bg-gray-50" />
-          <h3 className="text-lg font-semibold mt-2 md:text-xl truncate">{title}</h3>
+          <Link to={`/InfoProduct/${id}`}>
+            <img src={`/img/${image}`} alt={title} className="h-24  w-full object-contain md:h-30 rounded bg-gray-50" />
+            <h3 className="text-lg font-semibold mt-2 md:text-xl truncate">{title}</h3>
+          </Link>
           
           <div className="flex flex-col justify-start m-4 h-20"> {/* Altura fija para el contenido */}
               <p className='text-xs md:text-sm text-start text-gray-400 overflow-hidden text-ellipsis line-clamp-3'>{descripcion}</p>
