@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import { useKits } from "../../contexts/KitsContext.jsx"
 import { IoClose } from "react-icons/io5"

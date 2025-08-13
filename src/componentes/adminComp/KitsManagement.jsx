@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { useKits } from "../../contexts/KitsContext.jsx"
 import CrudKits from "./CrudKits.jsx"

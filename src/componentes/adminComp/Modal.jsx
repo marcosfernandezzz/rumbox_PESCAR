@@ -1,5 +1,3 @@
-"use client"
-
 const Modal = ({ open, onClose, children, size = "default" }) => {
   if (!open) return null
 

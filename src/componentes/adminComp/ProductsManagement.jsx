@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { useProductos } from "../../contexts/ProductsContext.jsx"
 import CrudProductos from "./CrudProductos.jsx"

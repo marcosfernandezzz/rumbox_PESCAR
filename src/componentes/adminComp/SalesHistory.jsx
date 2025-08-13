@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import { useProductos } from "../../contexts/ProductsContext.jsx"
 import { useKits } from "../../contexts/KitsContext.jsx"
