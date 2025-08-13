@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useProductos } from '../../contexts/ProductsContext.jsx'
 import { useKits } from '../../contexts/KitsContext';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 
 export const DescripCompra = () => {
-
+    const { usuario, setUsuario } = useContext(AuthContext);
+    const navigate = useNavigate();
     const { productos } = useProductos();
     const productosvarios = Array.isArray(productos) ? productos : [];
     
@@ -65,6 +68,57 @@ export const DescripCompra = () => {
         );
     });
 
+    const handleConfirmPurchase = async () => {
+        if (!comprador || !comprador.inventario || comprador.inventario.length === 0) {
+            alert("El carrito está vacío.");
+            return;
+        }
+
+        const saleData = {
+            userId: comprador._id,
+            products: comprador.inventario.map(item => {
+                const producto = productosvarios.find(p => String(p._id) === String(item.id));
+                const kit = KitsList.find(k => String(k._id) === String(item.id));
+                return {
+                    itemId: item.id,
+                    quantity: item.cant,
+                    itemType: producto ? 'Product' : 'Kit',
+                };
+            }),
+            totalAmount: totalCompra,
+        };
+
+        console.log("Token de usuario:", usuario?.token); // Agregado para depuración
+        console.log("Datos de venta a enviar:", saleData); // Agregado para depuración
+
+        try {
+            const response = await fetch('/api/sales', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${usuario?.token}` // Usar optional chaining por si usuario o token es null
+                },
+                body: JSON.stringify(saleData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al registrar la venta');
+            }
+
+            alert('¡Compra realizada con éxito!');
+            
+            // Limpiar el carrito
+            const usuarioActualizado = { ...usuario, inventario: [] };
+            setUsuario(usuarioActualizado);
+            localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+
+            navigate('/'); // Redirigir al inicio
+        } catch (error) {
+            console.error('Error en la compra:', error);
+            alert('Hubo un problema al procesar tu compra. Por favor, inténtalo de nuevo.');
+        }
+    };
+
     return (
         <section className="container mx-auto p-6 bg-gray-100 min-h-screen">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Detalles de Compra</h2>
@@ -85,6 +139,14 @@ export const DescripCompra = () => {
                     <div className="bg-blue-100 rounded-lg px-6 py-4 shadow">
                         <p className="text-2xl font-bold text-blue-700">Total de la compra: <span className="text-orange-500">${new Intl.NumberFormat('es-AR').format(totalCompra)}</span></p>
                     </div>
+                </div>
+                <div className="flex justify-center mt-8">
+                    <button 
+                        onClick={handleConfirmPurchase}
+                        className="bg-green-600 text-white px-8 py-4 rounded-lg shadow-md hover:bg-green-700 transition duration-300 text-xl font-bold"
+                    >
+                        Confirmar Compra
+                    </button>
                 </div>
             </div>
         </section>

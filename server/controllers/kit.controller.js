@@ -1,4 +1,5 @@
 import kitService from '../services/kit.service.js'
+import { errorHandler } from '../utils/errors.js';
 
 
 const kitController = {
@@ -14,11 +15,7 @@ const kitController = {
             })
 
         } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Hubo un error interno al intentar obtener los kits',
-                error: error.message
-            })
+            errorHandler(res, error);
         }
     },
 
@@ -41,11 +38,7 @@ const kitController = {
             });
     
         } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Error al obtener el kit",
-                error: error.message,
-            });
+            errorHandler(res, error);
         }
       },
     
@@ -65,11 +58,7 @@ const kitController = {
           });
     
         } catch (error) {
-          res.status(400).json({
-            success: false,
-            message: "Error al crear el kit",
-            error: error.message,
-          });
+          errorHandler(res, error);
         }
       },
     
@@ -98,11 +87,7 @@ const kitController = {
           });
     
         } catch (error) {
-          res.status(400).json({
-            success: false,
-            message: "Error al actualizar el kit",
-            error: error.message,
-          });
+          errorHandler(res, error);
         }
       },
     
@@ -125,11 +110,7 @@ const kitController = {
           });
     
         } catch (error) {
-          res.status(500).json({
-            success: false,
-            message: "Error al eliminar el kit",
-            error: error.message,
-          });
+          errorHandler(res, error);
         }
       }
 } 
