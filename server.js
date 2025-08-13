@@ -41,6 +41,10 @@ app.use("/api/images", express.static(path.join(publicPath, "img")))
 
 console.log("Ruta absoluta de imágenes:", path.join(publicPath, "img"))
 
+app.get('/', (req, res) => {
+  res.send('API Rumbox funcionando');
+});
+
 // Rutas de API
 app.use("/api/users", userRoutes)
 app.use("/api/auth", authRoutes)
