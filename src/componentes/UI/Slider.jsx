@@ -8,10 +8,13 @@ import img5 from '../../assets/imagenes/SliderImgs/mochila_buffalo_75.png'
 
 import {abrirWhatsApp} from '../../utils/Whatsapp.js'
 import { IoIosCart } from "react-icons/io";
+import React, { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
 
 
 function Slider() {
-    const cards = [
+  const { usuario, setUsuario } = useContext(AuthContext);
+  const cards = [
       {
     "id": 8,
     "nombre": "Botas Snowboard",
@@ -73,7 +76,7 @@ function Slider() {
   }
         
     ];
-     const addCart = (productId) => {
+    const addCart = (productId) => {
       if (usuario && usuario.inventario) {
         usuario.inventario.push(productId);
         setUsuario({ ...usuario, inventario: usuario.inventario });
@@ -112,17 +115,24 @@ function Slider() {
                                     <p className="text-xs  font-semibold text-green-500 p-0.5 rounded-xl mt-1">{card.descuento}</p>
                                 </div>
                                 
-                                <div className='flex  gap-2 justify-center items-center'>
-                                            <button className="mt-2 p-2  md:py-0.5 md:px-4 md:text-lg  bg-orange-500 text-white rounded hover:bg-orange-800 cursor-pointer text-xs"
-                                              onClick={abrirWhatsApp}>
-                                              Comprar
-                                            </button>
-                                            <button className="mt-2  bg-blue-500 text-white p-1 border  rounded hover:bg-blue-800 cursor-pointer hover:text-white text-xs"
-                                              onClick={() => addCart(card.id)}>
-                                              <IoIosCart className='text-2xl' />
-                                
-                                            </button>
-                                          </div>
+                                <div className='flex gap-2 justify-center items-center'>
+                                  <button
+                                    className="mt-2 p-2 md:py-0.5 md:px-4 md:text-lg bg-orange-500 text-white rounded hover:bg-orange-800 cursor-pointer text-xs"
+                                    onClick={() => {
+                                      if (!usuario) {
+                                        window.location.href = '/login';
+                                      } else {
+                                        abrirWhatsApp();
+                                      }
+                                    }}
+                                  >
+                                    Comprar
+                                  </button>
+                                  <button className="mt-2 bg-blue-500 text-white p-1 border rounded hover:bg-blue-800 cursor-pointer hover:text-white text-xs"
+                                    onClick={() => addCart(card.id)}>
+                                    <IoIosCart className='text-2xl' />
+                                  </button>
+                                </div>
 
                             </div>
                         ))
