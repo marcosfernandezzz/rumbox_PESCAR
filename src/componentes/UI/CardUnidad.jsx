@@ -43,11 +43,16 @@ const CardUnidad = ({ id, ImgURL, nombre, precio, descripcion }) => {
     };
 
     return (
-        <div className="bg-white text-center p-2 md:p-4 h-80 w-44 md:h-88 md:w-60 border border-gray-300 rounded-xl shrink-0 shadow relative">
-            <Link to={`/InfoProduct/${id}`}>
-                <img src={`/img/${ImgURL}`} alt={nombre} className="h-24 w-full object-contain md:h-30 rounded bg-gray-50" />
-                <h3 className="font-semibold mt-2 md:text-xl">{nombre}</h3>
-            </Link>
+                <div className="bg-white text-center p-2 md:p-4 h-80 w-44 md:h-88 md:w-60 border border-gray-300 rounded-xl shrink-0 shadow relative">
+                        <Link to={`/InfoProduct/${id}`}>
+                                <img src={`/img/${ImgURL}`} alt={nombre} className="h-24 w-full object-contain md:h-30 rounded bg-gray-50" />
+                                <h3
+                                    className="font-semibold mt-2 md:text-xl truncate max-w-[180px] line-clamp-1"
+                                    title={nombre}
+                                >
+                                    {nombre}
+                                </h3>
+                        </Link>
             <div className="flex flex-col justify-start m-4 flex-grow min-h-[70px]">
                 <p className='text-xs md:text-sm text-start text-gray-400 overflow-hidden text-ellipsis'>{descripcion}</p>
                 <p className="text-xl text-start md:text-2xl font-semibold text-blue-600 p-0.5 rounded-xl mt-1">${new Intl.NumberFormat('es-AR').format(precio)}</p>

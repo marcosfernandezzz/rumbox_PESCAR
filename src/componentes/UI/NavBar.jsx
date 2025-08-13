@@ -51,7 +51,7 @@ export const NavBar = () => {
     };
 
     return (
-        <section className='text-white'>
+        <section className='text-white sticky top-0 z-50 shadow-4xl'>
             {/* Toast de confirmación */}
             <Toast message={toastMsg} show={showToast} />
             {/* mobile first */}
