@@ -1,65 +1,64 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TiPlus , TiMinus , TiTrash } from "react-icons/ti";
 
-const CardCarrito = ({id, ImgURL, Nombre, Precio, descripcion, ActualizarMonto, EliminarItem}) =>{
+const CardCarrito = ({id, ImgURL, Nombre, Precio,cantidad, descripcion,ActualizarCantidad, EliminarItem}) =>{
 
-    const [cantidad, setCantidad] = useState(1);
-
-    /*  useEffect(() => {
-        ActualizarMonto(Precio);
-        }, [Precio, ActualizarMonto]); */
-
-    const mas = () => {
-        ActualizarMonto(Precio);
-        setCantidad(cantidad + 1);
+      const Mas = () => {
+        ActualizarCantidad(id, cantidad + 1);
     };
-    const menos = () => {
+
+    const Menos = () => {
+        // La lógica en Carrito.jsx ahora maneja el caso de cantidad <= 0
+        ActualizarCantidad(id, cantidad - 1);
+    };
     
-        if (cantidad > 1) {
-            ActualizarMonto(-Precio); 
-            setCantidad(cantidad - 1);
-        }
-        
+    const Eliminar = () => {
+        EliminarItem(id);
     };
+
+    // Explicitly convert Precio and cantidad to numbers for calculation
+    const precioNumerico = parseFloat(Precio);
+    const cantidadNumerica = parseInt(cantidad, 10);
+    const total = precioNumerico * cantidadNumerica;
 
 
   return(
     
-      <div key={id} className="bg-white  text-center p-2 md:p-4  h-40 w-80 md:h-44 md:w-200 border border-gray-300 rounded-xl shrink-0 shadow relative" >
-          
-        <div className="absolute bottom-0 left-0 right-0 m-4">
-            
-            <div className="flex  justify-between  mx-4 my-2 gap-0.5  items-center">
-                
-                <img src={`/img/${ImgURL}`} alt={Nombre} className="h-20  w-auto object-contain md:h-30 rounded bg-gray-50" />
-
-                <div className=''>
-                    <h3 className=" font-semibold mt-2 md:text-xl">{Nombre}</h3>
-                    <p className='text-xs  md:text-sm  text-start  text-gray-400'>{descripcion}</p>
-                    <button className='flex justify-center items-center' onClick={() => EliminarItem(id)}> Eliminar <TiTrash /></button>
-                </div>
-
-                <p className="text-lg md:text-xl text-start text-shadow-md font-bold text-blue-600 mt-2">${Precio}</p>
-                
-                <div className='flex flex-col gap-0 justify-center items-center'>
-                    <button className="mt-2 px-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-blue-500 text-xs"
-                    onClick={mas}>
-                    <TiPlus />
-                
+            <div key={id} className="bg-white p-2 md:p-4 border border-gray-300 rounded-xl shadow flex flex-col md:flex-row items-center gap-4 md:gap-6 w-full md:w-auto">
+                <img src={`/img/${ImgURL}`} alt={Nombre} className="h-20 w-20 object-contain rounded bg-gray-50 flex-shrink-0" />
+                <div className="flex flex-col flex-grow items-start justify-center w-full md:w-auto">
+                    <h3 className="font-semibold text-lg md:text-xl mb-1">{Nombre}</h3>
+                    <p className="text-xs md:text-sm text-gray-400 mb-2">{descripcion}</p>
+                    <button
+                        className="flex items-center gap-1 px-3 py-1 bg-red-500 text-white font-bold rounded-lg shadow hover:bg-red-700 border-2 border-red-600 transition-all duration-150 text-sm md:text-base mt-1"
+                        style={{ boxShadow: '0 2px 8px rgba(255,0,0,0.15)' }}
+                        onClick={Eliminar}
+                    >
+                        <span>Eliminar</span>
+                        <TiTrash className="text-xl md:text-2xl" />
                     </button>
+                </div>
+                <div className="flex flex-col items-start justify-center min-w-[140px] md:min-w-[180px] gap-1">
                     <div>
-                        {cantidad}
+                        <p className="text-xs text-gray-500">Precio unitario</p>
+                        <p className="text-lg md:text-xl font-bold text-blue-600">${new Intl.NumberFormat('es-AR').format(precioNumerico)}</p>
                     </div>
-                    <button className="mt-2 px-2  md:p-0.5 md:text-lg  bg-orange-500 text-white rounded hover:bg-blue-500 text-xs"
-                    onClick={menos}>
-                    <TiMinus />
-
-                    </button>
+                    <div>
+                        <p className="text-xs text-gray-500">Subtotal</p>
+                        <p className="text-lg md:text-xl font-bold text-orange-500">${new Intl.NumberFormat('es-AR').format(total)}</p>
+                    </div>
+                    <div className="flex items-center gap-1 mt-2">
+                        <span className="text-xs text-gray-500 mr-2">Cantidad</span>
+                        <button className="px-2 py-1 md:p-0.5 md:text-lg bg-orange-500 text-white rounded hover:bg-blue-500 text-xs" onClick={Menos}>
+                            <TiMinus />
+                        </button>
+                        <span className="mx-1 font-bold">{cantidad}</span>
+                        <button className="px-2 py-1 md:p-0.5 md:text-lg bg-orange-500 text-white rounded hover:bg-blue-500 text-xs" onClick={Mas}>
+                            <TiPlus />
+                        </button>
+                    </div>
                 </div>
-                <p className="text-lg md:text-xl text-start text-shadow-md font-bold text-blue-600 mt-2">${Precio*cantidad}</p>
             </div>
-        </div>
-      </div> 
   );
 }
 export default CardCarrito;

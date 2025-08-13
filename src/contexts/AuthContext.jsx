@@ -9,13 +9,21 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem("usuario");
     if (usuarioGuardado) {
-      setUsuario(JSON.parse(usuarioGuardado));
+      const parsedUser = JSON.parse(usuarioGuardado);
+      setUsuario(parsedUser);
+      console.log("AuthContext: Usuario cargado desde localStorage:", parsedUser);
     }
   }, []);
 
-  const login = (datosUsuario) => {
-    setUsuario(datosUsuario);
-    localStorage.setItem("usuario", JSON.stringify(datosUsuario));
+  const login = (datosUsuarioConToken) => { // Cambiar el nombre del parámetro para mayor claridad
+    // Asegurarse de que el inventario siempre sea un array y que el token esté incluido
+    const usuarioNormalizado = {
+      ...datosUsuarioConToken,
+      inventario: Array.isArray(datosUsuarioConToken.inventario) ? datosUsuarioConToken.inventario : [],
+    };
+    setUsuario(usuarioNormalizado);
+    localStorage.setItem("usuario", JSON.stringify(usuarioNormalizado));
+    console.log("AuthContext: Usuario logueado:", usuarioNormalizado);
   };
 
   const logout = () => {
@@ -24,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ usuario, login, logout }}>
+    <AuthContext.Provider value={{ usuario, setUsuario, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

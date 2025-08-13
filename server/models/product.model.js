@@ -18,14 +18,14 @@ const ProductSchema = new mongoose.Schema({
     },
     precioDescuento: {
         type: Number,
-        required: [false, "El precio del producto es requerido"],
-        min: [0, "El precio no puede ser negativo"],
-        
+        required: false, // No es requerido
+        min: [0, "El precio original no puede ser negativo"],
     },
     descuento: {
         type: Number,
         required: false,
         min: [0, "El descuento no puede ser negativo"],
+        max: [100, "El descuento no puede exceder el 100%"], // Añadir validación de máximo
         validate: {
             validator: Number.isInteger,
             message: "El descuento debe ser un numero entero"

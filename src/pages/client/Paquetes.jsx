@@ -15,12 +15,12 @@ export const Paquetes = () => {
   return (
     <section className="flex justify-center gap-4 mx-auto max-w-7xl">
       <div className='flex flex-col p-4 mt-4'>
-        <h2 className='ml-10 p-4 text-center md:text-start font-bold text-shadow-2xs text-4xl '> Nuestros Kits!</h2>
+        <h2 className='p-4 text-center font-bold text-shadow-2xs text-4xl '> Nuestros Kits</h2>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 p-4 justify-items-center">
         {KitsList.map((kits) => (
           ( (zonaActual == kits.categoria || zonaActual == true) && kits.activo) &&  
-          <CardUnidad id={kits._id} ImgURL={kits.image} Nombre={kits.nombre} Precio={kits.precio} descripcion={kits.descripcion && kits.descripcion.length > 15 ? kits.descripcion.slice(0, 35) + "..." : kits.descripcion} />
+          <CardUnidad id={kits._id} ImgURL={kits.image} nombre={kits.nombre} precio={kits.precio} descripcion={kits.descripcion && kits.descripcion.length > 15 ? kits.descripcion.slice(0, 35) + "..." : kits.descripcion} />
         ))}
       </div>
       </div>

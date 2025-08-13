@@ -1,4 +1,5 @@
 import kitService from '../services/kit.service.js'
+import { errorHandler } from '../utils/errors.js';
 
 
 const kitController = {
@@ -14,11 +15,7 @@ const kitController = {
             })
 
         } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Hubo un error interno al intentar obtener los kits',
-                error: error.message
-            })
+            errorHandler(res, error);
         }
     },
 
@@ -36,24 +33,23 @@ const kitController = {
     
             res.status(200).json({
                 success: true,
-                data: producto,
+                data: kit, // Corregido de 'producto' a 'kit'
                 message: "Kit obtenido correctamente"
             });
     
         } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Error al obtener el kit",
-                error: error.message,
-            });
+            errorHandler(res, error);
         }
       },
     
       //POST - crear un nuevo kit
       async create(req, res) {
         try {
-          const kitData = req.body;
-          const nuevoKit = await productKit.create(kitData);
+          const kitData = { ...req.body };
+          if (req.file) {
+            kitData.image = req.file.filename; // Guardar el nombre del archivo subido
+          }
+          const nuevoKit = await kitService.create(kitData); // Corregido de 'productKit' a 'kitService'
     
           res.status(201).json({
             success: true,
@@ -62,11 +58,7 @@ const kitController = {
           });
     
         } catch (error) {
-          res.status(400).json({
-            success: false,
-            message: "Error al crear el kit",
-            error: error.message,
-          });
+          errorHandler(res, error);
         }
       },
     
@@ -74,9 +66,12 @@ const kitController = {
       async update(req, res) {
         try {
           const { id } = req.params;
-          const kitData = req.body;
+          const kitData = { ...req.body };
+          if (req.file) {
+            kitData.image = req.file.filename; // Guardar el nombre del archivo subido
+          }
           
-          const kitActualizado = await productService.update(id, kitData);
+          const kitActualizado = await kitService.update(id, kitData); // Corregido de 'productService' a 'kitService'
     
           if (!kitActualizado) {
             return res.status(404).json({
@@ -92,11 +87,7 @@ const kitController = {
           });
     
         } catch (error) {
-          res.status(400).json({
-            success: false,
-            message: "Error al actualizar el kit",
-            error: error.message,
-          });
+          errorHandler(res, error);
         }
       },
     
@@ -106,7 +97,7 @@ const kitController = {
           const { id } = req.params;
           const kitEliminado = await kitService.delete(id);
     
-          if (!kitoEliminado) {
+          if (!kitEliminado) { // Corregido de 'kitoEliminado' a 'kitEliminado'
             return res.status(404).json({
               success: false,
               message: "Kit no encontrado"
@@ -119,11 +110,7 @@ const kitController = {
           });
     
         } catch (error) {
-          res.status(500).json({
-            success: false,
-            message: "Error al eliminar el kit",
-            error: error.message,
-          });
+          errorHandler(res, error);
         }
       }
 } 

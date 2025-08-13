@@ -4,13 +4,13 @@ import { Outlet } from "react-router-dom";
 
 function Layout() {
   return (
-    <>
+    <div className="flex flex-col min-h-screen"> {/* Main layout container */}
       <NavBar />
-      <main>
+      <main className="flex-grow"> {/* Content wrapper */}
         <Outlet /> {/* Aquí se carga el contenido de cada página */}
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -108,12 +108,12 @@ export const Nosotros = () => {
           {integrantes.map((persona, index) => (
             <section
               key={index}
-              className="border-2 bg-gray-50 border-gray-300 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-discrete duration-300 transform hover:scale-105"
+className="border-2 bg-gray-50 border-gray-300 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-discrete duration-300 transform hover:scale-105 flex justify-center flex-col items-center"
             >
               <img
                 src={persona.foto}
                 alt={persona.nombre}
-                className="w-auto rounded-2xl shadow-md object-cover mb-5"
+className="w-64 h-64 rounded-2xl shadow-md object-cover mb-5"
               />
               <h3 className="text-xl text-shadow-2xs font-semibold text-center mb-2">{persona.nombre}</h3>
 

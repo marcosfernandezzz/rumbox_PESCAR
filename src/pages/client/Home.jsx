@@ -8,7 +8,7 @@ import Promo from '../../componentes/UI/Promo.jsx'
 /* import KitsData from '../../assets/Mockdata/KitsData.js' */
 /* import ProductData from '../../assets/Mockdata/ProductData.js' */
 import PromoImg from '../../assets/imagenes/Promo.png'
-import hero2 from '../../assets/imagenes/hero2.png'
+import hero2 from '../../assets/imagenes/bg3.jpg'
 
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useProductos } from '../../contexts/ProductsContext.jsx'
@@ -37,14 +37,15 @@ export const Home = () => {
         <CardList
           title='Kits Destacados.'
           Products={KitsList}
-          url={'/Productos'}
-          btn='Ver más productos...'
+          url={'/Paquetes'}
+          btn='Ver más kits...'
+          type='kit'
         />
       
       
       <Promo 
           PromoImg={PromoImg} 
-          title='ESENCIALES PARA LA NIEVE!!' 
+          title='ESENCIALES PARA LA NIEVE' 
           info='HASTA 40% OFF!' 
           url={'/Productos'} />
       
@@ -54,6 +55,7 @@ export const Home = () => {
           Products={productosvarios}
           url={'/Productos'}
           btn='Ver más productos...'
+          type='producto'
         />
       )}
     </main>

@@ -1,4 +1,5 @@
 import productService from "../services/product.service.js";
+import { errorHandler } from '../utils/errors.js';
 
 const productController = {
   //GET - obtener todos los productos
@@ -13,11 +14,7 @@ const productController = {
       });
 
     } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Error al obtener los productos",
-        error: error.message,
-      });
+      errorHandler(res, error);
     }
   },
 
@@ -41,18 +38,25 @@ const productController = {
         });
 
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Error al obtener el producto",
-            error: error.message,
-        });
+      errorHandler(res, error);
     }
   },
 
   //POST - crear un nuevo producto
   async create(req, res) {
     try {
-      const productoData = req.body;
+      const productoData = { ...req.body };
+      
+      // Verificar si se subió una imagen
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "La imagen del producto es requerida."
+        });
+      }
+      
+      productoData.image = req.file.filename; // Guardar el nombre del archivo subido
+      
       const nuevoProducto = await productService.create(productoData);
 
       res.status(201).json({
@@ -62,11 +66,7 @@ const productController = {
       });
 
     } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: "Error al crear el producto",
-        error: error.message,
-      });
+      errorHandler(res, error);
     }
   },
 
@@ -74,7 +74,10 @@ const productController = {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const productoData = req.body;
+      const productoData = { ...req.body };
+      if (req.file) {
+        productoData.image = req.file.filename; // Guardar el nombre del archivo subido
+      }
       
       const productoActualizado = await productService.update(id, productoData);
 
@@ -92,11 +95,7 @@ const productController = {
       });
 
     } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: "Error al actualizar el producto",
-        error: error.message,
-      });
+      errorHandler(res, error);
     }
   },
 
@@ -119,11 +118,7 @@ const productController = {
       });
 
     } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Error al eliminar el producto",
-        error: error.message,
-      });
+      errorHandler(res, error);
     }
   }
 };

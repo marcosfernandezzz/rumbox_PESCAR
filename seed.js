@@ -211,7 +211,8 @@ const seedDatabase = async () => {
           productosIncluidos: kit.productosIncluidos || [],
           image: kit.image || "",
           activo: true,
-          categoria: determinarCategoria(kit.nombre)
+          categoria: determinarCategoria(kit.nombre),
+          cantidad: Math.floor(Math.random() * 20) + 1
         });
         kitsInsertados++;
       } catch (error) {
@@ -243,7 +244,7 @@ const seedDatabase = async () => {
           caracteristicaUno: product.caracteristicaUno,
           caracteristicaDos: product.caracteristicaDos,
           caracteristicaTres: product.caracteristicaTres,
-          cantidad: 1, // Agregamos cantidad por defecto
+          cantidad: Math.floor(Math.random() * 20) + 1,
           image: product.image,
           activo: true
         };

@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { abrirWhatsApp } from '../../utils/Whatsapp.js';
 import { Link } from 'react-router-dom'
 const PromoImg = ({PromoImg,title,info,url}) => {
   return (
@@ -19,9 +19,6 @@ const PromoImg = ({PromoImg,title,info,url}) => {
               {info}
             </div>
 
-            <Link to={url} className="mt-2 text-sm underline underline-offset-2 md:text-xl md:p-2">
-              Ver más en Productos
-            </Link>
           </div>
         </div>
       </div>
