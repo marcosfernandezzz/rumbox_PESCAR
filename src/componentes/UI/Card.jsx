@@ -85,8 +85,16 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
               </>
             ) : (
               <>
-                <button className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-orange-700 text-xs flex-grow cursor-pointer"
-                  onClick={abrirWhatsApp}>
+                <button
+                  className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-orange-700 text-xs flex-grow cursor-pointer"
+                  onClick={() => {
+                    if (!usuario) {
+                      window.location.href = '/login';
+                    } else {
+                      abrirWhatsApp();
+                    }
+                  }}
+                >
                   Comprar
                 </button>
                 <button className="bg-blue-500 text-white p-1 border rounded hover:bg-blue-800 hover:text-white text-xs md:p-1.5 cursor-pointer"
