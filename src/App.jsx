@@ -92,9 +92,9 @@ export const App = () => {
             } />
           </Routes>
         </KitsProvider>
-      </ProductsProvider >
+      </ProductsProvider>
     </AuthProvider>
-  )
+  );
 }
 
 export default App;
