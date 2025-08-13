@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // Para desarrollo local
-      "rhttps://rumbox.netlify.app", // Reemplaza con tu dominio de Netlify
+      "https://rumbox.netlify.app", // Reemplaza con tu dominio de Netlify
       // Agrega otros dominios si es necesario
     ],
     credentials: true,
