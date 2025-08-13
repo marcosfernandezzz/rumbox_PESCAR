@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react"
 
 const AdminTabs = ({ tabs }) => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(0)
   return (
     <div className="mb-6">
       <div className="flex border-b border-gray-300">
@@ -15,11 +15,9 @@ const AdminTabs = ({ tabs }) => {
           </button>
         ))}
       </div>
-      <div className="mt-4">
-        {tabs[active].content}
-      </div>
+      <div className="mt-4">{tabs[active].content}</div>
     </div>
-  );
-};
+  )
+}
 
-export default AdminTabs;
+export default AdminTabs

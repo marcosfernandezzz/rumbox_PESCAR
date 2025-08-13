@@ -1,133 +1,179 @@
-import React, { useState } from "react";
-import { useKits } from "../../contexts/KitsContext.jsx";
-import DragDropImage from "./DragDropImage.jsx";
-import { IoClose } from "react-icons/io5"; // Icono de cerrar
-import { FaHistory } from "react-icons/fa"; // Icono de historial
-import SalesHistory from "./SalesHistory.jsx";
-import Modal from "./Modal.jsx";
+"use client"
 
-const CrudKits = () => {
-  const { addKit, updateKit } = useKits(); // No necesitamos deleteKit ni kits para esta vista
-  const [form, setForm] = useState({ nombre: "", precio: "", descripcion: "", categoria: "", productosIncluidos: "", image: null });
-  const [editId, setEditId] = useState(null); // Mantener editId para la lógica de agregar/editar
-  const [showSalesHistoryModal, setShowSalesHistoryModal] = useState(false); // Estado para controlar la visibilidad del modal de historial
+import { useEffect, useState } from "react"
+import { useKits } from "../../contexts/KitsContext.jsx"
+import { IoClose } from "react-icons/io5"
 
-  const handleShowSalesHistory = () => {
-    setShowSalesHistoryModal(true);
-  };
+const CrudKits = ({ onClose, kitToEdit }) => {
+  const { addKit, updateKit } = useKits()
+  const [form, setForm] = useState({
+    nombre: "",
+    precio: "",
+    descripcion: "",
+    categoria: "",
+    productosIncluidos: "",
+    image: null,
+  })
+  const [isEditing, setIsEditing] = useState(false)
 
-  // Cambios en los inputs
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
-  };
-
-  // Drag & drop imagen
-  const handleImage = file => {
-    setForm(f => ({ ...f, image: file }));
-  };
-
-  // Submit
-  const handleSubmit = async e => {
-    e.preventDefault();
-
-    if (!editId && (!form.image || !(form.image instanceof File))) {
-      alert("Debes seleccionar una imagen para el kit.");
-      return;
-    }
-    if (editId && form.image === null) {
-      // Si se está editando y no se seleccionó una nueva imagen, no es necesario que sea un File
-    } else if (form.image && !(form.image instanceof File)) {
-      alert("El campo de imagen debe ser un archivo.");
-      return;
-    }
-
-    const formData = new FormData();
-    for (const key in form) {
-      if (form[key] !== null && form[key] !== undefined) {
-        if (key === "productosIncluidos") {
-          form[key].split(',').map(item => item.trim()).filter(item => item !== '').forEach(prodId => {
-            formData.append(key, prodId);
-          });
-        } else if (key === "precio") {
-          formData.append(key, Number(form[key]));
-        } else {
-          formData.append(key, form[key]);
-        }
-      }
-    }
-
-    if (editId) {
-      await updateKit(editId, form); // Pasar el objeto 'form' directamente
-      alert("Kit editado con éxito!");
+  useEffect(() => {
+    if (kitToEdit) {
+      setIsEditing(true)
+      setForm({
+        nombre: kitToEdit.nombre || "",
+        precio: kitToEdit.precio || "",
+        descripcion: kitToEdit.descripcion || "",
+        categoria: kitToEdit.categoria || "",
+        productosIncluidos: kitToEdit.productosIncluidos || "",
+        image: kitToEdit.image || null,
+      })
     } else {
-      await addKit(form); // Pasar el objeto 'form' directamente
-      alert("Kit agregado con éxito!");
+      setIsEditing(false)
+      setForm({ nombre: "", precio: "", descripcion: "", categoria: "", productosIncluidos: "", image: null })
     }
-    // Resetear el formulario después de agregar/editar
-    setForm({ nombre: "", precio: "", descripcion: "", categoria: "", productosIncluidos: "", image: null });
-    setEditId(null);
-  };
+  }, [kitToEdit])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!isEditing && (!form.image || !(form.image instanceof File))) {
+      alert("Debes seleccionar una imagen para el kit.")
+      return
+    }
+
+    try {
+      if (isEditing) {
+        await updateKit(kitToEdit._id, form)
+        alert("Kit editado con éxito!")
+      } else {
+        await addKit(form)
+        alert("Kit agregado con éxito!")
+      }
+      onClose()
+    } catch (error) {
+      console.error("Error al procesar kit:", error)
+      alert(`Error: ${error.message || "No se pudo procesar el kit."}`)
+    }
+  }
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target
+    if (name === "image") {
+      setForm({ ...form, image: files[0] })
+    } else {
+      setForm({ ...form, [name]: value })
+    }
+  }
 
   return (
-    <div className="my-8 p-6 bg-white rounded-lg shadow-lg max-w-2xl mx-auto text-gray-900">
-      <button onClick={() => setEditId(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+    <div className="my-8 p-6 bg-white rounded-lg shadow-lg max-w-2xl mx-auto text-gray-900 relative">
+      <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
         <IoClose className="text-2xl" />
       </button>
-      <h1 className="text-3xl font-bold mb-6 text-center">{editId ? "Editar Kit" : "Agregar Kit"}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">{isEditing ? "Editar Kit" : "Agregar Kit"}</h1>
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="image" className="block text-lg font-semibold mb-2">Imagen del kit</label>
-          <DragDropImage onFile={handleImage} preview={form.image && typeof form.image !== "string" ? URL.createObjectURL(form.image) : null} />
+          <label className="block text-sm font-medium text-gray-700 mb-2">Nombre del Kit</label>
+          <input
+            type="text"
+            name="nombre"
+            value={form.nombre}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Ingresa el nombre del kit"
+          />
         </div>
 
         <div>
-          <label htmlFor="nombre" className="block text-lg font-semibold mb-2">Nombre del kit</label>
-          <input name="nombre" id="nombre" value={form.nombre} onChange={handleChange} placeholder="Nombre del kit" required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
+          <label className="block text-sm font-medium text-gray-700 mb-2">Precio</label>
+          <input
+            type="number"
+            name="precio"
+            value={form.precio}
+            onChange={handleChange}
+            required
+            min="0"
+            step="0.01"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Ingresa el precio"
+          />
         </div>
 
         <div>
-          <label htmlFor="precio" className="block text-lg font-semibold mb-2">Precio</label>
-          <input name="precio" id="precio" value={form.precio} onChange={handleChange} placeholder="Precio" required type="number" className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500" />
+          <label className="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+          <textarea
+            name="descripcion"
+            value={form.descripcion}
+            onChange={handleChange}
+            required
+            rows="3"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Describe el kit"
+          />
         </div>
 
         <div>
-          <label htmlFor="descripcion" className="block text-lg font-semibold mb-2">Descripción</label>
-          <textarea name="descripcion" id="descripcion" value={form.descripcion} onChange={handleChange} placeholder="Descripción" required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 h-24 resize-y" />
+          <label className="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
+          <input
+            type="text"
+            name="categoria"
+            value={form.categoria}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Categoría del kit"
+          />
         </div>
 
         <div>
-          <label htmlFor="categoria" className="block text-lg font-semibold mb-2">Categoría</label>
-          <select name="categoria" id="categoria" value={form.categoria} onChange={handleChange} required className="w-full p-3 rounded bg-white border border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500">
-            <option value="">Selecciona Categoría</option>
-            <option value="Nieve">Nieve</option>
-            <option value="Playa">Playa</option>
-            <option value="Montaña">Montaña</option>
-          </select>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Productos Incluidos</label>
+          <textarea
+            name="productosIncluidos"
+            value={form.productosIncluidos}
+            onChange={handleChange}
+            required
+            rows="3"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Lista los productos incluidos en el kit"
+          />
         </div>
 
-  {/* Campo de productos incluidos oculto */}
-        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Imagen</label>
+          <input
+            type="file"
+            name="image"
+            onChange={handleChange}
+            accept="image/*"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {isEditing && form.image && typeof form.image === "string" && (
+            <div className="mt-2">
+              <p className="text-sm text-gray-600">Imagen actual: {form.image}</p>
+            </div>
+          )}
+        </div>
+
         <div className="flex justify-end gap-4 mt-6">
-          <button 
-            type="button" 
-            onClick={handleShowSalesHistory} 
-            className="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700"
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100"
           >
-            <FaHistory className="inline-block mr-2" />
-            Historial de Ventas
+            Cancelar
           </button>
-          <button type="submit" className="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md hover:bg-blue-500 transition duration-300">{editId ? "Editar Kit" : "Agregar Kit"}</button>
+          <button
+            type="submit"
+            className="px-4 py-2 rounded-md bg-orange-500 text-white font-semibold hover:bg-orange-600"
+          >
+            {isEditing ? "Actualizar" : "Guardar"}
+          </button>
         </div>
       </form>
-      <Modal open={showSalesHistoryModal} onClose={() => setShowSalesHistoryModal(false)}>
-        <SalesHistory />
-      </Modal>
     </div>
-  );
-};
+  )
+}
 
-
-           
-
-  export default CrudKits;
+export default CrudKits
