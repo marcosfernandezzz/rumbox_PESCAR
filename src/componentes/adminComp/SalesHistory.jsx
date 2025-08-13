@@ -1,22 +1,22 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useProductos } from "../../contexts/ProductsContext.jsx"
+import { useKits } from "../../contexts/KitsContext.jsx"
 
 const SalesHistory = () => {
   const [sales, setSales] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const { productos } = useProductos()
+  const { kits } = useKits()
+
   useEffect(() => {
     const fetchSales = async () => {
       try {
-        const storedUser = JSON.parse(localStorage.getItem('usuario'));
-        const token = storedUser ? storedUser.token : null;
-        
-        if (!token) {
-          throw new Error("No se encontró token de autenticación");
-        }
-
+        const token = localStorage.getItem("authToken")
+        console.log("TOKEN ENVIADO:", token)
         const response = await fetch("/api/sales", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -37,16 +37,44 @@ const SalesHistory = () => {
     fetchSales()
   }, [])
 
+  const getItemName = (itemId, itemType) => {
+    console.log("Buscando item:", { itemId, itemType })
+    console.log("Productos disponibles:", productos.length)
+    console.log("Kits disponibles:", kits.length)
+
+    const searchId = String(itemId)
+    console.log("ID a buscar (como string):", searchId)
+
+    if (itemType === "Product") {
+      console.log(
+        "IDs de productos:",
+        productos.map((p) => ({ id: String(p._id), nombre: p.nombre })),
+      )
+      const product = productos.find((p) => String(p._id) === searchId)
+      console.log("Producto encontrado:", product)
+      return product ? product.nombre : `Producto no encontrado (${searchId})`
+    } else if (itemType === "Kit") {
+      console.log(
+        "IDs de kits:",
+        kits.map((k) => ({ id: String(k._id), nombre: k.nombre })),
+      )
+      const kit = kits.find((k) => String(k._id) === searchId)
+      console.log("Kit encontrado:", kit)
+      return kit ? kit.nombre : `Kit no encontrado (${searchId})`
+    }
+    return "Item desconocido"
+  }
+
   const formatProducts = (products) => {
     if (!products || products.length === 0) return "Sin productos"
 
-    return products
-      .map((product) => {
-        const name = product.itemId?.nombre || 'Producto no encontrado';
-        const quantity = product.quantity || 1
-        return `${name} (x${quantity})`
-      })
-      .join(", ")
+    console.log("Productos de la venta:", products)
+
+    return products.map((product) => {
+      const name = getItemName(product.itemId, product.itemType)
+      const quantity = product.quantity || 1
+      return { name, quantity }
+    })
   }
 
   if (loading) {
@@ -69,11 +97,11 @@ const SalesHistory = () => {
           <table className="min-w-full">
             <thead className="bg-gray-50 border-b">
               <tr>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">ID de Venta</th>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">Usuario</th>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">Productos</th>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">Total</th>
-                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">Fecha</th>
+                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900 w-1/6">ID de Venta</th>
+                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900 w-1/6">Usuario</th>
+                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900 w-2/6">Productos</th>
+                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900 w-1/6">Total</th>
+                <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900 w-1/6">Fecha</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -81,9 +109,17 @@ const SalesHistory = () => {
                 <tr key={sale._id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                   <td className="py-4 px-6 text-sm text-gray-900 font-mono">{sale._id}</td>
                   <td className="py-4 px-6 text-sm text-gray-900">{sale.userId?.name || "N/A"}</td>
-                  <td className="py-4 px-6 text-sm text-gray-700 max-w-xs">
-                    <div className="truncate" title={formatProducts(sale.products)}>
-                      {formatProducts(sale.products)}
+                  <td className="py-4 px-6 text-sm text-gray-700">
+                    <div className="space-y-1">
+                      {formatProducts(sale.products).map((product, idx) => (
+                        <div
+                          key={idx}
+                          className="flex justify-between items-center bg-gray-100 px-2 py-1 rounded text-xs"
+                        >
+                          <span className="font-medium">{product.name}</span>
+                          <span className="text-gray-600">x{product.quantity}</span>
+                        </div>
+                      ))}
                     </div>
                   </td>
                   <td className="py-4 px-6 text-sm font-semibold text-green-600">${sale.totalAmount.toFixed(2)}</td>
