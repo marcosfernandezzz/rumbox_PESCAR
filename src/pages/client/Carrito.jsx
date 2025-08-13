@@ -142,9 +142,9 @@ const Carrito = () => {
           <div className="bg-blue-100 rounded-lg px-6 py-4 shadow flex flex-col items-center w-full text-center">
             <p className="text-lg font-semibold text-gray-700 mb-2">Total a pagar:</p>
             <p className="text-3xl font-bold text-blue-700 mb-4">${new Intl.NumberFormat('es-AR').format(montoTotal)}</p>
-            <Link to="/DescripCompra" className="w-full flex justify-center">
+            <Link to="/RealizarPago" className="w-full flex justify-center">
               <button className="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 text-lg font-bold shadow-md transition-all w-full">
-                Finalizar Compra
+                Terminar Compra
               </button>
             </Link>
           </div>
