@@ -1,0 +1,17 @@
+# Headers for Netlify
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+
+# JavaScript files
+/*.js
+  Content-Type: application/javascript
+
+# ES modules
+/*.mjs
+  Content-Type: application/javascript
+
+# CSS files
+/*.css
+  Content-Type: text/css

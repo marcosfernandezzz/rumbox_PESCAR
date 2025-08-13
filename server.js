@@ -1,108 +1,70 @@
-import express from 'express'
-import path from 'path'
-import dotenv from 'dotenv'
-import connectDB from './server/config/db.config.js'
-import { fileURLToPath } from 'url'
-import clientRoutes from './server/routes/client.routes.js'
-import authRoutes from './server/routes/auth.routes.js'
-import productRoutes from './server/routes/product.routes.js'
-import kitRoutes from './server/routes/kit.routes.js'
-import userRoutes from './server/routes/user.routes.js'
-import saleRoutes from './server/routes/sale.routes.js' // Importar las rutas de ventas
-import cors from 'cors'
-import { errorHandler } from './server/utils/errors.js'; // Importar el manejador de errores
+import express from "express"
+import cors from "cors"
+import dotenv from "dotenv"
+import path from "path"
+import { fileURLToPath } from "url"
 
+// Importar rutas
+import userRoutes from "./server/routes/user.routes.js"
+import authRoutes from "./server/routes/auth.routes.js"
+import clientRoutes from "./server/routes/client.routes.js"
+import productRoutes from "./server/routes/product.routes.js"
+import kitRoutes from "./server/routes/kit.routes.js"
+import salesRoutes from "./server/routes/sale.routes.js"
+
+// Configuración de dotenv
 dotenv.config()
-connectDB()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = express()
 const PORT = process.env.PORT || 3000
-const isDevelopment = process.env.NODE_ENV !== 'production'
 
-//app.use(express.static(path.join(__dirname,'server', 'public')));
-console.log('Ruta absoluta de imágenes:', path.join(__dirname, 'server', 'public', 'img'));
-app.use('/img', express.static(path.join(__dirname, 'server', 'public', 'img')));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // Para desarrollo local
+      "https://your-netlify-domain.netlify.app", // Reemplaza con tu dominio de Netlify
+      // Agrega otros dominios si es necesario
+    ],
+    credentials: true,
+  }),
+)
 
-
-
-
-
-// Middleware
+// Middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors())
 
-// Rutas de API (backend)
-app.use('/api/users', userRoutes)
-app.use('/api/auth', authRoutes)
-app.use('/api/client', clientRoutes)
-app.use('/api/products', productRoutes)
-app.use('/api/kits', kitRoutes)
-app.use('/api/sales', saleRoutes) 
-console.log('Rutas de API cargadas: /api/users, /api/auth, /api/client, /api/products, /api/kits, /api/sales');
+const publicPath = path.join(__dirname, "src/server/public")
+app.use("/api/images", express.static(path.join(publicPath, "img")))
 
-// Middleware de manejo de errores global
-app.use((err, req, res, next) => {
-  errorHandler(res, err);
-});
+console.log("Ruta absoluta de imágenes:", path.join(publicPath, "img"))
 
-// Configuración según el entorno
-if (isDevelopment) {
-  // En desarrollo, verificar si existe la carpeta dist
-  const distPath = path.join(__dirname, 'dist')
-  
-  try {
-    const fs = await import('fs')
-    if (fs.existsSync(distPath)) {
-      // Si existe dist, servir archivos estáticos
-      app.use(express.static(distPath))
-      
-      // Todas las rutas que no sean /api/* van al frontend de React
-      app.get('*', (req, res) => {
-        res.sendFile(path.join(distPath, 'index.html'))
-      })
-      console.log('Modo desarrollo: Sirviendo archivos estáticos desde /dist')
-      console.log('Frontend disponible en http://localhost:3000')
-    } else {
-      // Si no existe dist, solo API
-      console.log('Modo desarrollo: Solo API disponible')
-      console.log('Frontend se sirve desde Vite en puerto 5173')
-      console.log('Para acceder al frontend: http://localhost:5173')
-    }
-  } catch (error) {
-    console.log('Modo desarrollo: Solo API disponible')
-    console.log('Para acceder al frontend: http://localhost:5173')
-  }
-  
-  console.log('Backend API disponible en http://localhost:3000/api/')
-} else {
-  // En producción, servir archivos estáticos de React
-  const distPath = path.join(__dirname, 'dist')
-  
-  // Verificar si existe la carpeta dist
-  try {
-    const fs = await import('fs')
-    if (fs.existsSync(distPath)) {
-      app.use(express.static(distPath))
-      
-      // Todas las rutas que no sean /api/* van al frontend de React
-      app.get('*', (req, res) => {
-        res.sendFile(path.join(distPath, 'index.html'))
-      })
-      console.log('Modo producción: Sirviendo archivos estáticos desde /dist')
-    } else {
-      console.error('Error: La carpeta dist no existe. Ejecuta "npm run build" primero.')
-      process.exit(1)
-    }
-  } catch (error) {
-    console.error('Error al verificar la carpeta dist:', error)
-    process.exit(1)
-  }
-}
+// Rutas de API
+app.use("/api/users", userRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/client", clientRoutes)
+app.use("/api/products", productRoutes)
+app.use("/api/kits", kitRoutes)
+app.use("/api/sales", salesRoutes)
 
+console.log("Rutas de API cargadas: /api/users, /api/auth, /api/client, /api/products, /api/kits, /api/sales")
+
+// Ya no intentamos servir la carpeta 'dist' porque el frontend está en Netlify
+
+// Ruta de prueba para verificar que el servidor funciona
+app.get("/api/health", (req, res) => {
+  res.json({ message: "Backend funcionando correctamente", timestamp: new Date().toISOString() })
+})
+
+// Manejo de rutas no encontradas para API
+app.use("/api/*splat", (req, res) => {
+  res.status(404).json({ message: "Ruta de API no encontrada" })
+})
+
+// Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}/`)
+  console.log(`Servidor corriendo en puerto ${PORT}`)
+  console.log(`Modo: ${process.env.NODE_ENV || "development"}`)
 })
