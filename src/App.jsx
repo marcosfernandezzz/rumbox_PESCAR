@@ -6,6 +6,7 @@ import Paquetes from './pages/client/Paquetes'
 import Productos from './pages/client/Productos'
 import InfoProduct from './componentes/ContPageProduc/InfoProduct'
 import DescripCompra from './componentes/ContPageProduc/DescripCompra'
+import RealizarPago from './componentes/ContPageProduc/RealizarPago'
 import Carrito from './pages/client/Carrito'
 import LoginIn from './pages/client/LoginIn'
 import SignUpPage from './pages/client/SignUp'
@@ -63,6 +64,11 @@ export const App = () => {
               <Route path="DescripCompra" element={
                 <ClienteRoute>
                   <DescripCompra />
+                </ClienteRoute>
+              } />
+              <Route path="RealizarPago" element={
+                <ClienteRoute>
+                  <RealizarPago />
                 </ClienteRoute>
               } />
               <Route path="carrito" element={
