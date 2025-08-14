@@ -100,10 +100,6 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
                 >
                   Comprar
                 </button>
-                <button className="bg-blue-500 text-white p-1 border rounded hover:bg-blue-800 hover:text-white text-xs md:p-1.5 cursor-pointer"
-                  onClick={addCart}>
-                  <IoIosCart className='text-2xl' />
-                </button>
               </>
             )}
           </div>
