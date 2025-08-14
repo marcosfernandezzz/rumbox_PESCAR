@@ -73,7 +73,7 @@ const ProductsManagement = () => {
             <div className="aspect-square bg-gray-100 flex items-center justify-center">
               {producto.image ? (
                 <img
-                  src={`https://rumbox-pescar.onrender.com/api/images/${sproducto.image}`}
+                  src={`https://rumbox-pescar.onrender.com/api/images/${producto.image}`}
                   alt={producto.nombre}
                   className="w-full h-full object-cover"
                 />
