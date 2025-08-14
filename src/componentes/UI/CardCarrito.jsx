@@ -25,7 +25,7 @@ const CardCarrito = ({id, ImgURL, Nombre, Precio,cantidad, descripcion,Actualiza
   return(
     
             <div key={id} className="bg-white p-2 md:p-4 border border-gray-300 rounded-xl shadow flex flex-col md:flex-row items-center gap-4 md:gap-6 w-full md:w-auto">
-                <img src={`/img/${ImgURL}`} alt={Nombre} className="h-20 w-20 object-contain rounded bg-gray-50 flex-shrink-0" />
+                <img src={`https://rumbox-pescar.onrender.com/api/images/${ImgURL}`} alt={Nombre} className="h-20 w-20 object-contain rounded bg-gray-50 flex-shrink-0" />
                 <div className="flex flex-col flex-grow items-start justify-center w-full md:w-auto">
                     <h3 className="font-semibold text-lg md:text-xl mb-1">{Nombre}</h3>
                     <p className="text-xs md:text-sm text-gray-400 mb-2">{descripcion}</p>

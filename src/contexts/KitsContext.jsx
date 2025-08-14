@@ -71,7 +71,7 @@ export function KitsProvider({ children }) {
         }
       });
 
-      const res = await fetch(`/api/kits/${id}`, {
+      const res = await fetch(`https://rumbox-pescar.onrender.com/api/kits/${id}`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${usuario?.token}`
@@ -91,7 +91,7 @@ export function KitsProvider({ children }) {
   const deleteKit = async (id) => {
     try {
       console.log("KitsContext: Enviando token para deleteKit:", usuario?.token);
-      const res = await fetch(`/api/kits/${id}`, { 
+      const res = await fetch(`https://rumbox-pescar.onrender.com/api/kits/${id}`, { 
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${usuario?.token}` // Añadir el token
