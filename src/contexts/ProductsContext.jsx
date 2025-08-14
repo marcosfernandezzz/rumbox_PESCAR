@@ -1,128 +1,138 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { AuthContext } from "./AuthContext"; // Importar AuthContext
+"use client"
 
-const ProductsContext = createContext();
+import { createContext, useContext, useState, useEffect } from "react"
+import { AuthContext } from "./AuthContext" // Import AuthContext
+
+const ProductsContext = createContext()
+
+export const useProductos = () => {
+  const context = useContext(ProductsContext)
+  if (!context) {
+    throw new Error("useProductos debe ser usado dentro de un ProductsProvider")
+  }
+  return context
+}
 
 export function ProductsProvider({ children }) {
-  const { usuario } = useContext(AuthContext); // Obtener el usuario del AuthContext
-  const [productos, setProductos] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { usuario } = useContext(AuthContext) // Obtener el usuario del AuthContext
+  const [productos, setProductos] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  // Cargar productos al inicializar
+  useEffect(() => {
+    fetchProducts()
+  }, [])
 
   const fetchProducts = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const res = await fetch("https://rumbox-pescar.onrender.com/api/products");
-      const data = await res.json();
-      setProductos(Array.isArray(data) ? data : data.data || []);
+      const res = await fetch("/api/products")
+      const data = await res.json()
+      setProductos(Array.isArray(data) ? data : data.data || [])
     } catch (error) {
-      console.error("Error al cargar productos:", error);
+      console.error("Error al cargar productos:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  // Crear producto
-  const addProduct = async (nuevo) => {
+  const addProduct = async (productData) => {
     try {
-      const formData = new FormData();
-      Object.entries(nuevo).forEach(([key, value]) => {
-        if (key === "image" && value instanceof File) {
-          formData.append("image", value);
-        } else {
-          formData.append(key, value);
+      const formData = new FormData()
+
+      // Agregar todos los campos del producto al FormData
+      Object.keys(productData).forEach((key) => {
+        if (productData[key] !== null && productData[key] !== undefined) {
+          formData.append(key, productData[key])
         }
       });
       const res = await fetch("https://rumbox-pescar.onrender.com/api/products", {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${usuario?.token}`
-        },
-        body: formData
-      });
-      console.log("ProductsContext: Respuesta HTTP cruda:", res); // Log de depuración de la respuesta HTTP
-      console.log("ProductsContext: res.ok:", res.ok); // Log de depuración de res.ok
-      console.log("ProductsContext: res.status:", res.status); // Log de depuración de res.status
+        body: formData,
+      })
 
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({ message: "Error desconocido o respuesta no JSON" }));
-        console.error("ProductsContext: Error de respuesta del servidor:", errorData);
-        throw new Error(errorData.message || `Error al agregar producto: ${res.status}`);
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || "Error al agregar producto")
       }
-      
-      const data = await res.json();
-      console.log("ProductsContext: Respuesta del servidor al agregar producto (JSON):", data); // Log de depuración
-      
-      // Después de agregar, recargar la lista de productos
-      await fetchProducts(); 
-      // Después de agregar, recargar la lista de productos
-      await fetchProducts(); 
-    } catch (err) {
-      console.error("Error al crear producto:", err);
-      throw err; // Re-lanzar el error para que el componente que llama pueda manejarlo
-    }
-  };
 
-  // Editar producto
-  const updateProduct = async (id, actualizado) => {
+      const newProduct = await response.json()
+      setProductos((prev) => [...prev, newProduct])
+      return newProduct
+    } catch (error) {
+      console.error("Error agregando producto:", error)
+      throw error
+    }
+  }
+
+  const updateProduct = async (id, productData) => {
     try {
-      const formData = new FormData();
-      Object.entries(actualizado).forEach(([key, value]) => {
-        if (key === "image" && value instanceof File) {
-          formData.append("image", value);
-        } else {
-          formData.append(key, value);
+      const formData = new FormData()
+
+      // Agregar todos los campos del producto al FormData
+      Object.keys(productData).forEach((key) => {
+        if (productData[key] !== null && productData[key] !== undefined) {
+          formData.append(key, productData[key])
         }
       });
   const res = await fetch(`https://rumbox-pescar.onrender.com/api/products/${id}`, {
         method: "PUT",
-        headers: {
-          "Authorization": `Bearer ${usuario?.token}`
-        },
-        body: formData
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || "Error al editar producto");
-      }
-      // Después de editar, recargar la lista de productos
-      await fetchProducts();
-    } catch (err) {
-      console.error("Error al editar producto:", err);
-      throw err; // Re-lanzar el error
-    }
-  };
+        body: formData,
+      })
 
-  // Borrar producto
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || "Error al actualizar producto")
+      }
+
+      const updatedProduct = await response.json()
+      setProductos((prev) => prev.map((p) => (p._id === id ? updatedProduct : p)))
+      return updatedProduct
+    } catch (error) {
+      console.error("Error actualizando producto:", error)
+      throw error
+    }
+  }
+
   const deleteProduct = async (id) => {
     try {
       console.log("ProductsContext: Enviando token para deleteProduct:", usuario?.token);
   const res = await fetch(`https://rumbox-pescar.onrender.com/api/products/${id}`, { 
         method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${usuario?.token}` // Añadir el token
-        }
-      });
-      if (res.ok) {
-        setProductos((prev) => prev.filter(p => p._id !== id)); // Cambiar p.id a p._id
-        await fetchProducts(); // Recargar la lista después de eliminar para asegurar la sincronización
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || "Error al eliminar producto")
       }
-    } catch (err) {
-      console.error("Error al borrar producto:", err);
-      throw err; // Re-lanzar el error
+
+      setProductos((prev) => prev.filter((p) => p._id !== id))
+    } catch (error) {
+      console.error("Error eliminando producto:", error)
+      throw error
     }
-  };
+  }
 
-  return (
-    <ProductsContext.Provider value={{ productos, loading, addProduct, updateProduct, deleteProduct }}>
-      {children}
-    </ProductsContext.Provider>
-  );
+  const getProductById = (id) => {
+    return productos.find((p) => p._id === id)
+  }
+
+  const getProductsByCategory = (categoria) => {
+    return productos.filter((p) => p.categoria === categoria)
+  }
+
+  const value = {
+    productos,
+    loading,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    getProductById,
+    getProductsByCategory,
+    fetchProducts,
+  }
+
+  return <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>
 }
 
-export function useProductos() {
-  return useContext(ProductsContext);
-}
+export default ProductsContext

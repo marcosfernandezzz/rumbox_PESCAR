@@ -3,6 +3,7 @@ import cors from "cors"
 import dotenv from "dotenv"
 import path from "path"
 import { fileURLToPath } from "url"
+import mongoose from "mongoose"
 
 // Importar rutas
 import userRoutes from "./server/routes/user.routes.js"
@@ -21,12 +22,31 @@ const __dirname = path.dirname(__filename)
 const app = express()
 const PORT = process.env.PORT || 3000
 
+const connectDB = async () => {
+  try {
+    console.log("Intentando conectar a MongoDB...")
+    console.log("MONGO_URI:", process.env.MONGO_URI ? "Configurada" : "No configurada")
+
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+
+    console.log(`MongoDB conectado: ${conn.connection.host}`)
+  } catch (error) {
+    console.error("Error conectando a MongoDB:", error.message)
+    process.exit(1)
+  }
+}
+
+// Conectar a la base de datos
+connectDB()
+
 app.use(
   cors({
     origin: [
       "http://localhost:5173", // Para desarrollo local
-      "https://rumbox.netlify.app", // Reemplaza con tu dominio de Netlify
-      // Agrega otros dominios si es necesario
+      "https://rumbox.netlify.app", // Tu dominio de Netlify
     ],
     credentials: true,
   }),
@@ -40,10 +60,6 @@ const publicPath = path.join(__dirname, "src/server/public")
 app.use("/api/images", express.static(path.join(publicPath, "img")))
 
 console.log("Ruta absoluta de imágenes:", path.join(publicPath, "img"))
-
-app.get('/', (req, res) => {
-  res.send('API Rumbox funcionando');
-});
 
 // Rutas de API
 app.use("/api/users", userRoutes)
@@ -62,8 +78,8 @@ app.get("/api/health", (req, res) => {
   res.json({ message: "Backend funcionando correctamente", timestamp: new Date().toISOString() })
 })
 
-// Manejo de rutas no encontradas para API
-app.use("/api/*splat", (req, res) => {
+// Manejo de rutas no encontradas para API - usando patrón compatible
+app.use(/^\/api\/.*/, (req, res) => {
   res.status(404).json({ message: "Ruta de API no encontrada" })
 })
 
