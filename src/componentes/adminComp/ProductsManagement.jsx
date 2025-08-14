@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { useProductos } from "../../contexts/ProductsContext.jsx"
 import CrudProductos from "./CrudProductos.jsx"
@@ -69,7 +71,11 @@ const ProductsManagement = () => {
           <div key={producto._id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="aspect-square bg-gray-100 flex items-center justify-center">
               {producto.image ? (
-                <img src={`/img/${producto.image}`} alt={producto.nombre} className="w-full h-full object-cover" />
+                <img
+                  src={`https://rumbox-pescar.onrender.com/api/images/${producto.image}`}
+                  alt={producto.nombre}
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <div className="text-gray-400">Sin imagen</div>
               )}

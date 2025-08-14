@@ -1,10 +1,27 @@
+"use client"
+
 import { useState } from "react"
-import { useKits } from "../../contexts/KitsContext.jsx"
+import { useKits } from "../../contexts/KitsContext"
 import CrudKits from "./CrudKits.jsx"
 import Modal from "./Modal.jsx"
 import SalesHistory from "./SalesHistory.jsx"
 import Pagination from "./Pagination.jsx"
 import { FaHistory } from "react-icons/fa"
+
+const ProductImage = ({ src, alt, className }) => {
+  const imageUrl = src?.startsWith("http") ? src : `https://rumbox-pescar.onrender.com/api/images/${src}`
+
+  return (
+    <img
+      src={imageUrl || "/placeholder.svg?height=200&width=200&query=kit"}
+      alt={alt}
+      className={className}
+      onError={(e) => {
+        e.target.src = "/kit-no-disponible.png"
+      }}
+    />
+  )
+}
 
 const KitsManagement = () => {
   const { kits, deleteKit } = useKits()
@@ -69,7 +86,7 @@ const KitsManagement = () => {
           <div key={kit._id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="aspect-square bg-gray-100 flex items-center justify-center">
               {kit.image ? (
-                <img src={`/img/${kit.image}`} alt={kit.nombre} className="w-full h-full object-cover" />
+                <ProductImage src={kit.image} alt={kit.nombre} className="w-full h-full object-cover" />
               ) : (
                 <div className="text-gray-400">Sin imagen</div>
               )}
