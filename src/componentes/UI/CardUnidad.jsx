@@ -58,10 +58,9 @@ const CardUnidad = ({ id, ImgURL, nombre, precio, descripcion }) => {
                 <p className="text-xl text-start md:text-2xl font-semibold text-blue-600 p-0.5 rounded-xl mt-1">${new Intl.NumberFormat('es-AR').format(precio)}</p>
             </div>
             <div className='flex gap-2 justify-center items-center mt-auto'>
-                <button className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-orange-800 text-xs flex-grow cursor-pointer"
-                    onClick={abrirWhatsApp}>
-                    Comprar
-                </button>
+                <Link to={`/InfoProduct/${id}`} className="p-2 md:p-1 md:text-lg bg-orange-500 text-white rounded hover:bg-orange-800 text-xs flex-grow cursor-pointer">
+                    Ver más
+                </Link>
                 <button className="bg-blue-500 text-white p-1 border rounded hover:bg-blue-800 hover:text-white text-xs md:p-1.5 cursor-pointer"
                     onClick={addCart}>
                     <IoIosCart className='text-2xl' />
