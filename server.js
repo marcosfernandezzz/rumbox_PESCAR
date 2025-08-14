@@ -45,7 +45,8 @@ connectDB()
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // Para desarrollo local
+      "http://localhost:5173", // Para desarrollo local (Vite default)
+      "http://localhost:5174", // Added port 5174 for your local development
       "https://rumbox.netlify.app", // Tu dominio de Netlify
     ],
     credentials: true,
@@ -55,11 +56,6 @@ app.use(
 // Middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
-const publicPath = path.join(__dirname, "src/server/public")
-app.use("/api/images", express.static(path.join(publicPath, "img")))
-
-console.log("Ruta absoluta de imágenes:", path.join(publicPath, "img"))
 
 // Rutas de API
 app.use("/api/users", userRoutes)
@@ -71,12 +67,17 @@ app.use("/api/sales", salesRoutes)
 
 console.log("Rutas de API cargadas: /api/users, /api/auth, /api/client, /api/products, /api/kits, /api/sales")
 
-// Ya no intentamos servir la carpeta 'dist' porque el frontend está en Netlify
-
 // Ruta de prueba para verificar que el servidor funciona
 app.get("/api/health", (req, res) => {
   res.json({ message: "Backend funcionando correctamente", timestamp: new Date().toISOString() })
 })
+
+const publicPath = path.join(__dirname, "server", "public")
+app.use("/api/images", express.static(path.join(publicPath, "img")))
+
+console.log("Ruta absoluta de imágenes:", path.join(publicPath, "img"))
+
+// Ya no intentamos servir la carpeta 'dist' porque el frontend está en Netlify
 
 // Manejo de rutas no encontradas para API - usando patrón compatible
 app.use(/^\/api\/.*/, (req, res) => {

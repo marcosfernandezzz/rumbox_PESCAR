@@ -7,6 +7,7 @@ import Modal from "./Modal.jsx"
 import SalesHistory from "./SalesHistory.jsx"
 import Pagination from "./Pagination.jsx"
 import { FaHistory } from "react-icons/fa"
+import { s } from "motion/react-client"
 
 const ProductsManagement = () => {
   const { productos, deleteProduct } = useProductos()
@@ -72,7 +73,7 @@ const ProductsManagement = () => {
             <div className="aspect-square bg-gray-100 flex items-center justify-center">
               {producto.image ? (
                 <img
-                  src={`https://rumbox-pescar.onrender.com/api/images/${producto.image}`}
+                  src={`https://rumbox-pescar.onrender.com/api/images/${sproducto.image}`}
                   alt={producto.nombre}
                   className="w-full h-full object-cover"
                 />
