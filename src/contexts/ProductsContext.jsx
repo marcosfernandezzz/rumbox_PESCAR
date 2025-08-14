@@ -11,7 +11,7 @@ export function ProductsProvider({ children }) {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/products");
+      const res = await fetch("https://rumbox-pescar.onrender.com/api/products");
       const data = await res.json();
       setProductos(Array.isArray(data) ? data : data.data || []);
     } catch (error) {
