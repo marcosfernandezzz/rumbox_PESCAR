@@ -94,10 +94,10 @@ const Carrito = () => {
       }
 
   return (
-    <section className="flex flex-col justify-center p-4 gap-4">
+  <section className="flex flex-col justify-center items-center p-4 gap-4 max-w-4xl mx-auto">
       <div className="md:w-3/4"> {/* Cart items container */}
         <h2 className="text-2xl font-bold mb-4">Productos en el carrito</h2>
-      <div className="flex flex-col md:flex-row gap-8 mb-8"> {/* Carrito y resumen a la derecha */}
+  <div className="flex flex-col md:flex-row gap-8 mb-8"> {/* Carrito y resumen a la derecha */}
         <div className="flex-1 flex flex-col gap-4"> {/* Items del carrito */}
           {carritoUser.map((item) => {
             const producto = productosvarios.find(p => String(p._id) === String(item.id));
@@ -135,21 +135,22 @@ const Carrito = () => {
             return null;
           })}
         </div>
-        <div className="w-full md:w-1/3 flex flex-col gap-4 items-end"> {/* Resumen a la derecha */}
-          <button onClick={borrarLocalS} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 w-full md:w-auto">
-            Reiniciar Carrito
-          </button>
-          <div className="bg-blue-100 rounded-lg px-6 py-4 shadow flex flex-col items-center w-full text-center">
-            <p className="text-lg font-semibold text-gray-700 mb-2">Total a pagar:</p>
-            <p className="text-3xl font-bold text-blue-700 mb-4">${new Intl.NumberFormat('es-AR').format(montoTotal)}</p>
-            <Link to="/RealizarPago" className="w-full flex justify-center">
-              <button className="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 text-lg font-bold shadow-md transition-all w-full">
-                Terminar Compra
-              </button>
-            </Link>
-          </div>
-        </div>
       </div>
+      {/* Botones debajo del carrito */}
+      <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-8 w-full">
+        <button onClick={borrarLocalS} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 w-full md:w-auto max-w-xs">
+          Reiniciar Carrito
+        </button>
+        <div className="bg-blue-100 rounded-lg px-6 py-4 shadow flex flex-col items-center w-full text-center max-w-xs">
+          <p className="text-lg font-semibold text-gray-700 mb-2">Total a pagar:</p>
+          <p className="text-3xl font-bold text-blue-700 mb-4">${new Intl.NumberFormat('es-AR').format(montoTotal)}</p>
+          <Link to="/RealizarPago" className="w-full flex justify-center">
+            <button className="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 text-lg font-bold shadow-md transition-all w-full">
+              Terminar Compra
+            </button>
+          </Link>
+        </div>
+  </div>
       </div>
     </section>
   )

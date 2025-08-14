@@ -68,7 +68,7 @@ export const DescripCompra = () => {
         className="flex flex-col md:flex-row items-center bg-white shadow-md rounded-lg p-4 border border-gray-200 space-y-4 md:space-y-0 md:space-x-4"
       >
         <img
-          src={`/img/${imagen}`}
+          src={`https://rumbox-pescar.onrender.com/api/images/${imagen}`}
           alt={nombre}
           className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-md flex-shrink-0"
         />

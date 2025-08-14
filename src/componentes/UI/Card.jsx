@@ -46,7 +46,7 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
   const formattedPrecioDescuento = precioDescuento ? new Intl.NumberFormat('es-AR').format(precioDescuento) : null;
 
   return (
-      <div key={id} className="bg-white mx-auto text-center text-shadow-2xs p-4 h-80 w-46 md:h-88 md:w-60 my-2 border border-gray-300 rounded-xl shrink-0 shadow relative" >
+      <div key={id} className="bg-white mx-auto text-center text-shadow-2xs p-4 h-80 w-44 md:h-88 md:w-60 my-2 border border-gray-300 rounded-xl shrink-0 shadow relative" >
           {descuento > 0 && (
             <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
               -{descuento}%

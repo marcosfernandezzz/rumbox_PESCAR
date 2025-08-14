@@ -104,56 +104,60 @@ export const Nosotros = () => {
         {/* NUESTRO EQUIPO */}
         <h3 className='text-3xl font-bold text-center pt-8 mb-10 '>Nuestro equipo</h3>
 
-        <div className=" m-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-25 sm:px-15 lg:px-30">
+        <div className="m-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-2 sm:px-4 lg:px-8">
           {integrantes.map((persona, index) => (
             <section
               key={index}
-className="border-2 bg-gray-50 border-gray-300 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-discrete duration-300 transform hover:scale-105 flex justify-center flex-col items-center"
+              className="border-2 bg-gray-50 border-gray-300 rounded-2xl p-4 sm:p-5 lg:p-6 shadow-lg hover:shadow-2xl transition-transform duration-300 hover:scale-105 flex flex-col items-center w-full max-w-xs mx-auto"
             >
               <img
                 src={persona.foto}
                 alt={persona.nombre}
-className="w-64 h-64 rounded-2xl shadow-md object-cover mb-5"
+                className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-2xl shadow-md object-cover mb-4"
               />
-              <h3 className="text-xl text-shadow-2xs font-semibold text-center mb-2">{persona.nombre}</h3>
-
-
+              <h3 className="text-lg sm:text-xl font-semibold text-center mb-2">{persona.nombre}</h3>
               {/* Redes */}
-
-              <div className=" flex flex-wrap justify-center items-center gap-3">
-                <a
-                  href={persona.linkedin}
-                  target="_blank"
-                  rel=""
-                  className="  text-blue-600 text-2xl sm:text-2xl md:text-2xl lg:text-3xl"
-                >
-                  <FaLinkedin />
-                </a>
-                <a
-                  href={`mailto:${persona.email}`}
-                  target="_blank"
-                  rel=""
-                  className=" text-red-800 m-1 text-2xl sm:text-2xl md:text-2xl lg:text-3xl "
-                >
-                  <SiGmail />
-                </a>
-                <a
-                  href={persona.portfolio}
-                  target="_blank"
-                  rel=""
-                  className='text-2xl sm:text-2xl md:text-2xl lg:text-3xl'
-                >
-                  <TfiBriefcase />
-                </a>
-                <a
-                  href={persona.git}
-                  target="_blank"
-                  rel=""
-                  className='text-2xl sm:text-2xl md:text-2xl lg:text-3xl'
-                >
-                  <VscGithubInverted />
-                </a>
-
+              <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mt-2">
+                {persona.linkedin && (
+                  <a
+                    href={persona.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 text-xl sm:text-2xl lg:text-3xl hover:scale-110 transition-transform"
+                  >
+                    <FaLinkedin />
+                  </a>
+                )}
+                {persona.email && (
+                  <a
+                    href={`mailto:${persona.email}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-800 text-xl sm:text-2xl lg:text-3xl hover:scale-110 transition-transform"
+                  >
+                    <SiGmail />
+                  </a>
+                )}
+                {persona.portfolio && (
+                  <a
+                    href={persona.portfolio}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-700 text-xl sm:text-2xl lg:text-3xl hover:scale-110 transition-transform"
+                  >
+                    <TfiBriefcase />
+                  </a>
+                )}
+                {persona.git && (
+                  <a
+                    href={persona.git}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-black text-xl sm:text-2xl lg:text-3xl hover:scale-110 transition-transform"
+                  >
+                    <VscGithubInverted />
+                  </a>
+                )}
               </div>
             </section>
           ))}

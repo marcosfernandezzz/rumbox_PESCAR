@@ -37,7 +37,7 @@ export const Productos = () => {
         <div className="">
           <Filtros />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 p-4 justify-items-center">
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 p-4 justify-items-center">
           {productosFiltrados.map((producto) => (
             <Card 
               key={producto._id} 
