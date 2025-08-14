@@ -11,7 +11,7 @@ import authRoutes from "./server/routes/auth.routes.js"
 import clientRoutes from "./server/routes/client.routes.js"
 import productRoutes from "./server/routes/product.routes.js"
 import kitRoutes from "./server/routes/kit.routes.js"
-import salesRoutes from "./server/routes/sales.routes.js"
+import salesRoutes from "./server/routes/sale.routes.js"
 
 // Configuración de dotenv
 dotenv.config()
