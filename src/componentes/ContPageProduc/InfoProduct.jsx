@@ -96,9 +96,6 @@ export const InfoProduct = () => {
                     </div>
                     <div className="flex flex-col  gap-4 pt-4">
                         
-                        <button onClick={abrirWhatsApp} className="flex-1 bg-orange-400 text-white py-3 px-6 rounded-sm hover:bg-orange-800 transition-colors font-semibold cursor-pointer">
-                            Comprar Ahora
-                        </button>
                 
                         
                         <button className="flex-1 bg-white text-orange-400 border border-orange-400 py-3 px-6 rounded-sm hover:bg-orange-400 hover:text-white transition-colors font-semibold cursor-pointer"
