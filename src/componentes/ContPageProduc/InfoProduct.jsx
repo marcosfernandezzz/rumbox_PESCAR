@@ -74,7 +74,7 @@ export const InfoProduct = () => {
             <div className="m-auto flex  flex-col justify-around gap-4 items-center p-10 md:w-4xl md:h-[600px] md:flex-row md:gap-0.5 md:bg-white">
                 <div className=" bg-gray-200 ">
                     <img
-                        src={`https://rumbox-pescar.onrender.com/api/images/${producto.image}`} alt={nombre} className="h-[250px] w-[250px]  object-contain rounded-sm md:h-[400px] md:w-[400px]"
+                        src={`https://rumbox-pescar.onrender.com/api/images/${image}`} alt={nombre} className="h-[250px] w-[250px]  object-contain rounded-sm md:h-[400px] md:w-[400px]"
                     />
                 </div>
 

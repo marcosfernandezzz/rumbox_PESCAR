@@ -26,7 +26,7 @@ export function ProductsProvider({ children }) {
   const fetchProducts = async () => {
     setLoading(true)
     try {
-      const res = await fetch("/api/products")
+      const res = await fetch("https://rumbox-pescar.onrender.com/api/products") // Usar ruta relativa
       const data = await res.json()
       setProductos(Array.isArray(data) ? data : data.data || [])
     } catch (error) {
@@ -40,23 +40,34 @@ export function ProductsProvider({ children }) {
     try {
       const formData = new FormData()
 
-      // Agregar todos los campos del producto al FormData
       Object.keys(productData).forEach((key) => {
         if (productData[key] !== null && productData[key] !== undefined) {
           formData.append(key, productData[key])
         }
       });
-      const res = await fetch("https://rumbox-pescar.onrender.com/api/products", {
+
+      // Obtener token de localStorage para asegurar que esté actualizado
+      const storedUser = JSON.parse(localStorage.getItem('usuario'));
+      const token = storedUser ? storedUser.token : null;
+
+      if (!token) {
+        throw new Error("No se encontró token de autenticación");
+      }
+
+      const res = await fetch("https://rumbox-pescar.onrender.com/api/products", { // Usar ruta relativa
         method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}` // Añadir token a la cabecera
+        },
         body: formData,
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
+      if (!res.ok) { // Corregir 'response' a 'res'
+        const errorData = await res.json()
         throw new Error(errorData.message || "Error al agregar producto")
       }
 
-      const newProduct = await response.json()
+      const newProduct = await res.json() // Corregir 'response' a 'res'
       setProductos((prev) => [...prev, newProduct])
       return newProduct
     } catch (error) {
@@ -69,23 +80,34 @@ export function ProductsProvider({ children }) {
     try {
       const formData = new FormData()
 
-      // Agregar todos los campos del producto al FormData
       Object.keys(productData).forEach((key) => {
         if (productData[key] !== null && productData[key] !== undefined) {
           formData.append(key, productData[key])
         }
       });
-  const res = await fetch(`https://rumbox-pescar.onrender.com/api/products/${id}`, {
+
+      // Obtener token de localStorage para asegurar que esté actualizado
+      const storedUser = JSON.parse(localStorage.getItem('usuario'));
+      const token = storedUser ? storedUser.token : null;
+
+      if (!token) {
+        throw new Error("No se encontró token de autenticación");
+      }
+
+      const res = await fetch(`/api/products/${id}`, { // Usar ruta relativa
         method: "PUT",
+        headers: {
+          'Authorization': `Bearer ${token}` // Añadir token a la cabecera
+        },
         body: formData,
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
+      if (!res.ok) { // Corregir 'response' a 'res'
+        const errorData = await res.json()
         throw new Error(errorData.message || "Error al actualizar producto")
       }
 
-      const updatedProduct = await response.json()
+      const updatedProduct = await res.json() // Corregir 'response' a 'res'
       setProductos((prev) => prev.map((p) => (p._id === id ? updatedProduct : p)))
       return updatedProduct
     } catch (error) {
@@ -97,12 +119,24 @@ export function ProductsProvider({ children }) {
   const deleteProduct = async (id) => {
     try {
       console.log("ProductsContext: Enviando token para deleteProduct:", usuario?.token);
-  const res = await fetch(`https://rumbox-pescar.onrender.com/api/products/${id}`, { 
+      
+      // Obtener token de localStorage para asegurar que esté actualizado
+      const storedUser = JSON.parse(localStorage.getItem('usuario'));
+      const token = storedUser ? storedUser.token : null;
+
+      if (!token) {
+        throw new Error("No se encontró token de autenticación");
+      }
+
+      const res = await fetch(`/api/products/${id}`, { // Usar ruta relativa
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}` // Añadir token a la cabecera
+        }
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
+      if (!res.ok) { // Corregir 'response' a 'res'
+        const errorData = await res.json()
         throw new Error(errorData.message || "Error al eliminar producto")
       }
 
