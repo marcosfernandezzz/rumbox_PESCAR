@@ -1,39 +1,62 @@
-import { createContext, useState, useEffect } from "react";
+"use client"
 
-export const AuthContext = createContext();
+import { createContext, useState, useEffect } from "react"
 
-export const AuthProvider = ({ children }) => {
-  const [usuario, setUsuario] = useState(null);
+export const AuthContext = createContext()
 
-  // 🔁 Al cargar la app, revisamos si ya hay un usuario guardado
+export function AuthProvider({ children }) {
+  const [usuario, setUsuario] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  // Cargar usuario desde localStorage al inicializar
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuario");
-    if (usuarioGuardado) {
-      const parsedUser = JSON.parse(usuarioGuardado);
-      setUsuario(parsedUser);
-      console.log("AuthContext: Usuario cargado desde localStorage:", parsedUser);
+    try {
+      const storedUser = localStorage.getItem("usuario")
+      if (storedUser) {
+        const userData = JSON.parse(storedUser)
+        setUsuario(userData)
+      }
+    } catch (error) {
+      console.error("Error al cargar usuario desde localStorage:", error)
+      localStorage.removeItem("usuario")
+    } finally {
+      setLoading(false)
     }
-  }, []);
+  }, [])
 
-  const login = (datosUsuarioConToken) => { // Cambiar el nombre del parámetro para mayor claridad
-    // Asegurarse de que el inventario siempre sea un array y que el token esté incluido
-    const usuarioNormalizado = {
-      ...datosUsuarioConToken,
-      inventario: Array.isArray(datosUsuarioConToken.inventario) ? datosUsuarioConToken.inventario : [],
-    };
-    setUsuario(usuarioNormalizado);
-    localStorage.setItem("usuario", JSON.stringify(usuarioNormalizado));
-    console.log("AuthContext: Usuario logueado:", usuarioNormalizado);
-  };
+  // Función de login
+  const login = (userData) => {
+    setUsuario(userData)
+    localStorage.setItem("usuario", JSON.stringify(userData))
+    if (userData.token) {
+      localStorage.setItem("authToken", userData.token)
+    }
+  }
 
+  // Función de logout
   const logout = () => {
-    setUsuario(null);
-    localStorage.removeItem("usuario");
-  };
+    setUsuario(null)
+    localStorage.removeItem("usuario")
+    localStorage.removeItem("authToken")
+    localStorage.removeItem("ultimaVenta")
+  }
 
-  return (
-    <AuthContext.Provider value={{ usuario, setUsuario, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  // Actualizar usuario
+  const updateUsuario = (updatedData) => {
+    const newUserData = { ...usuario, ...updatedData }
+    setUsuario(newUserData)
+    localStorage.setItem("usuario", JSON.stringify(newUserData))
+  }
+
+  const value = {
+    usuario,
+    setUsuario: updateUsuario,
+    login,
+    logout,
+    loading,
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
+
+export default AuthContext
