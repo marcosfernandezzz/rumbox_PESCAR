@@ -11,13 +11,15 @@ import { FaHistory } from "react-icons/fa"
 const ProductImage = ({ src, alt, className }) => {
   const imageUrl = src?.startsWith("http") ? src : `https://rumbox-pescar.onrender.com/api/images/${src}`
 
+  console.log("Intentando cargar imagen:", imageUrl)
+
   return (
     <img
       src={imageUrl || "/placeholder.svg?height=200&width=200&query=kit+producto"}
       alt={alt}
       className={className}
       onError={(e) => {
-        e.target.src = "/generic-unavailable-image.png"
+        console.log("Error cargando imagen:", imageUrl, "- Usando fallback")
       }}
     />
   )
