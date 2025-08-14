@@ -127,7 +127,7 @@ export const RealizarPago = () => {
       console.log("🚀 Enviando petición a /api/sales...")
       console.log("🔑 Token:", token ? "Presente" : "Ausente")
 
-      const response = await fetch("/api/sales", {
+  const response = await fetch("https://rumbox-pescar.onrender.com/api/sales", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

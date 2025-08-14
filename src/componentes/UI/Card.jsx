@@ -53,7 +53,7 @@ const Card = ({id, image, title, precio, descripcion, precioDescuento, descuento
             </div>
           )}
           <Link to={`/InfoProduct/${id}`}>
-            <img src={`/img/${image}`} alt={title} className="h-24  w-full object-contain md:h-30 rounded bg-gray-50" />
+            <img src={`https://rumbox-pescar.onrender.com/api/images/${image}`} alt={title} className="h-24  w-full object-contain md:h-30 rounded bg-gray-50" />
             <h3 className="text-lg font-semibold mt-2 md:text-xl truncate">{title}</h3>
           </Link>
           

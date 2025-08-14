@@ -15,7 +15,7 @@ const SalesHistory = () => {
       try {
         const token = localStorage.getItem("authToken")
         console.log("TOKEN ENVIADO:", token)
-        const response = await fetch("/api/sales", {
+  const response = await fetch("https://rumbox-pescar.onrender.com/api/sales", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

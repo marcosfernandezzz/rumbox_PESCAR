@@ -6,7 +6,7 @@ export function UsersProvider({ children }) {
   
 
   useEffect(() => {
-    fetch("/api/users")
+  fetch("https://rumbox-pescar.onrender.com/api/users")
       .then((res) => res.json())
       .then((data) => {
         setUsers(Array.isArray(data) ? data : data.data || []);

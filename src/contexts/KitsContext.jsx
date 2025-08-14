@@ -8,7 +8,7 @@ export function KitsProvider({ children }) {
   const [kits, setKits] = useState([]);
 
   useEffect(() => {
-    fetch("/api/kits")
+    fetch("https://rumbox-pescar.onrender.com/api/kits")
       .then((res) => res.json())
       .then((data) => {
         setKits(Array.isArray(data) ? data : data.data || []);
@@ -36,7 +36,7 @@ export function KitsProvider({ children }) {
         }
       });
 
-      const res = await fetch("/api/kits", {
+      const res = await fetch("https://rumbox-pescar.onrender.com/api/kits", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${usuario?.token}`

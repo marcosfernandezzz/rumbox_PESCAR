@@ -36,7 +36,7 @@ export function ProductsProvider({ children }) {
           formData.append(key, value);
         }
       });
-      const res = await fetch("/api/products", {
+      const res = await fetch("https://rumbox-pescar.onrender.com/api/products", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${usuario?.token}`
@@ -77,7 +77,7 @@ export function ProductsProvider({ children }) {
           formData.append(key, value);
         }
       });
-      const res = await fetch(`/api/products/${id}`, {
+  const res = await fetch(`https://rumbox-pescar.onrender.com/api/products/${id}`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${usuario?.token}`
@@ -100,7 +100,7 @@ export function ProductsProvider({ children }) {
   const deleteProduct = async (id) => {
     try {
       console.log("ProductsContext: Enviando token para deleteProduct:", usuario?.token);
-      const res = await fetch(`/api/products/${id}`, { 
+  const res = await fetch(`https://rumbox-pescar.onrender.com/api/products/${id}`, { 
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${usuario?.token}` // Añadir el token

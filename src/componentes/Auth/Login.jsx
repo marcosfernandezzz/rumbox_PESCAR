@@ -60,7 +60,7 @@ const Login = () => {
       setApiError('')
 
       try {
-        const response = await fetch('/api/auth/login', {
+  const response = await fetch('https://rumbox-pescar.onrender.com/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
