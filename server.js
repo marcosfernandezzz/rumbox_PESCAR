@@ -25,9 +25,9 @@ const PORT = process.env.PORT || 3000
 const connectDB = async () => {
   try {
     console.log("Intentando conectar a MongoDB...")
-    console.log("DATABASE_URL:", process.env.DATABASE_URL ? "Configurada" : "No configurada")
+    console.log("MONGO_URI:", process.env.MONGO_URI ? "Configurada" : "No configurada")
 
-    const conn = await mongoose.connect(process.env.DATABASE_URL, {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
@@ -46,8 +46,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // Para desarrollo local
-      "https://your-netlify-domain.netlify.app", // Reemplaza con tu dominio de Netlify
-      // Agrega otros dominios si es necesario
+      "https://rumbox.netlify.app", // Tu dominio de Netlify
     ],
     credentials: true,
   }),
