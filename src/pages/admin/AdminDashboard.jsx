@@ -1,8 +1,17 @@
 import AdminTabs from "../../componentes/adminComp/AdminTabs.jsx"
 import ProductsManagement from "../../componentes/adminComp//ProductsManagement.jsx"
 import KitsManagement from "../../componentes/adminComp/KitsManagement.jsx"
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const AdminDashboard = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken'); // Assuming the token is stored as 'jwtToken'
+    // Optionally clear user context here if needed
+    navigate('/login'); // Redirect to login page
+  };
+
   const tabs = [
     {
       label: "Productos",
@@ -21,7 +30,7 @@ const AdminDashboard = () => {
           <h1 className="text-2xl font-bold">Rumbox Dashboard</h1>
           <div className="flex gap-4">
             <span className="text-gray-300">Admin</span>
-            <button className="bg-orange-500 px-4 py-2 rounded hover:bg-orange-600 transition duration-300">
+            <button onClick={handleLogout} className="bg-orange-500 px-4 py-2 rounded hover:bg-orange-600 transition duration-300">
               Logout
             </button>
           </div>
